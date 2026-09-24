@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>网址储存 · 兼容版</title>
+<style type="text/css">
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#ffffff;color:#111111;font-family:-apple-system,'PingFang SC','Microsoft YaHei',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.65}
+body.theme-dark{background:#0f0f0f;color:#e6e6e6}
+a{color:#0055cc;text-decoration:none}
+body.theme-dark a{color:#7db2ff}
+.wrap{max-width:760px;margin:0 auto;padding:0 14px}
+.top{padding:14px 0;border-bottom:2px solid #111111}
+body.theme-dark .top{border-color:#e6e6e6}
+.site{font-size:1.35em;font-weight:bold}
+.tag{font-size:.75em;color:#888;margin-left:8px}
+.bar{padding:12px 0 4px}
+input[type=text],input[type=password],select{display:block;width:100%;box-sizing:border-box;-webkit-box-sizing:border-box;padding:11px 12px;font-size:1em;border:1px solid #999;border-radius:6px;background:#ffffff;color:#111111;margin:0 0 8px}
+body.theme-dark input[type=text],body.theme-dark input[type=password],body.theme-dark select{background:#1b1b1b;color:#e6e6e6;border-color:#666}
+.btn{display:inline-block;padding:10px 16px;font-size:1em;border:1px solid #999;border-radius:6px;background:#f2f2f2;color:#111111;cursor:pointer;margin:0 8px 8px 0;line-height:1.2}
+a.btn{color:#111111}
+body.theme-dark .btn{background:#232323;color:#e6e6e6;border-color:#666}
+body.theme-dark a.btn{color:#e6e6e6}
+.btn.primary{background:#0066cc;border-color:#0066cc;color:#ffffff}
+a.btn.primary{color:#ffffff}
+.tabs{padding:8px 0 2px;border-bottom:1px solid #ddd}
+body.theme-dark .tabs{border-color:#333}
+.tab{display:inline-block;padding:8px 13px;font-size:.95em;border:1px solid #999;border-radius:6px;background:#f7f7f7;color:#111111;cursor:pointer;margin:0 6px 8px 0}
+body.theme-dark .tab{background:#1b1b1b;color:#e6e6e6;border-color:#555}
+.tab.active{background:#0066cc;border-color:#0066cc;color:#ffffff;font-weight:bold}
+body.theme-dark .tab.active{background:#2a6fd6;color:#ffffff}
+.catadmin{padding:8px 0;font-size:.9em;display:none}
+.mini{color:#888}
+.minibtn{display:inline-block;padding:5px 10px;font-size:.85em;border:1px solid #999;border-radius:6px;background:#f2f2f2;color:#111111;cursor:pointer;margin:0 4px 6px 0}
+body.theme-dark .minibtn{background:#232323;color:#e6e6e6;border-color:#666}
+.box{border:1px solid #bbb;border-radius:8px;padding:12px;margin:12px 0;background:#fafafa;display:none}
+body.theme-dark .box{background:#161616;border-color:#444}
+.box-title{font-weight:bold;margin-bottom:8px}
+.row{margin-top:6px}
+.card{border-bottom:1px solid #ddd;padding:12px 0}
+body.theme-dark .card{border-color:#2e2e2e}
+.card .title{display:block;font-size:1.12em;font-weight:bold;padding:2px 0;word-break:break-all}
+.card .meta{font-size:.82em;color:#888;margin-top:2px;word-break:break-all}
+.card .note{font-size:.9em;color:#666;margin-top:4px;word-break:break-all}
+body.theme-dark .card .note{color:#aaa}
+.gh{margin:22px 0 4px;font-weight:bold;font-size:.92em;color:#666}
+body.theme-dark .gh{color:#aaa}
+.empty{padding:40px 10px;text-align:center;color:#999}
+.editbox{border:1px dashed #999;border-radius:8px;padding:10px;margin:8px 0}
+.msg{display:none;margin:8px 0;padding:10px 12px;border:1px solid #d9a300;border-radius:6px;background:#fff8e1;font-size:.92em}
+body.theme-dark .msg{background:#2a2410;border-color:#8a6d00}
+.foot{margin:28px 0;padding-bottom:40px;text-align:center;font-size:.8em;color:#999}
+.static-note{font-size:.8em;color:#999;margin:10px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="top">
+  <span class="site" id="siteName">网址储存</span>
+  <span class="tag" id="modeTag">· 兼容版</span>
+ </div>
+ <div class="bar">
+  <input id="q" type="text" placeholder="搜索标题 / 网址 / 备注" autocomplete="off">
+  <div>
+   <button class="btn" id="btnTheme" type="button">亮/暗</button>
+   <button class="btn" id="btnFontUp" type="button">A+</button>
+   <button class="btn" id="btnFontDown" type="button">A-</button>
+   <button class="btn" id="btnRefresh" type="button">刷新</button>
+   <button class="btn" id="btnLogin" type="button">登录</button>
+   <button class="btn" id="btnLogout" type="button" style="display:none">退出</button>
+  </div>
+ </div>
+ <div class="msg" id="topMsg"></div>
+ <div class="tabs" id="catTabs"></div>
+ <div class="catadmin" id="catAdmin"></div>
+ <div class="box" id="loginBox">
+  <div class="box-title">管理员登录</div>
+  <input id="loginPwd" type="password" placeholder="密码">
+  <div class="row">
+   <button class="btn primary" id="btnLoginOk" type="button">登录</button>
+   <button class="btn" id="btnLoginCancel" type="button">取消</button>
+  </div>
+ </div>
+ <div class="box" id="addBox">
+  <div class="box-title">添加网址</div>
+  <input id="addUrl" type="text" placeholder="粘贴网址 https://..." autocomplete="off">
+  <input id="addTitle" type="text" placeholder="标题（可选）" autocomplete="off">
+  <select id="addCat"></select>
+  <div class="row"><button class="btn primary" id="btnAdd" type="button">添加</button></div>
+ </div>
+<div id="list"><div class="static-note">脚本未运行时的静态列表（生成时快照，可直接点击）</div>
+<div class="gh">常用</div>
+<div class="card"><a class="title" href="https://www.bing.com/">必应</a><div class="meta">bing.com · 常用</div></div>
+<div class="card"><a class="title" href="https://dash.cloudflare.com/b9865b22dc4d64174713371c293e700f/home">cloudflare</a><div class="meta">dash.cloudflare.com · 常用</div></div>
+<div class="card"><a class="title" href="http://www.github.com">github</a><div class="meta">github.com · 常用</div></div>
+<div class="gh">阅读</div>
+<div class="card"><a class="title" href="https://www.sudugu.cc/top/lastupdate/1.html">速读谷</a><div class="meta">sudugu.cc · 阅读</div></div>
+<div class="gh">节点管理</div>
+<div class="card"><a class="title" href="https://yongjiu.ccwu.cc/admin">edgetunnel-自建1</a><div class="meta">yongjiu.ccwu.cc · 节点管理</div></div>
+<div class="card"><a class="title" href="https://jfw6dhzm3i-bjy7cxrd.pages.dev/xdd12345678/login">BPB panel-自建2</a><div class="meta">jfw6dhzm3i-bjy7cxrd.pages.dev · 节点管理</div></div>
+<div class="gh">AI</div>
+<div class="card"><a class="title" href="https://cto.new/">cto</a><div class="meta">cto.new · AI</div></div>
+<div class="card"><a class="title" href="https://www.codebuddy.ai/agents">codebuddy</a><div class="meta">codebuddy.ai · AI</div></div>
+<div class="card"><a class="title" href="https://platform.deepseek.com/usage">deepseek</a><div class="meta">platform.deepseek.com · AI</div></div>
+<div class="card"><a class="title" href="https://huggingface.co/">huggingface</a><div class="meta">huggingface.co · AI</div></div>
+<div class="card"><a class="title" href="https://duck.ai/">DuckDuckGo AI Chat</a><div class="meta">duck.ai · AI</div></div>
+<div class="gh">MC</div>
+<div class="card"><a class="title" href="https://modrinth.com/discover/mods">modrinth</a><div class="meta">modrinth.com · MC</div></div>
+<div class="card"><a class="title" href="https://www.curseforge.com/minecraft">curseforge</a><div class="meta">curseforge.com · MC</div></div>
+<div class="card"><a class="title" href="https://www.mcmod.cn/v2/">mc百科</a><div class="meta">mcmod.cn · MC</div></div></div><!-- /list -->
+ <div class="foot"><span id="footInfo">兼容轻量版 · 数据与完整版互通 · 脚本不可用时显示静态快照</span></div>
+</div><!-- /wrap -->
+<script type="text/javascript">
+var SNP={"siteName":"网址储存","settings":{"theme":"light","fontSize":16},"categories":[{"id":"default","name":"常用"},{"id":"mto48v08thojk","name":"阅读"},{"id":"mto9jczb664su","name":"节点管理"},{"id":"mtpf5a1lzn0d3","name":"AI"},{"id":"mtybfaohc8dx5","name":"MC"}],"links":[{"id":"mu810qevqhchj","url":"https://cto.new/","title":"cto","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-19T06:48:43.447Z"},{"id":"mu7x5n8hwp1md","url":"https://modrinth.com/discover/mods","title":"modrinth","categoryId":"mtybfaohc8dx5","note":"","pinned":false,"added":"2026-09-19T05:00:34.145Z"},{"id":"mu7wmvqnl8756","url":"https://www.curseforge.com/minecraft","title":"curseforge","categoryId":"mtybfaohc8dx5","note":"","pinned":false,"added":"2026-09-19T04:45:58.703Z"},{"id":"mu72ilwy82vxo","url":"https://www.codebuddy.ai/agents","title":"codebuddy","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-18T14:42:50.866Z"},{"id":"mtyf7mifcd40z","url":"https://platform.deepseek.com/usage","title":"deepseek","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-12T13:28:17.847Z"},{"id":"mtybfh9jtevlf","url":"https://www.mcmod.cn/v2/","title":"mc百科","categoryId":"mtybfaohc8dx5","note":"","pinned":false,"added":"2026-09-12T11:42:25.831Z"},{"id":"mtybe371no69s","url":"https://huggingface.co/","title":"huggingface","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-12T11:41:20.941Z"},{"id":"mtpfbpir7ix4d","url":"https://www.bing.com/","title":"必应","categoryId":"default","note":"","pinned":false,"added":"2026-09-06T06:21:32.787Z"},{"id":"mtpf6q298jrsr","url":"https://duck.ai/","title":"DuckDuckGo AI Chat","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-06T06:17:40.209Z"},{"id":"mtoaw8ou5p5ci","url":"https://yongjiu.ccwu.cc/admin","title":"edgetunnel-自建1","categoryId":"mto9jczb664su","note":"","pinned":false,"added":"2026-09-05T11:29:46.494Z"},{"id":"mto9h349lb4bl","url":"https://jfw6dhzm3i-bjy7cxrd.pages.dev/xdd12345678/login","title":"BPB panel-自建2","categoryId":"mto9jczb664su","note":"","pinned":false,"added":"2026-09-05T10:49:59.817Z"},{"id":"mto47insy94sh","url":"https://dash.cloudflare.com/b9865b22dc4d64174713371c293e700f/home","title":"cloudflare","categoryId":"default","note":"","pinned":false,"added":"2026-09-05T08:22:35.320Z"},{"id":"mtnyjn2dwguob","url":"https://www.sudugu.cc/top/lastupdate/1.html","title":"速读谷","categoryId":"mto48v08thojk","note":"","pinned":false,"added":"2026-09-05T05:44:03.205Z"},{"id":"mtn1tz4kg63cl","url":"http://www.github.com","title":"github","categoryId":"default","note":"","pinned":false,"added":"2026-09-04T14:28:18.068Z"}]};
+var SRC_LIST=[
+ '/lite1/links.json',
+ 'https://nav.yongjiu.ccwu.cc/links.json',
+ 'https://raw.githubusercontent.com/xdd2024030565-spec/lite1/main/links.json',
+ 'https://xdd2024030565-spec.github.io/lite1/links.json'
+];
+var WRITE_URL='https://api.yongjiu.ccwu.cc/repos/xdd2024030565-spec/lite1/contents/links.json';
+var AUTH_API='https://auth-api.xdd2024030565.workers.dev';
+var DATA=null,CURCAT='all',Q='',ADMIN=false,TOKEN=null,FILE_SHA=null,BUSY=false,EDITID=null,UNDO=null,FS=16;
+var msgTimer=null,memStore={};
+
+function $(id){return document.getElementById(id);}
+function esc(s){if(s===null||s===undefined)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&#34;');}
+function attr(s){return esc(s).replace(/'/g,'&#39;');}
+function trimS(s){return String(s===null||s===undefined?'':s).replace(/^\s+|\s+$/g,'');}
+function on(el,ev,fn){if(!el)return;if(el.addEventListener){el.addEventListener(ev,fn,false);}else if(el.attachEvent){el.attachEvent('on'+ev,function(e){return fn.call(el,e||window.event);});}else{el['on'+ev]=fn;}}
+
+function lsGet(k){try{if(window.localStorage){var v=localStorage.getItem(k);return v===null?'':v;}}catch(e){}return memStore['L_'+k]||'';}
+function lsSet(k,v){try{if(window.localStorage){localStorage.setItem(k,v);return;}}catch(e){}memStore['L_'+k]=v;}
+function ssGet(k){try{if(window.sessionStorage){var v=sessionStorage.getItem(k);return v===null?'':v;}}catch(e){}return memStore['S_'+k]||'';}
+function ssSet(k,v){try{if(window.sessionStorage){sessionStorage.setItem(k,v);return;}}catch(e){}memStore['S_'+k]=v;}
+function ssDel(k){try{if(window.sessionStorage){sessionStorage.removeItem(k);return;}}catch(e){}memStore['S_'+k]='';}
+
+var J=window.JSON||{};
+function jsonParse(s){if(J.parse){try{return J.parse(s);}catch(e){return null;}}try{return eval('('+s+')');}catch(e){return null;}}
+function jsonStr(o){if(J.stringify){return J.stringify(o);}return _js(o);}
+function _js(o){var t=typeof o;if(o===null||o===undefined)return 'null';if(t==='string')return '"'+o.replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/\r/g,'\\r').replace(/\n/g,'\\n')+'"';if(t==='number')return isFinite(o)?String(o):'null';if(t==='boolean')return String(o);var a=[],i,k,v;if(o instanceof Array){for(i=0;i<o.length;i++){a.push(_js(o[i]));}return '['+a.join(',')+']';}for(k in o){if(o.hasOwnProperty(k)){v=o[k];if(typeof v!=='function'&&typeof v!=='undefined'){a.push(_js(k)+':'+_js(v));}}}return '{'+a.join(',')+'}';}
+
+var B64K='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+function b64enc(s){var str=s;try{str=unescape(encodeURIComponent(s));}catch(e){}var out='',i=0,c1,c2,c3,e1,e2,e3,e4;while(i<str.length){c1=str.charCodeAt(i++);c2=str.charCodeAt(i++);c3=str.charCodeAt(i++);e1=c1>>2;e2=((c1&3)<<4)|(c2>>4);e3=((c2&15)<<2)|(c3>>6);e4=c3&63;if(isNaN(c2)){e3=e4=64;}else if(isNaN(c3)){e4=64;}out+=B64K.charAt(e1)+B64K.charAt(e2)+(e3<64?B64K.charAt(e3):'=')+(e4<64?B64K.charAt(e4):'=');}return out;}
+
+function isoNow(){var d=new Date();function p(n){return (n<10?'0':'')+n;}return d.getUTCFullYear()+'-'+p(d.getUTCMonth()+1)+'-'+p(d.getUTCDate())+'T'+p(d.getUTCHours())+':'+p(d.getUTCMinutes())+':'+p(d.getUTCSeconds())+'.000Z';}
+
+function ajax(method,url,body,headers,cb,timeoutMs){
+ var x=null,done=false,timer=null;
+ try{if(window.XMLHttpRequest){x=new XMLHttpRequest();}else if(window.ActiveXObject){x=new ActiveXObject('Microsoft.XMLHTTP');}}catch(e){}
+ if(!x){cb(new Error('XMLHttpRequest 不可用'),0,null);return;}
+ function finish(err,code,text){if(done)return;done=true;if(timer){try{clearTimeout(timer);}catch(e){}}cb(err,code,text);}
+ try{
+  x.open(method,url,true);
+  if(headers){for(var k in headers){if(headers.hasOwnProperty(k)){try{x.setRequestHeader(k,headers[k]);}catch(e){}}}}
+  x.onreadystatechange=function(){if(x.readyState===4){if(x.status>=200&&x.status<300){finish(null,x.status,x.responseText);}else{finish(new Error('HTTP '+x.status),x.status,x.responseText);}}};
+  timer=setTimeout(function(){if(!done){try{x.abort();}catch(e){}finish(new Error('网络超时'),0,null);}},timeoutMs||9000);
+  if(body!==null&&body!==undefined){x.send(body);}else{x.send();}
+ }catch(e){finish(e,0,null);}
+}
+
+function getDomain(u){var m=String(u||'').match(/^https?:\/\/([^\/?#]+)/i);if(m){return m[1].replace(/^www\./i,'');}return String(u||'');}
+function parseDate(s){if(!s)return 0;var t=Date.parse(s);if(isNaN(t)||!t){var s2=String(s).replace(/-/g,'/').replace(/T/,' ').replace(/\..*/,'');t=Date.parse(s2);}return isNaN(t)?0:t;}
+function timeAgo(s){var t=parseDate(s);if(!t)return '';var diff=(new Date().getTime()-t)/1000;if(diff<0)diff=0;if(diff<3600)return Math.floor(diff/60)+' 分钟前';if(diff<86400)return Math.floor(diff/3600)+' 小时前';var d=Math.floor(diff/86400);if(d<30)return d+' 天前';if(d<365)return Math.floor(d/30)+' 个月前';return Math.floor(d/365)+' 年前';}
+function groupOf(s){var t=parseDate(s);if(!t)return 'earlier';var d=new Date();var start=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime();if(t>=start)return 'today';if(t>=start-6*86400000)return 'week';return 'earlier';}
+
+function msg(s,keep){var el=$('topMsg');if(!el)return;el.innerHTML=s||'';el.style.display=s?'block':'none';if(msgTimer){clearTimeout(msgTimer);msgTimer=null;}if(s&&!keep){msgTimer=setTimeout(function(){el.style.display='none';},5000);}}
+
+function defaultCatId(){if(!DATA.categories||!DATA.categories.length){DATA.categories=[{id:'default',name:'常用'}];}return DATA.categories[0].id;}
+function findLink(id){var l=DATA.links||[];for(var i=0;i<l.length;i++){if(l[i].id===id)return l[i];}return null;}
+function findIndexById(id){var l=DATA.links||[];for(var i=0;i<l.length;i++){if(l[i].id===id)return i;}return -1;}
+function findCat(id){var c=DATA.categories||[];for(var i=0;i<c.length;i++){if(c[i].id===id)return c[i];}return null;}
+function catName(id){var c=findCat(id);return c?c.name:'未分类';}
+function val(id){var e=$(id);return e?e.value:'';}
+
+function setTheme(t,skip){if(t==='dark'){document.body.className='theme-dark';}else{document.body.className='';}if(!skip){lsSet('lite_theme',t);}}
+function toggleTheme(){var dark=document.body.className.indexOf('theme-dark')>=0;setTheme(dark?'light':'dark');}
+function setFont(n,skip){n=parseInt(n,10);if(isNaN(n))n=16;if(n<12)n=12;if(n>28)n=28;FS=n;document.body.style.fontSize=n+'px';if(!skip){lsSet('lite_fs',String(n));}}
+
+function setCat(c){CURCAT=c;lsSet('lite_cat',c);render();}
+function onSearch(v){Q=String(v||'');renderList();}
+
+function filtered(){var l=DATA.links||[],out=[],i,x;var q=Q?Q.toLowerCase():'';for(i=0;i<l.length;i++){x=l[i];if(CURCAT!=='all'&&x.categoryId!==CURCAT)continue;if(q){var hay=String((x.title||'')+' '+(x.url||'')+' '+(x.note||'')).toLowerCase();if(hay.indexOf(q)<0)continue;}out.push(x);}return out;}
+
+function render(){if(!DATA)return;
+ var sn=$('siteName');if(sn){sn.innerHTML=esc(DATA.siteName||'网址储存');}
+ var mt=$('modeTag');if(mt){mt.innerHTML=ADMIN?'· 兼容版 · 管理员':'· 兼容版';}
+ var links=DATA.links||[];var tabs='<button type="button" class="tab'+(CURCAT==='all'?' active':'')+'" onclick="setCat(\'all\')">全部('+links.length+')</button>';
+ var cats=DATA.categories||[];var i,j,c,cnt;
+ for(i=0;i<cats.length;i++){c=cats[i];cnt=0;for(j=0;j<links.length;j++){if(links[j].categoryId===c.id)cnt++;}
+  tabs+='<button type="button" class="tab'+(CURCAT===c.id?' active':'')+'" onclick="setCat(\''+attr(c.id)+'\')">'+esc(c.name)+'('+cnt+')</button>';}
+ var ct=$('catTabs');if(ct){ct.innerHTML=tabs;}
+ renderList();renderCatAdmin();syncAdminUI();
+}
+
+function cardHTML(x){var h='<div class="card" id="c_'+attr(x.id)+'">';
+ h+='<a class="title" href="'+attr(x.url)+'">'+esc(x.title||x.url)+'</a>';
+ h+='<div class="meta">'+esc(getDomain(x.url))+' · '+esc(catName(x.categoryId))+' · '+timeAgo(x.added)+(x.pinned?' · 置顶':'')+'</div>';
+ if(x.note){h+='<div class="note">'+esc(x.note)+'</div>';}
+ h+='<div class="row"><a class="btn" href="'+attr(x.url)+'">打开</a>';
+ if(ADMIN){
+  h+='<button type="button" class="btn" onclick="togglePin(\''+attr(x.id)+'\')">'+(x.pinned?'取消置顶':'置顶')+'</button>';
+  h+='<button type="button" class="btn" onclick="showEdit(\''+attr(x.id)+'\')">编辑</button>';
+  h+='<button type="button" class="btn" onclick="delLink(\''+attr(x.id)+'\')">删除</button>';
+ }
+ h+='</div></div>';
+ return h;}
+
+function renderList(){if(!DATA)return;var el=$('list');if(!el)return;
+ EDITID=null;
+ var links=filtered();var h='';var i,j;
+ if(!links.length){h='<div class="empty">没有匹配的网址</div>';}
+ else{
+  var pinned=[],rest=[];
+  for(i=0;i<links.length;i++){if(links[i].pinned){pinned.push(links[i]);}else{rest.push(links[i]);}}
+  if(pinned.length){h+='<div class="gh">置顶</div>';for(i=0;i<pinned.length;i++){h+=cardHTML(pinned[i]);}}
+  var g={today:[],week:[],earlier:[]};
+  for(i=0;i<rest.length;i++){g[groupOf(rest[i].added)].push(rest[i]);}
+  var names={today:'今天',week:'本周',earlier:'更早'};
+  var seq=['today','week','earlier'];
+  for(i=0;i<seq.length;i++){if(g[seq[i]].length){h+='<div class="gh">'+names[seq[i]]+'</div>';for(j=0;j<g[seq[i]].length;j++){h+=cardHTML(g[seq[i]][j]);}}}
+ }
+ el.innerHTML=h;
+ fillAddCat();
+}
+
+function fillAddCat(){var sel=$('addCat');if(!sel||!DATA)return;var cats=DATA.categories||[];var last=lsGet('lite_lastcat');if(!last)last=defaultCatId();var h='';for(var i=0;i<cats.length;i++){h+='<option value="'+attr(cats[i].id)+'"'+(cats[i].id===last?' selected':'')+'>'+esc(cats[i].name)+'</option>';}sel.innerHTML=h;}
+
+function syncAdminUI(){var b1=$('btnLogin'),b2=$('btnLogout'),ab=$('addBox'),ca=$('catAdmin');
+ if(ADMIN){if(b1)b1.style.display='none';if(b2)b2.style.display='inline-block';if(ab)ab.style.display='block';if(ca)ca.style.display='block';}
+ else{if(b1)b1.style.display='inline-block';if(b2)b2.style.display='none';if(ab)ab.style.display='none';if(ca)ca.style.display='none';}
+}
+
+function renderCatAdmin(){var el=$('catAdmin');if(!el)return;if(!ADMIN){el.innerHTML='';return;}
+ var h='<span class="mini">分类管理：</span>';var cats=DATA.categories||[];
+ for(var i=0;i<cats.length;i++){h+=esc(cats[i].name)+' <button type="button" class="minibtn" onclick="renameCat(\''+attr(cats[i].id)+'\')">改名</button><button type="button" class="minibtn" onclick="delCat(\''+attr(cats[i].id)+'\')">删除</button> ';}
+ h+='<button type="button" class="minibtn" onclick="newCat()">+ 新分类</button>';
+ el.innerHTML=h;}
+
+function togglePin(id){if(!ADMIN)return;var x=findLink(id);if(!x)return;x.pinned=!x.pinned;render();saveData(function(){});}
+
+function delLink(id){if(!ADMIN)return;var i=findIndexById(id);if(i<0)return;var del=DATA.links[i];if(!confirm('确定删除：'+(del.title||del.url)+' ？'))return;DATA.links.splice(i,1);UNDO={i:i,x:del};render();saveData(function(){});
+ msg('已删除。<span style="text-decoration:underline;cursor:pointer;color:#0066cc" onclick="undoDel()">点此撤销</span>',true);}
+
+function undoDel(){if(!UNDO||!ADMIN)return;DATA.links.splice(UNDO.i,0,UNDO.x);UNDO=null;render();saveData(function(){msg('已恢复');});}
+
+function showEdit(id){if(!ADMIN)return;if(EDITID===id){hideEdit();return;}hideEdit();var x=findLink(id);if(!x)return;var el=$('c_'+id);if(!el)return;EDITID=id;
+ var opts='';var cats=DATA.categories||[];for(var i=0;i<cats.length;i++){opts+='<option value="'+attr(cats[i].id)+'"'+(cats[i].id===x.categoryId?' selected':'')+'>'+esc(cats[i].name)+'</option>';}
+ var d=document.createElement('div');d.className='editbox';d.id='e_'+id;
+ d.innerHTML='<input type="text" id="et_'+attr(id)+'" value="'+attr(x.title)+'" placeholder="标题"><input type="text" id="eu_'+attr(id)+'" value="'+attr(x.url)+'" placeholder="网址"><select id="ec_'+attr(id)+'">'+opts+'</select><input type="text" id="en_'+attr(id)+'" value="'+attr(x.note||'')+'" placeholder="备注"><div class="row"><button type="button" class="btn primary" onclick="saveEdit()">完成</button><button type="button" class="btn" onclick="hideEdit()">取消</button></div>';
+ el.appendChild(d);}
+
+function hideEdit(){if(EDITID){var e=$('e_'+EDITID);if(e&&e.parentNode){e.parentNode.removeChild(e);}EDITID=null;}}
+
+function saveEdit(){var id=EDITID;if(!id)return;var x=findLink(id);if(!x)return;var t=val('et_'+id),u=val('eu_'+id),c=val('ec_'+id),n=val('en_'+id);
+ u=trimS(u);if(!u){alert('网址不能为空');return;}
+ if(!/^https?:\/\//i.test(u)){u='https://'+u;}
+ x.title=trimS(t)||u;x.url=u;if(c){x.categoryId=c;}x.note=trimS(n);
+ hideEdit();render();saveData(function(){});}
+
+function addLink(){if(!ADMIN||BUSY)return;var u=trimS(val('addUrl')),t=trimS(val('addTitle'));var c=val('addCat')||defaultCatId();
+ if(!u){msg('请输入网址');return;}
+ if(!/^https?:\/\//i.test(u)){u='https://'+u;}
+ var id='g'+new Date().getTime()+Math.floor(Math.random()*10000);
+ DATA.links.unshift({id:id,url:u,title:t||getDomain(u),categoryId:c,note:'',pinned:false,added:isoNow()});
+ lsSet('lite_lastcat',c);
+ var iu=$('addUrl'),it=$('addTitle');if(iu)iu.value='';if(it)it.value='';
+ render();BUSY=true;
+ saveData(function(err){BUSY=false;if(err){msg('保存失败：'+err.message);}else{msg('已添加');}});}
+
+function newCat(){if(!ADMIN)return;var n=trimS(prompt('新分类名称',''));if(!n)return;DATA.categories.push({id:'g'+new Date().getTime(),name:n});render();saveData(function(){});}
+
+function renameCat(id){if(!ADMIN)return;var c=findCat(id);if(!c)return;var n=trimS(prompt('重命名分类',c.name));if(!n)return;c.name=n;render();saveData(function(){});}
+
+function delCat(id){if(!ADMIN)return;var c=findCat(id);if(!c)return;var cnt=0;var i;
+ for(i=0;i<(DATA.links||[]).length;i++){if(DATA.links[i].categoryId===id)cnt++;}
+ if(!confirm('删除分类「'+c.name+'」'+(cnt?('，其中 '+cnt+' 条网址将移入「常用」'):'')+' ？'))return;
+ var defid=null;var cats=DATA.categories;for(i=0;i<cats.length;i++){if(cats[i].id!==id){defid=cats[i].id;break;}}
+ if(!defid){defid='default';DATA.categories.push({id:'default',name:'常用'});}
+ var nc=[];for(i=0;i<cats.length;i++){if(cats[i].id!==id)nc.push(cats[i]);}
+ DATA.categories=nc;
+ for(i=0;i<(DATA.links||[]).length;i++){if(DATA.links[i].categoryId===id)DATA.links[i].categoryId=defid;}
+ if(CURCAT===id){CURCAT='all';}
+ render();saveData(function(){});}
+
+function fetchSha(cb){ajax('GET','https://api.yongjiu.ccwu.cc/repos/xdd2024030565-spec/lite1/contents/links.json?ref=main&t='+(new Date().getTime()),null,{'Accept':'application/vnd.github.v3+json'},function(err,code,text){if(!err){var d=jsonParse(text||'');if(d&&d.sha){FILE_SHA=d.sha;}}cb(err);},10000);}
+
+function saveData(cb){
+ if(!ADMIN){if(cb)cb(new Error('需要管理员权限'));return;}
+ msg('保存中...',true);
+ fetchSha(function(e0){
+  if(e0){msg('保存失败：无法连接数据服务');if(cb)cb(e0);return;}
+  var payload={siteName:DATA.siteName,settings:DATA.settings,categories:DATA.categories,links:DATA.links};
+  var content=b64enc(jsonStr(payload));
+  var body={message:'更新数据（兼容版）',content:content,branch:'main'};
+  if(FILE_SHA){body.sha=FILE_SHA;}
+  ajax('PUT',WRITE_URL,jsonStr(body),{'Content-Type':'application/json;charset=UTF-8','Accept':'application/vnd.github.v3+json'},function(err,code,text){
+   if(err){
+    var txt=String(text||'');
+    if(code===409||code===422||txt.indexOf('does not match')>=0){
+     fetchSha(function(){
+      var body2={message:'更新数据（兼容版·重试）',content:content,branch:'main'};
+      if(FILE_SHA){body2.sha=FILE_SHA;}
+      ajax('PUT',WRITE_URL,jsonStr(body2),{'Content-Type':'application/json;charset=UTF-8','Accept':'application/vnd.github.v3+json'},function(err2,code2,text2){
+       if(err2){msg('保存失败：'+err2.message);if(cb)cb(err2);return;}
+       var d2=jsonParse(text2||'');if(d2&&d2.content&&d2.content.sha){FILE_SHA=d2.content.sha;}
+       msg('已保存');if(cb)cb(null);
+      },15000);
+     });
+     return;
+    }
+    msg('保存失败：'+err.message);if(cb)cb(err);return;
+   }
+   var d=jsonParse(text||'');if(d&&d.content&&d.content.sha){FILE_SHA=d.content.sha;}
+   msg('已保存');if(cb)cb(null);
+  },15000);
+ });
+}
+
+function loadFrom(i,done){if(i>=SRC_LIST.length){done(new Error('全部数据源加载失败'));return;}
+ var base=SRC_LIST[i];var url=base+(base.indexOf('?')>=0?'&':'?')+'t='+(new Date().getTime());
+ ajax('GET',url,null,{'Accept':'application/json'},function(err,code,text){
+  if(err){loadFrom(i+1,done);return;}
+  var d=jsonParse(text||'');
+  if(!d||!d.links){loadFrom(i+1,done);return;}
+  DATA=d;lsSet('lite_cache',text);
+  done(null,i);
+ },8000);}
+
+function loadData(){msg('正在加载数据...',true);
+ loadFrom(0,function(err,srcIdx){
+  if(err){if(!DATA){msg('数据加载失败，请检查网络后点「刷新」');}else{msg('使用离线缓存数据');}return;}
+  render();msg('');
+ });}
+
+function doLogin(){if(BUSY)return;var pwd=val('loginPwd');if(!pwd){msg('请输入密码');return;}
+ BUSY=true;msg('登录中...',true);
+ ajax('POST',AUTH_API+'/auth/login',jsonStr({password:pwd}),{'Content-Type':'application/json;charset=UTF-8'},function(err,code,text){
+  BUSY=false;
+  if(err){msg('登录失败：'+err.message);return;}
+  var d=jsonParse(text||'');
+  if(d&&d.token){TOKEN=d.token;ssSet('lite_token',d.token);ADMIN=true;enterAdmin();msg('');}
+  else{msg('登录失败：'+((d&&d.error)||'密码错误'));}
+ },12000);}
+
+function enterAdmin(){var lb=$('loginBox');if(lb)lb.style.display='none';var lp=$('loginPwd');if(lp)lp.value='';render();}
+
+function doLogout(){ADMIN=false;TOKEN=null;ssDel('lite_token');var lb=$('loginBox');if(lb)lb.style.display='none';render();msg('已退出登录');}
+
+function tryRestoreLogin(){var t=ssGet('lite_token');if(!t)return;ajax('POST',AUTH_API+'/auth/verify',null,{'Authorization':'Bearer '+t},function(err,code,text){if(err)return;var d=jsonParse(text||'');if(d&&d.valid){TOKEN=t;ADMIN=true;render();}},10000);}
+
+function bind(){
+ on($('btnTheme'),'click',toggleTheme);
+ on($('btnFontUp'),'click',function(){setFont(FS+1);});
+ on($('btnFontDown'),'click',function(){setFont(FS-1);});
+ on($('btnRefresh'),'click',function(){loadData();});
+ on($('btnLogin'),'click',function(){var lb=$('loginBox');if(lb)lb.style.display='block';});
+ on($('btnLoginCancel'),'click',function(){var lb=$('loginBox');if(lb)lb.style.display='none';});
+ on($('btnLoginOk'),'click',doLogin);
+ on($('loginPwd'),'keyup',function(e){e=e||window.event;var k=e.keyCode||e.which;if(k===13){doLogin();}});
+ on($('btnLogout'),'click',doLogout);
+ on($('btnAdd'),'click',addLink);
+ on($('q'),'keyup',function(){onSearch(this.value);});
+ on($('q'),'change',function(){onSearch(this.value);});
+ on($('addUrl'),'keyup',function(e){e=e||window.event;var k=e.keyCode||e.which;if(k===13){addLink();}});
+}
+
+function init(){
+ var th=lsGet('lite_theme');setTheme(th==='dark'?'dark':'light',true);
+ var fs=parseInt(lsGet('lite_fs'),10);if(isNaN(fs))fs=16;setFont(fs,true);
+ var c=lsGet('lite_cat');CURCAT=c||'all';
+ if(!DATA){if(SNP&&SNP.links){DATA=SNP;}else{var cached=lsGet('lite_cache');var d0=cached?jsonParse(cached):null;if(d0&&d0.links){DATA=d0;}}}
+ if(!DATA){DATA={siteName:'网址储存',settings:{theme:'light',fontSize:16},categories:[{id:'default',name:'常用'}],links:[]};}
+ bind();render();tryRestoreLogin();loadData();
+}
+init();
+</script>
+</body>
+</html>
