@@ -58,6 +58,7 @@ body.theme-dark .toclist a{border-color:#2e2e2e;color:#7db2ff}
    <button class="btn" id="btnImport" type="button">导入文档</button>
    <button class="btn" id="btnTrash" type="button">回收站</button>
    <button class="btn" id="btnReload" type="button">刷新</button>
+   <button class="btn" id="btnSource" type="button">🌐 书源</button>
   </div>
   <div class="box" id="importBox">
    <div class="box-title">导入文档</div>
@@ -107,6 +108,48 @@ body.theme-dark .toclist a{border-color:#2e2e2e;color:#7db2ff}
    <button class="btn" id="btnEmpty" type="button">清空回收站</button>
   </div>
   <div id="trashList"></div>
+ </div>
+ <div id="vSource" style="display:none">
+  <div class="bar">
+   <button class="btn" id="btnSrcBack" type="button">« 书库</button>
+   <button class="btn" id="btnSrcMgr" type="button">书源管理</button>
+  </div>
+  <div class="box" id="srcMgrBox">
+   <div class="box-title">书源管理（存储于 GitHub · sources.json）</div>
+   <textarea id="srcImport" placeholder="粘贴 legado 书源 JSON（单条或数组）"></textarea>
+   <div class="row">
+    <button class="btn primary" id="btnSrcImport" type="button">导入并保存</button>
+    <button class="btn" id="btnSrcReload" type="button">重新加载</button>
+   </div>
+   <div id="srcList"></div>
+   <div class="mini">说明：支持文本类书源的基础规则（XPath / @css / class.xxx 等简写，规则可用 || 多选）；不支持 @js 规则。书源保存在 lite1 仓库的 sources.json，所有设备共享。</div>
+  </div>
+  <div class="bar">
+   <input id="srcQ" type="text" placeholder="输入书名或作者" autocomplete="off">
+   <button class="btn primary" id="btnSrcSearch" type="button">搜索</button>
+   <span class="mini" id="srcStat"></span>
+  </div>
+  <div id="srcResults"></div>
+  <div id="srcTocPane" style="display:none">
+   <div class="bar">
+    <button class="btn" id="btnTocBack" type="button">« 返回结果</button>
+    <span class="mini" id="srcBookTitle"></span>
+   </div>
+   <div id="srcTocList"></div>
+  </div>
+  <div id="srcReadPane" style="display:none">
+   <div class="bar">
+    <button class="btn" id="btnRdBack" type="button">« 目录</button>
+    <button class="btn" id="btnRdPrev" type="button">« 上一章</button>
+    <button class="btn" id="btnRdNext" type="button">下一章 »</button>
+   </div>
+   <div class="mini" id="srcChapTitle"></div>
+   <div class="rd-content" id="srcContent"></div>
+   <div class="pgbar">
+    <button class="btn" id="btnRdPrev2" type="button">« 上一章</button>
+    <button class="btn" id="btnRdNext2" type="button">下一章 »</button>
+   </div>
+  </div>
  </div>
  <div class="foot">
   <a href="https://reader.yongjiu.ccwu.cc/reader/web/list">进入纯HTML模式（无需脚本）</a><br>
@@ -190,10 +233,11 @@ function buildToc(text){
 }
 
 function show(view){
- var v1=$('vLib'),v2=$('vRead'),v3=$('vTrash');
+ var v1=$('vLib'),v2=$('vRead'),v3=$('vTrash'),v4=$('vSource');
  if(v1)v1.style.display=(view==='lib')?'block':'none';
  if(v2)v2.style.display=(view==='read')?'block':'none';
  if(v3)v3.style.display=(view==='trash')?'block':'none';
+ if(v4)v4.style.display=(view==='source')?'block':'none';
  try{window.scrollTo(0,0);}catch(e){}
 }
 
@@ -308,11 +352,13 @@ function setFs(n,skip){
  if(n<13)n=13;if(n>30)n=30;
  RD_FS=n;
  var el=$('rdContent');if(el){el.style.fontSize=RD_FS+'px';}
+ var el2=$('srcContent');if(el2){el2.style.fontSize=RD_FS+'px';}
  if(!skip){lsSet('rd_fs',String(n));}
 }
 function cycleLh(){
  RD_LH=(RD_LH===1.6)?1.85:((RD_LH===1.85)?2.1:1.6);
  var el=$('rdContent');if(el){el.style.lineHeight=String(RD_LH);}
+ var el2=$('srcContent');if(el2){el2.style.lineHeight=String(RD_LH);}
  lsSet('rd_lh',String(RD_LH));
  msg('行距：'+RD_LH);
 }
@@ -405,6 +451,406 @@ function renderTrash(){
 }
 function showTrash(){renderTrash();show('trash');}
 
+// ===== 书源模块（网络书源：加载自 GitHub，正文不落地） =====
+var SRCS=[],SR_RESULTS=[],SR_SEL=null,SR_CHS=[],SR_CHIDX=-1,SR_BUSY=false,SRC_SHA=null;
+var SRC_LIST=[
+ 'sources.json',
+ 'https://nav.yongjiu.ccwu.cc/sources.json',
+ 'https://raw.githubusercontent.com/xdd2024030565-spec/lite1/main/sources.json'
+];
+function srcApiUrl(){return 'https://api.yongjiu.ccwu.cc/repos/xdd2024030565-spec/lite1/contents/sources.json';}
+function setSrcStat(s){var el=$('srcStat');if(el)el.textContent=s||'';}
+
+function loadSources(manual){
+ setSrcStat('加载书源中...');
+ loadSrcFrom(0,function(err){
+  if(err){setSrcStat('书源加载失败');if(manual)msg('书源加载失败：'+err.message);return;}
+  setSrcStat('已加载 '+SRCS.length+' 个书源');
+  renderSrcList();
+  if(manual)msg('书源已加载：'+SRCS.length+' 个');
+ });
+}
+function loadSrcFrom(i,done){
+ if(i>=SRC_LIST.length){done(new Error('全部书源加载失败'));return;}
+ var base=SRC_LIST[i];var url=base+(base.indexOf('?')>=0?'&':'?')+'t='+(new Date().getTime());
+ ajax('GET',url,null,{'Accept':'application/json'},function(err,code,text){
+  if(err){loadSrcFrom(i+1,done);return;}
+  var d=jsonParse(text||'');
+  if(d&&(d instanceof Array)){SRCS=d;done(null);return;}
+  if(d&&d.sources&&(d.sources instanceof Array)){SRCS=d.sources;done(null);return;}
+  loadSrcFrom(i+1,done);
+ },15000);
+}
+function renderSrcList(){
+ var el=$('srcList');if(!el)return;
+ var h='';
+ if(!SRCS.length){h='<div class="mini">还没有书源。可粘贴 legado 书源 JSON 导入。</div>';}
+ for(var i=0;i<SRCS.length;i++){
+  var s=SRCS[i];
+  h+='<div class="doc"><span class="t" style="font-size:1em">'+esc(s.bookSourceName||s.bookSourceUrl||('书源'+(i+1)))+'</span>';
+  h+='<div class="m">'+esc(s.bookSourceUrl||'')+'</div>';
+  h+='<div class="row"><button type="button" class="btn" onclick="delSource('+i+')">删除</button></div></div>';
+ }
+ el.innerHTML=h;
+}
+function delSource(i){
+ if(!(i>=0&&i<SRCS.length))return;
+ if(!confirm('删除书源：'+((SRCS[i]&&SRCS[i].bookSourceName)||'')))return;
+ SRCS.splice(i,1);
+ saveSources(function(err){if(err){msg('删除保存失败：'+err.message);return;}msg('已删除');renderSrcList();});
+}
+function doSrcImport(){
+ var raw=trimS(val('srcImport'));
+ if(!raw){msg('请先粘贴书源 JSON');return;}
+ var d=jsonParse(raw);
+ if(!d){msg('JSON 解析失败');return;}
+ var arr=[];
+ if(d instanceof Array){arr=d;}
+ else if(d.bookSourceUrl||d.bookSourceName){arr=[d];}
+ else{msg('无法识别的格式（需要书源对象或数组）');return;}
+ var added=0;
+ for(var i=0;i<arr.length;i++){
+  var s=arr[i];
+  if(!s||(!s.bookSourceUrl&&!s.bookSourceName))continue;
+  var dup=false;
+  for(var j=0;j<SRCS.length;j++){if(SRCS[j].bookSourceUrl===s.bookSourceUrl){dup=true;break;}}
+  if(!dup){SRCS.push(s);added++;}
+ }
+ if(!added){msg('没有新增（可能已存在）');return;}
+ saveSources(function(err){
+  if(err){msg('保存失败：'+err.message);return;}
+  var ta=$('srcImport');if(ta)ta.value='';
+  msg('已导入 '+added+' 个书源');
+  renderSrcList();setSrcStat('共 '+SRCS.length+' 个书源');
+ });
+}
+function fetchSrcSha(cb){
+ ajax('GET',srcApiUrl()+'?ref=main&t='+(new Date().getTime()),null,{'Accept':'application/vnd.github.v3+json'},function(err,code,text){
+  if(!err){var d=jsonParse(text||'');if(d&&d.sha){SRC_SHA=d.sha;}}
+  cb(err);
+ },12000);
+}
+function saveSources(cb){
+ fetchSrcSha(function(e0){
+  if(e0){cb(e0);return;}
+  var content=b64enc(jsonStr(SRCS));
+  var body={message:'更新书源（reader）',content:content,branch:'main'};
+  if(SRC_SHA){body.sha=SRC_SHA;}
+  ajax('PUT',srcApiUrl(),jsonStr(body),{'Content-Type':'application/json;charset=UTF-8','Accept':'application/vnd.github.v3+json'},function(err,code,text){
+   if(err){
+    var txt=String(text||'');
+    if(code===409||code===422||txt.indexOf('does not match')>=0){
+     fetchSrcSha(function(){
+      var b2={message:'更新书源（reader·重试）',content:content,branch:'main'};
+      if(SRC_SHA){b2.sha=SRC_SHA;}
+      ajax('PUT',srcApiUrl(),jsonStr(b2),{'Content-Type':'application/json;charset=UTF-8','Accept':'application/vnd.github.v3+json'},function(err2,code2,text2){
+       if(err2){cb(err2);return;}
+       var d2=jsonParse(text2||'');if(d2&&d2.content&&d2.content.sha){SRC_SHA=d2.content.sha;}
+       cb(null);
+      },20000);
+     });
+     return;
+    }
+    cb(err);return;
+   }
+   var d=jsonParse(text||'');if(d&&d.content&&d.content.sha){SRC_SHA=d.content.sha;}
+   cb(null);
+  },20000);
+ });
+}
+
+function doSrcSearch(){
+ if(SR_BUSY){msg('正在搜索中，请稍候');return;}
+ var q=trimS(val('srcQ'));
+ if(!q){msg('请输入书名或作者');return;}
+ if(!SRCS.length){msg('请先导入书源（书源管理）');return;}
+ SR_BUSY=true;SR_RESULTS=[];
+ showSrcSearch();
+ var el=$('srcResults');if(el){el.innerHTML='<div class="empty">搜索中...</div>';}
+ var i=0;
+ var step=function(){
+  if(i>=SRCS.length){
+   SR_BUSY=false;
+   setSrcStat('完成：'+SR_RESULTS.length+' 条结果');
+   renderSrcResults();
+   return;
+  }
+  var s=SRCS[i];i++;
+  if(!s.searchUrl){step();return;}
+  var u=buildSearchUrl(s,q);
+  if(!u){step();return;}
+  if(el){el.innerHTML='<div class="empty">搜索中... '+(i-1)+'/'+SRCS.length+'（'+esc(s.bookSourceName||'')+'）</div>';}
+  proxyFetch(u,function(err,text,finalUrl){
+   if(!err&&text){
+    try{
+     var doc=htmlDoc(text);
+     var items=doc?parseSearch(s,doc,finalUrl||u):[];
+     for(var k=0;k<items.length;k++){SR_RESULTS.push(items[k]);}
+    }catch(e){}
+   }
+   step();
+  });
+ };
+ step();
+}
+function buildSearchUrl(s,q){
+ var t=String(s.searchUrl||'');
+ if(!t)return '';
+ t=t.replace(/\{\{\s*key\s*\}\}/g,encodeURIComponent(q)).replace(/\{key\}/g,encodeURIComponent(q));
+ return fullUrl(t,s.bookSourceUrl||'');
+}
+
+function proxyFetch(url,cb){
+ var x=null,done=false,timer=null;
+ try{x=new XMLHttpRequest();}catch(e){}
+ if(!x){cb(new Error('浏览器不支持抓取'));return;}
+ function fin(err,text,furl){if(done)return;done=true;if(timer){try{clearTimeout(timer);}catch(e){}}cb(err,text,furl);}
+ try{
+  x.open('GET',API+'/reader/proxy?url='+encodeURIComponent(url),true);
+  x.setRequestHeader('Accept','*/*');
+  x.onreadystatechange=function(){
+   if(x.readyState===4){
+    if(x.status>=200&&x.status<300){
+     var furl='';
+     try{var h=x.getResponseHeader('X-Final-Url');if(h)furl=decodeURIComponent(h);}catch(e){}
+     fin(null,x.responseText||'',furl);
+    }else{
+     var e2='抓取失败 HTTP '+x.status;
+     try{if(x.responseText)e2+='：'+String(x.responseText).substring(0,60);}catch(e){}
+     fin(new Error(e2));
+    }
+   }
+  };
+  timer=setTimeout(function(){if(!done){try{x.abort();}catch(e){}fin(new Error('抓取超时'));}},45000);
+  x.send();
+ }catch(e){fin(e);}
+}
+
+var _srFrame=null;
+function htmlDoc(html){
+ if(!_srFrame){
+  _srFrame=document.createElement('iframe');
+  _srFrame.style.width='1px';_srFrame.style.height='1px';
+  _srFrame.style.position='absolute';_srFrame.style.left='-9999px';
+  try{_srFrame.setAttribute('sandbox','allow-same-origin');}catch(e){}
+  document.body.appendChild(_srFrame);
+ }
+ var doc=null;
+ try{doc=_srFrame.contentDocument||_srFrame.contentWindow.document;}catch(e){return null;}
+ if(!doc)return null;
+ var safe=String(html)
+  .replace(/<script[\s\S]*?<\/script>/gi,'')
+  .replace(/<script[^>]*>/gi,'')
+  .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi,'');
+ try{doc.open();doc.write(safe);doc.close();}catch(e){return null;}
+ return doc;
+}
+
+function pickAll(rule,ctx,baseUrl){
+ var parts=String(rule||'').split('||');
+ for(var p=0;p<parts.length;p++){
+  var r=trimS(parts[p]);if(!r)continue;
+  var res=runRule(r,ctx,baseUrl);
+  if(res&&res.length)return res;
+ }
+ return [];
+}
+function runRule(r,ctx,baseUrl){
+ if(!ctx)return [];
+ if(r.indexOf('//')===0||r.indexOf('(/')===0){return xpathAll(r,ctx);}
+ if(r.indexOf('@css:')===0){return cssAll(trimS(r.substring(5)),ctx);}
+ var m=r.match(/^(class|id|tag)\.(.+)$/);
+ if(m){
+  var sel=(m[1]==='class')?('.'+m[2]):((m[1]==='id')?('#'+m[2]):m[2]);
+  return cssAll(sel,ctx);
+ }
+ if(r.charAt(0)==='.'||r.charAt(0)==='#'){return cssAll(r,ctx);}
+ return [];
+}
+function mkItem(n){
+ if(!n)return null;
+ var it={node:n,text:'',href:''};
+ try{
+  if(n.nodeType===2){it.text=String(n.nodeValue||'');}
+  else if(n.nodeType===3){it.text=String(n.nodeValue||'');}
+  else{
+   it.text=String(n.textContent!==undefined?n.textContent:(n.innerText||''));
+   if(n.getAttribute){it.href=n.getAttribute('href')||'';}
+  }
+ }catch(e){}
+ it.text=trimS(it.text);
+ return it;
+}
+function xpathAll(r,ctx){
+ var out=[];
+ var doc=null;
+ try{doc=ctx.ownerDocument||ctx;}catch(e){}
+ if(!doc||!doc.evaluate)return out;
+ var res=null;
+ try{res=doc.evaluate(r,ctx,null,XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null);}catch(e){return out;}
+ for(var i=0;i<res.snapshotLength;i++){
+  var it=mkItem(res.snapshotItem(i));if(it)out.push(it);
+ }
+ return out;
+}
+function cssAll(sel,ctx){
+ var out=[];
+ if(!ctx||!ctx.querySelectorAll)return out;
+ var list=null;
+ try{list=ctx.querySelectorAll(sel);}catch(e){return out;}
+ for(var i=0;i<list.length;i++){var it=mkItem(list[i]);if(it)out.push(it);}
+ return out;
+}
+function pickText(rule,ctx,baseUrl,joinStr){
+ var list=pickAll(rule,ctx,baseUrl);var arr=[];
+ for(var i=0;i<list.length;i++){var t=list[i].text;if(t){arr.push(t);}}
+ return arr.join(joinStr===undefined?'':joinStr);
+}
+function pickHref(rule,ctx,baseUrl){
+ var list=pickAll(rule,ctx,baseUrl);
+ for(var i=0;i<list.length;i++){
+  var it=list[i];
+  var v=trimS(it.href||it.text);
+  if(v){
+   if(v.indexOf('javascript:')===0||v.charAt(0)==='#'){
+    if(it.href&&it.text&&it.text!==it.href){v=trimS(it.text);}else{continue;}
+   }
+   return fullUrl(v,baseUrl);
+  }
+ }
+ return '';
+}
+function fullUrl(u,base){
+ u=trimS(u);
+ if(!u)return '';
+ if(/^https?:\/\//i.test(u))return u;
+ if(u.indexOf('//')===0)return 'https:'+u;
+ if(u.charAt(0)==='/'){var m=String(base||'').match(/^(https?:\/\/[^\/]+)/i);return (m?m[1]:'')+u;}
+ if(!base)return u;
+ return String(base).replace(/[^\/]*$/,'')+u;
+}
+
+function parseSearch(s,doc,finalUrl){
+ var rule=s.ruleSearch||{};
+ var base=s.bookSourceUrl||finalUrl||'';
+ var cont=pickAll(rule.bookList||'',doc,base);
+ var out=[];
+ for(var i=0;i<cont.length;i++){
+  var c=cont[i];if(!c.node)continue;
+  var name=pickText(rule.name||'',c.node,base,'');
+  var author=pickText(rule.author||'',c.node,base,'');
+  var burl=pickHref(rule.bookUrl||'',c.node,base);
+  if(!name||!burl)continue;
+  out.push({srcName:s.bookSourceName||s.bookSourceUrl||'',name:name,author:author,url:burl,bs:s});
+ }
+ return out;
+}
+function parseToc(s,doc,base){
+ var rule=s.ruleToc||{};
+ var cont=pickAll(rule.chapterList||'',doc,base);
+ var out=[];
+ for(var i=0;i<cont.length;i++){
+  var c=cont[i];if(!c.node)continue;
+  var name=pickText(rule.chapterName||'',c.node,base,'');
+  var url=pickHref(rule.chapterUrl||'',c.node,base);
+  if(name&&url)out.push({name:name,url:url});
+ }
+ return out;
+}
+
+function openBook(item){
+ if(SR_BUSY)return;
+ SR_BUSY=true;msg('打开书籍...',true);
+ var s=item.bs,bookUrl=item.url;
+ proxyFetch(bookUrl,function(err,text,finalUrl){
+  if(err){SR_BUSY=false;msg('打开失败：'+err.message);return;}
+  var doc=htmlDoc(text);
+  if(!doc){SR_BUSY=false;msg('页面解析失败');return;}
+  var base=finalUrl||bookUrl;
+  var chs=parseToc(s,doc,base);
+  if(chs.length){SR_BUSY=false;SR_SEL=item;SR_CHS=chs;msg('');renderSrcToc();showSrcToc();return;}
+  var tocRule=(s.ruleBookInfo&&s.ruleBookInfo.tocUrl)||'';
+  if(tocRule){
+   var tocUrl=pickHref(tocRule,doc,base);
+   if(tocUrl){
+    proxyFetch(tocUrl,function(err2,text2,finalUrl2){
+     SR_BUSY=false;
+     if(err2){msg('目录页抓取失败：'+err2.message);return;}
+     var doc2=htmlDoc(text2);
+     var chs2=doc2?parseToc(s,doc2,finalUrl2||tocUrl):[];
+     if(chs2.length){SR_SEL=item;SR_CHS=chs2;msg('');renderSrcToc();showSrcToc();}
+     else{msg('未解析到目录（规则不匹配）');}
+    });
+    return;
+   }
+  }
+  SR_BUSY=false;msg('未解析到目录（规则不匹配，可换其他书源结果）');
+ });
+}
+function openChapter(i){
+ if(SR_BUSY)return;
+ if(i<0||i>=SR_CHS.length)return;
+ SR_BUSY=true;
+ var ch=SR_CHS[i];
+ var s=SR_SEL?SR_SEL.bs:null;
+ if(!s){SR_BUSY=false;return;}
+ msg('加载章节...',true);
+ proxyFetch(ch.url,function(err,text,finalUrl){
+  SR_BUSY=false;
+  if(err){msg('章节加载失败：'+err.message);return;}
+  var doc=htmlDoc(text);
+  if(!doc){msg('页面解析失败');return;}
+  var rule=s.ruleContent||{};
+  var body=pickText(rule.content||'',doc,finalUrl||ch.url,'\n');
+  if(!body){msg('正文提取为空（该规则可能不支持）');return;}
+  body=body.replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n');
+  SR_CHIDX=i;
+  var t=$('srcChapTitle');
+  if(t){t.textContent='第 '+(i+1)+'/'+SR_CHS.length+' 章 · '+ch.name;}
+  var c=$('srcContent');
+  if(c){
+   c.innerHTML='';
+   c.appendChild(document.createTextNode(body));
+   c.style.fontSize=RD_FS+'px';
+   c.style.lineHeight=String(RD_LH);
+  }
+  msg('');
+  showSrcRead();
+  try{window.scrollTo(0,0);}catch(e){}
+ });
+}
+function prevChapter(){if(SR_CHIDX>0)openChapter(SR_CHIDX-1);}
+function nextChapter(){if(SR_CHIDX>=0&&SR_CHIDX<SR_CHS.length-1)openChapter(SR_CHIDX+1);}
+
+function showSrcSearch(){var a=$('srcResults'),b=$('srcTocPane'),c=$('srcReadPane');if(a)a.style.display='block';if(b)b.style.display='none';if(c)c.style.display='none';}
+function showSrcToc(){var a=$('srcResults'),b=$('srcTocPane'),c=$('srcReadPane');if(a)a.style.display='none';if(b)b.style.display='block';if(c)c.style.display='none';}
+function showSrcRead(){var a=$('srcResults'),b=$('srcTocPane'),c=$('srcReadPane');if(a)a.style.display='none';if(b)b.style.display='none';if(c)c.style.display='block';}
+function renderSrcResults(){
+ var el=$('srcResults');if(!el)return;
+ var h='';
+ if(!SR_RESULTS.length){h='<div class="empty">没有结果。可能：书源不支持 / 网络受限 / 换个关键词再试。</div>';}
+ else{
+  h='<div class="mini">共 '+SR_RESULTS.length+' 条</div>';
+  for(var i=0;i<SR_RESULTS.length;i++){
+   var r=SR_RESULTS[i];
+   h+='<div class="doc"><span class="t" style="cursor:pointer;color:#0055cc" onclick="openBookByIdx('+i+')">'+esc(r.name)+'</span>';
+   h+='<div class="m">'+esc(r.author||'')+' · '+esc(r.srcName)+'</div></div>';
+  }
+ }
+ el.innerHTML=h;
+}
+function openBookByIdx(i){if(i>=0&&i<SR_RESULTS.length)openBook(SR_RESULTS[i]);}
+function renderSrcToc(){
+ var el=$('srcTocList');if(!el)return;
+ var ti=$('srcBookTitle');
+ if(ti){ti.textContent=(SR_SEL?SR_SEL.name:'')+'（'+SR_CHS.length+' 章）';}
+ var h='';
+ for(var i=0;i<SR_CHS.length;i++){
+  h+='<div class="doc"><span class="t" style="font-size:1em;cursor:pointer;color:#0055cc" onclick="openChapter('+i+')">'+esc(SR_CHS[i].name)+'</span></div>';
+ }
+ el.innerHTML=h;
+}
+
 function bind(){
  on($('btnImport'),'click',showImport);
  on($('btnImportCancel'),'click',hideImport);
@@ -423,6 +869,19 @@ function bind(){
  on($('btnLh'),'click',cycleLh);
  on($('btnTheme'),'click',toggleTheme);
  on($('btnEmpty'),'click',emptyTrash);
+ on($('btnSource'),'click',function(){show('source');loadSources();});
+ on($('btnSrcBack'),'click',function(){show('lib');renderLib();});
+ on($('btnSrcMgr'),'click',function(){var b=$('srcMgrBox');if(b)b.style.display=(b.style.display==='block')?'none':'block';});
+ on($('btnSrcImport'),'click',doSrcImport);
+ on($('btnSrcReload'),'click',function(){loadSources(true);});
+ on($('btnSrcSearch'),'click',doSrcSearch);
+ on($('srcQ'),'keyup',function(e){e=e||window.event;var k=e.keyCode||e.which;if(k===13){doSrcSearch();}});
+ on($('btnTocBack'),'click',function(){showSrcSearch();});
+ on($('btnRdBack'),'click',function(){showSrcToc();});
+ on($('btnRdPrev'),'click',prevChapter);
+ on($('btnRdNext'),'click',nextChapter);
+ on($('btnRdPrev2'),'click',prevChapter);
+ on($('btnRdNext2'),'click',nextChapter);
  var rc=$('rdContent');
  if(rc){
   rc.onclick=function(){
@@ -439,6 +898,7 @@ function init(){
  var rc=$('rdContent');if(rc){rc.style.lineHeight=String(RD_LH);}
  bind();
  loadList();
+ loadSources(false);
 }
 init();
 </script>
