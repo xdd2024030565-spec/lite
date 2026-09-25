@@ -116,7 +116,8 @@ body.theme-dark .toclist a{border-color:#2e2e2e;color:#7db2ff}
   </div>
   <div class="box" id="srcMgrBox">
    <div class="box-title">书源管理（存储于 GitHub · sources.json）</div>
-   <textarea id="srcImport" placeholder="粘贴 legado 书源 JSON（单条或数组）"></textarea>
+   <textarea id="srcImport" placeholder="粘贴 legado 书源 JSON，或书源分享链接（https://...）"></textarea>
+   <input id="srcLimit" type="text" placeholder="链接导入数量（默认60；输入 all 表示全部）" autocomplete="off">
    <div class="row">
     <button class="btn primary" id="btnSrcImport" type="button">导入并保存</button>
     <button class="btn" id="btnSrcReload" type="button">重新加载</button>
@@ -501,7 +502,52 @@ function delSource(i){
 }
 function doSrcImport(){
  var raw=trimS(val('srcImport'));
- if(!raw){msg('请先粘贴书源 JSON');return;}
+ if(!raw){msg('请输入 JSON 或链接');return;}
+ if(/^https?:\/\//i.test(raw)){
+  var lm=trimS(val('srcLimit'))||'60';
+  srcImportFromUrl(raw,lm);
+  return;
+ }
+ importSrcJson(raw,function(added){
+  msg('已导入 '+added+' 个书源');
+  renderSrcList();setSrcStat('共 '+SRCS.length+' 个书源');
+ });
+}
+var SRC_PACK={total:0,offset:0};
+function srcImportFromUrl(u,lm){
+ if(SR_BUSY){msg('忙，请稍候');return;}
+ SR_BUSY=true;
+ msg('下载书源包...',true);
+ setSrcStat('下载书源包中...');
+ var offset=SRC_PACK.offset||0;
+ var spUrl=API+'/reader/sourcepack?url='+encodeURIComponent(u)+'&limit='+encodeURIComponent(lm)+'&offset='+offset;
+ proxyFetch(spUrl,function(err,text){
+  if(err){SR_BUSY=false;msg('导入失败：'+err.message);setSrcStat('');return;}
+  var d=jsonParse(text||'');
+  if(!d||!d.ok||!(d.sources instanceof Array)){SR_BUSY=false;msg('导入失败：'+((d&&d.error)||'格式错误'));setSrcStat('');return;}
+  SRC_PACK.total=d.total;SRC_PACK.offset=(d.offset||0)+d.count;
+  var added=0;
+  for(var i=0;i<d.sources.length;i++){
+   var s=d.sources[i];
+   if(!s||(!s.bookSourceUrl&&!s.bookSourceName))continue;
+   var dup=false;
+   for(var j=0;j<SRCS.length;j++){if(SRCS[j].bookSourceUrl===s.bookSourceUrl){dup=true;break;}}
+   if(!dup){SRCS.push(s);added++;}
+  }
+  msg('保存中...',true);
+  saveSources(function(e2){
+   SR_BUSY=false;
+   if(e2){msg('保存失败：'+e2.message);return;}
+   var done=SRC_PACK.offset>=(SRC_PACK.total||0);
+   var prog='已导入 '+SRC_PACK.offset+' / '+SRC_PACK.total+'（本批 '+added+'）';
+   setSrcStat(prog);
+   msg((done?'书源导入完成：':'本批完成：')+prog+(done?'':'；再点一次「导入并保存」继续下一批'));
+   renderSrcList();
+   if(done){var ta=$('srcImport');if(ta)ta.value='';}
+  });
+ },180000);
+}
+function importSrcJson(raw,cb){
  var d=jsonParse(raw);
  if(!d){msg('JSON 解析失败');return;}
  var arr=[];
@@ -520,8 +566,7 @@ function doSrcImport(){
  saveSources(function(err){
   if(err){msg('保存失败：'+err.message);return;}
   var ta=$('srcImport');if(ta)ta.value='';
-  msg('已导入 '+added+' 个书源');
-  renderSrcList();setSrcStat('共 '+SRCS.length+' 个书源');
+  if(cb)cb(added);
  });
 }
 function fetchSrcSha(cb){
@@ -588,6 +633,7 @@ function doSrcSearch(){
      for(var k=0;k<items.length;k++){SR_RESULTS.push(items[k]);}
     }catch(e){}
    }
+   if(SR_RESULTS.length){setSrcStat('已找到 '+SR_RESULTS.length+' 条（已搜 '+(i)+'/'+SRCS.length+'）');renderSrcResults();}
    step();
   });
  };
@@ -600,7 +646,7 @@ function buildSearchUrl(s,q){
  return fullUrl(t,s.bookSourceUrl||'');
 }
 
-function proxyFetch(url,cb){
+function proxyFetch(url,cb,timeoutMs){
  var x=null,done=false,timer=null;
  try{x=new XMLHttpRequest();}catch(e){}
  if(!x){cb(new Error('浏览器不支持抓取'));return;}
@@ -621,7 +667,7 @@ function proxyFetch(url,cb){
     }
    }
   };
-  timer=setTimeout(function(){if(!done){try{x.abort();}catch(e){}fin(new Error('抓取超时'));}},45000);
+  timer=setTimeout(function(){if(!done){try{x.abort();}catch(e){}fin(new Error('抓取超时'));}},timeoutMs||25000);
   x.send();
  }catch(e){fin(e);}
 }
