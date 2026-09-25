@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>阅读器 · 兼容版</title>
+<style type="text/css">
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#ffffff;color:#111111;font-family:-apple-system,'PingFang SC','Microsoft YaHei',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.65}
+body.theme-dark{background:#0f0f0f;color:#e6e6e6}
+a{color:#0055cc;text-decoration:none}
+body.theme-dark a{color:#7db2ff}
+.wrap{max-width:760px;margin:0 auto;padding:0 14px}
+.top{padding:14px 0;border-bottom:2px solid #111111}
+body.theme-dark .top{border-color:#e6e6e6}
+.site{font-size:1.3em;font-weight:bold}
+.tag{font-size:.75em;color:#888;margin-left:8px}
+.bar{padding:12px 0 4px;border-bottom:1px solid #eeeeee}
+body.theme-dark .bar{border-color:#2e2e2e}
+.btn{display:inline-block;padding:10px 16px;font-size:1em;border:1px solid #999999;border-radius:6px;background:#f2f2f2;color:#111111;cursor:pointer;margin:0 8px 8px 0;line-height:1.2}
+body.theme-dark .btn{background:#232323;color:#e6e6e6;border-color:#666666}
+.btn.primary{background:#0066cc;border-color:#0066cc;color:#ffffff}
+input[type=text],input[type=file],select,textarea{display:block;width:100%;box-sizing:border-box;-webkit-box-sizing:border-box;padding:11px 12px;font-size:1em;border:1px solid #999999;border-radius:6px;background:#ffffff;color:#111111;margin:0 0 8px}
+body.theme-dark input[type=text],body.theme-dark select,body.theme-dark textarea{background:#1b1b1b;color:#e6e6e6;border-color:#666666}
+textarea{height:130px;font-family:inherit;font-size:.95em}
+.box{border:1px solid #bbbbbb;border-radius:8px;padding:12px;margin:12px 0;background:#fafafa;display:none}
+body.theme-dark .box{background:#161616;border-color:#444444}
+.box-title{font-weight:bold;margin-bottom:8px}
+.row{margin-top:6px}
+.doc{border-bottom:1px solid #dddddd;padding:12px 0}
+body.theme-dark .doc{border-color:#2e2e2e}
+.doc .t{display:block;font-size:1.12em;font-weight:bold;padding:2px 0;word-break:break-all}
+.doc .m{font-size:.82em;color:#888888;margin-top:2px;word-break:break-all}
+.msg{display:none;margin:8px 0;padding:10px 12px;border:1px solid #d9a300;border-radius:6px;background:#fff8e1;font-size:.92em}
+body.theme-dark .msg{background:#2a2410;border-color:#8a6d00}
+.empty{padding:40px 10px;text-align:center;color:#999999}
+.foot{margin:28px 0;padding-bottom:40px;text-align:center;font-size:.8em;color:#999999}
+.pgbar{padding:10px 0;font-size:.95em}
+.pgbar .pinfo{color:#666666;margin-left:10px}
+body.theme-dark .pgbar .pinfo{color:#aaaaaa}
+.pginput{display:inline-block;width:70px;margin:0 6px;padding:8px}
+.rd-content{white-space:pre-wrap;word-break:break-all;padding:10px 0 4px;font-size:18px;line-height:1.8;min-height:200px}
+.toclist a{display:block;padding:8px 0;border-bottom:1px solid #eeeeee;color:#0055cc;word-break:break-all}
+body.theme-dark .toclist a{border-color:#2e2e2e;color:#7db2ff}
+.mini{font-size:.85em;color:#888888}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="top">
+  <span class="site">📖 阅读器</span>
+  <span class="tag">兼容版</span>
+  <a class="btn" href="https://reader.yongjiu.ccwu.cc/reader/web/list">纯HTML模式</a>
+ </div>
+ <div class="msg" id="topMsg"></div>
+ <div id="vLib">
+  <div class="bar">
+   <button class="btn" id="btnImport" type="button">导入文档</button>
+   <button class="btn" id="btnTrash" type="button">回收站</button>
+   <button class="btn" id="btnReload" type="button">刷新</button>
+  </div>
+  <div class="box" id="importBox">
+   <div class="box-title">导入文档</div>
+   <input id="imTitle" type="text" placeholder="标题（必填，如：书名 / 章节名）" autocomplete="off">
+   <input id="imCat" type="text" placeholder="分类（可选，默认“未分类”）" autocomplete="off">
+   <div id="fileWrap">
+    <input type="file" id="imFile">
+    <div class="mini">选择文件（TXT / MD，UTF-8 编码；若导入后乱码请先转码）</div>
+   </div>
+   <textarea id="imText" placeholder="或在此粘贴文本内容……"></textarea>
+   <div class="row">
+    <button class="btn primary" id="btnDoImport" type="button">开始导入</button>
+    <button class="btn" id="btnImportCancel" type="button">取消</button>
+   </div>
+  </div>
+  <div id="libList"></div>
+ </div>
+ <div id="vRead" style="display:none">
+  <div class="bar">
+   <button class="btn" id="btnBack" type="button">« 书库</button>
+   <button class="btn" id="btnToc" type="button">目录</button>
+   <button class="btn" id="btnFsUp" type="button">A+</button>
+   <button class="btn" id="btnFsDown" type="button">A-</button>
+   <button class="btn" id="btnLh" type="button">行距</button>
+   <button class="btn" id="btnTheme" type="button">亮/暗</button>
+  </div>
+  <div class="box" id="tocBox">
+   <div class="box-title">目录</div>
+   <div class="toclist" id="tocList"></div>
+  </div>
+  <div class="pgbar">
+   第 <b id="pgNow">1</b> / <span id="pgTotal">1</span> 页
+   <input class="pginput" id="pgInput" type="text" placeholder="页码">
+   <button class="btn" id="btnGo" type="button">跳转</button>
+   <span class="pinfo" id="rdInfo"></span>
+  </div>
+  <div class="rd-content" id="rdContent"></div>
+  <div class="pgbar">
+   <button class="btn" id="btnPrev" type="button">« 上一页</button>
+   <button class="btn" id="btnNext" type="button">下一页 »</button>
+  </div>
+  <div class="mini" id="rdMeta"></div>
+ </div>
+ <div id="vTrash" style="display:none">
+  <div class="bar">
+   <button class="btn" id="btnBack2" type="button">« 返回书库</button>
+   <button class="btn" id="btnEmpty" type="button">清空回收站</button>
+  </div>
+  <div id="trashList"></div>
+ </div>
+ <div class="foot">
+  <a href="https://reader.yongjiu.ccwu.cc/reader/web/list">进入纯HTML模式（无需脚本）</a><br>
+  兼容轻量版 · 适配老设备 / 墨水屏
+ </div>
+</div>
+<noscript>
+ <div style="padding:16px;border:1px solid #d9a300;background:#fff8e1;color:#333333">
+  <b>当前浏览器未运行脚本。</b><br>
+  请使用纯HTML模式阅读书库：<br>
+  <a href="https://reader.yongjiu.ccwu.cc/reader/web/list">https://reader.yongjiu.ccwu.cc/reader/web/list</a>
+ </div>
+</noscript><script type="text/javascript">
+var API='https://reader.yongjiu.ccwu.cc';
+var DOCS=[],CUR=null,CONTENT='',PAGES=[],PAGE=1,RD_FS=18,RD_LH=1.8,BUSY_R=false;
+var memStore={},msgTimer=null,progTimer=null;
+
+function $(id){return document.getElementById(id);}
+function esc(s){if(s===null||s===undefined)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&#34;');}
+function attr(s){return esc(s).replace(/'/g,'&#39;');}
+function trimS(s){return String(s===null||s===undefined?'':s).replace(/^\s+|\s+$/g,'');}
+function val(id){var e=$(id);return e?e.value:'';}
+function setText(id,v){var el=$(id);if(el){el.textContent=String(v);}}
+function on(el,ev,fn){if(!el)return;if(el.addEventListener){el.addEventListener(ev,fn,false);}else if(el.attachEvent){el.attachEvent('on'+ev,function(e){return fn.call(el,e||window.event);});}else{el['on'+ev]=fn;}}
+function lsGet(k){try{if(window.localStorage){var v=localStorage.getItem(k);return v===null?'':v;}}catch(e){}return memStore['L_'+k]||'';}
+function lsSet(k,v){try{if(window.localStorage){localStorage.setItem(k,v);return;}}catch(e){}memStore['L_'+k]=v;}
+
+var J=window.JSON||{};
+function jsonParse(s){if(J.parse){try{return J.parse(s);}catch(e){return null;}}try{return eval('('+s+')');}catch(e){return null;}}
+function jsonStr(o){if(J.stringify){return J.stringify(o);}return _js(o);}
+function _js(o){var t=typeof o;if(o===null||o===undefined)return 'null';if(t==='string')return '"'+o.replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/\r/g,'\\r').replace(/\n/g,'\\n')+'"';if(t==='number')return isFinite(o)?String(o):'null';if(t==='boolean')return String(o);var a=[],i,k,v;if(o instanceof Array){for(i=0;i<o.length;i++){a.push(_js(o[i]));}return '['+a.join(',')+']';}for(k in o){if(o.hasOwnProperty(k)){v=o[k];if(typeof v!=='function'&&typeof v!=='undefined'){a.push(_js(k)+':'+_js(v));}}}return '{'+a.join(',')+'}';}
+
+function ajax(method,url,body,headers,cb,timeoutMs){
+ var x=null,done=false,timer=null;
+ try{if(window.XMLHttpRequest){x=new XMLHttpRequest();}else if(window.ActiveXObject){x=new ActiveXObject('Microsoft.XMLHTTP');}}catch(e){}
+ if(!x){cb(new Error('XMLHttpRequest 不可用，请改用纯HTML模式'),0,null);return;}
+ function finish(err,code,text){if(done)return;done=true;if(timer){try{clearTimeout(timer);}catch(e){}}cb(err,code,text);}
+ try{
+  x.open(method,url,true);
+  if(headers){for(var k in headers){if(headers.hasOwnProperty(k)){try{x.setRequestHeader(k,headers[k]);}catch(e){}}}}
+  x.onreadystatechange=function(){if(x.readyState===4){if(x.status>=200&&x.status<300){finish(null,x.status,x.responseText);}else{finish(new Error('HTTP '+x.status),x.status,x.responseText);}}};
+  timer=setTimeout(function(){if(!done){try{x.abort();}catch(e){}finish(new Error('网络超时'),0,null);}},timeoutMs||15000);
+  if(body!==null&&body!==undefined){x.send(body);}else{x.send();}
+ }catch(e){finish(e,0,null);}
+}
+
+function msg(s,keep){var el=$('topMsg');if(!el)return;el.innerHTML=s||'';el.style.display=s?'block':'none';if(msgTimer){clearTimeout(msgTimer);msgTimer=null;}if(s&&!keep){msgTimer=setTimeout(function(){el.style.display='none';},5000);}}
+function fmtDate(ts){if(!ts)return '';try{var d=new Date(ts);return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}catch(e){return '';}}
+
+function pageize(text,perPage){
+ var pages=[],off=0,len=text.length;
+ while(off<len){
+  var end=Math.min(off+perPage,len);
+  if(end<len){
+   var winStart=Math.max(off,end-400);
+   var win=text.substring(winStart,end);
+   var idx=win.lastIndexOf('\n\n');
+   if(idx<0)idx=win.lastIndexOf('\n');
+   if(idx>=0)end=winStart+idx+1;
+  }
+  pages.push([off,end]);
+  off=end;
+ }
+ return pages;
+}
+function pageOfPos(pages,pos){for(var i=0;i<pages.length;i++){if(pos<pages[i][1])return i+1;}return pages.length;}
+function buildToc(text){
+ var lines=text.split('\n');var toc=[];var offset=0;
+ for(var i=0;i<lines.length;i++){
+  var raw=lines[i];var t=raw.replace(/^\s+|\s+$/g,'');
+  if(t.length>0&&t.length<=42){
+   if(/^(第[0-9零一二三四五六七八九十百千两０-９]{1,12}[章节回卷篇集部]|[Cc]hapter\s+[0-9]+|#{1,3}\s+\S)/.test(t)){
+    var tt=t.replace(/^#{1,3}\s*/,'').slice(0,42);
+    toc.push({t:tt,pos:offset});
+    if(toc.length>=500)break;
+   }
+  }
+  offset+=raw.length+1;
+ }
+ return toc;
+}
+
+function show(view){
+ var v1=$('vLib'),v2=$('vRead'),v3=$('vTrash');
+ if(v1)v1.style.display=(view==='lib')?'block':'none';
+ if(v2)v2.style.display=(view==='read')?'block':'none';
+ if(v3)v3.style.display=(view==='trash')?'block':'none';
+ try{window.scrollTo(0,0);}catch(e){}
+}
+
+function loadList(){
+ msg('加载中...',true);
+ ajax('GET',API+'/reader/list',null,{'Accept':'application/json'},function(err,code,text){
+  if(err){msg('加载失败：'+err.message+'（可在页脚进入纯HTML模式）');return;}
+  var d=jsonParse(text||'');
+  if(!(d instanceof Array)){msg('数据格式错误');return;}
+  DOCS=d;msg('');
+  renderLib();
+ },20000);
+}
+
+function findDoc(id){for(var i=0;i<DOCS.length;i++){if(DOCS[i].id===id)return DOCS[i];}return null;}
+
+function renderLib(){
+ var el=$('libList');if(!el)return;
+ var arr=[],i;
+ for(i=0;i<DOCS.length;i++){if(!DOCS[i].deleted){arr.push(DOCS[i]);}}
+ arr.sort(function(a,b){return (b.lastReadAt||0)-(a.lastReadAt||0);});
+ var h='';
+ if(!arr.length){h='<div class="empty">书库为空，点上方「导入文档」开始</div>';}
+ for(i=0;i<arr.length;i++){
+  var d=arr[i];var pct=Math.round((d.progress||0)*100);
+  h+='<div class="doc"><span class="t" style="cursor:pointer;color:#0055cc" onclick="openDoc(\''+attr(d.id)+'\')">'+esc(d.title||d.id)+'</span>';
+  h+='<div class="m">'+esc(d.category||'未分类')+' · '+pct+'%'+(d.lastReadAt?(' · '+fmtDate(d.lastReadAt)):'')+'</div>';
+  h+='<div class="row"><button type="button" class="btn" onclick="openDoc(\''+attr(d.id)+'\')">'+(pct>0?'继续阅读':'开始阅读')+'</button>';
+  h+='<button type="button" class="btn" onclick="renameDoc(\''+attr(d.id)+'\')">改名</button>';
+  h+='<button type="button" class="btn" onclick="delDoc(\''+attr(d.id)+'\')">删除</button></div></div>';
+ }
+ el.innerHTML=h;
+}
+/* n2s removed */
+
+function openDoc(id){
+ if(!id)return;
+ msg('打开中...',true);
+ ajax('GET',API+'/reader/get?id='+encodeURIComponent(id),null,{'Accept':'application/json'},function(err,code,text){
+  if(err){msg('打开失败：'+err.message);return;}
+  var d=jsonParse(text||'');
+  if(!d||d.content===undefined||d.content===null){msg('内容缺失');return;}
+  CUR=d;CONTENT=String(d.content);PAGES=pageize(CONTENT,4000);
+  if(!PAGES.length){PAGES=[[0,CONTENT.length]];}
+  var total=PAGES.length;
+  PAGE=Math.floor((d.progress||0)*total)+1;
+  if(PAGE<1)PAGE=1;if(PAGE>total)PAGE=total;
+  msg('');
+  renderReader();show('read');
+ },60000);
+}
+
+function renderReader(){
+ if(!CUR)return;
+ var el=$('rdContent');if(!el)return;
+ var seg=CONTENT.substring(PAGES[PAGE-1][0],PAGES[PAGE-1][1]);
+ el.innerHTML='';
+ el.appendChild(document.createTextNode(seg));
+ el.style.fontSize=RD_FS+'px';
+ el.style.lineHeight=String(RD_LH);
+ setText('pgNow',PAGE);
+ setText('pgTotal',PAGES.length);
+ var rm=$('rdMeta');
+ if(rm){rm.textContent='《'+(CUR.title||'')+'》 · 共 '+CONTENT.length+' 字 · 第 '+PAGE+' / '+PAGES.length+' 页';}
+ try{window.scrollTo(0,0);}catch(e){}
+}
+
+function goPage(n){
+ if(!CUR||!PAGES.length)return;
+ n=parseInt(n,10);if(isNaN(n))return;
+ if(n<1)n=1;if(n>PAGES.length)n=PAGES.length;
+ PAGE=n;renderReader();saveProgress();
+}
+function nextPage(){if(CUR&&PAGE<PAGES.length){PAGE++;renderReader();saveProgress();}}
+function prevPage(){if(CUR&&PAGE>1){PAGE--;renderReader();saveProgress();}}
+
+function saveProgress(){
+ if(!CUR||!PAGES.length)return;
+ CUR.progress=PAGE/PAGES.length;
+ var d=findDoc(CUR.id);if(d){d.progress=CUR.progress;d.lastReadAt=new Date().getTime();}
+ if(progTimer){clearTimeout(progTimer);}
+ progTimer=setTimeout(function(){
+  var pr=CUR.progress;var id=CUR.id;
+  ajax('POST',API+'/reader/progress',jsonStr({id:id,progress:pr}),{'Content-Type':'application/json;charset=UTF-8'},function(){},8000);
+ },1500);
+}
+function saveProgressNow(){
+ if(!CUR||!PAGES.length)return;
+ if(progTimer){clearTimeout(progTimer);progTimer=null;}
+ var pr=PAGE/PAGES.length;var id=CUR.id;
+ ajax('POST',API+'/reader/progress',jsonStr({id:id,progress:pr}),{'Content-Type':'application/json;charset=UTF-8'},function(){},8000);
+ var d=findDoc(CUR.id);if(d){d.progress=pr;}
+}
+function backToLib(){saveProgressNow();show('lib');renderLib();}
+
+function toggleToc(){
+ var box=$('tocBox');if(!box)return;
+ if(box.style.display==='block'){box.style.display='none';return;}
+ if(!CONTENT)return;
+ var toc=buildToc(CONTENT);var h='';
+ if(!toc.length){h='<div class="mini">未识别到章节标记（支持「第X章」或 Markdown 标题行）</div>';}
+ for(var i=0;i<toc.length;i++){
+  var pg=pageOfPos(PAGES,toc[i].pos);
+  h+='<span style="display:block;padding:8px 0;border-bottom:1px solid #eeeeee;color:#0055cc;cursor:pointer;word-break:break-all" onclick="goPage('+pg+')">'+esc(toc[i].t)+'</span>';
+ }
+ var list=$('tocList');if(list){list.innerHTML=h;}
+ box.style.display='block';
+}
+
+function setFs(n,skip){
+ n=parseInt(n,10);if(isNaN(n))n=18;
+ if(n<13)n=13;if(n>30)n=30;
+ RD_FS=n;
+ var el=$('rdContent');if(el){el.style.fontSize=RD_FS+'px';}
+ if(!skip){lsSet('rd_fs',String(n));}
+}
+function cycleLh(){
+ RD_LH=(RD_LH===1.6)?1.85:((RD_LH===1.85)?2.1:1.6);
+ var el=$('rdContent');if(el){el.style.lineHeight=String(RD_LH);}
+ lsSet('rd_lh',String(RD_LH));
+ msg('行距：'+RD_LH);
+}
+function setTheme(t){document.body.className=(t==='dark')?'theme-dark':'';lsSet('rd_theme',t||'light');}
+function toggleTheme(){var c=document.body.className||'';setTheme((c.indexOf('theme-dark')>=0)?'light':'dark');}
+
+function readFileText(f,cb){
+ if(!window.FileReader){cb(new Error('浏览器不支持文件读取，请在文本框粘贴内容'));return;}
+ try{
+  var r=new FileReader();
+  r.onload=function(e){cb(null,String(e.target.result||''));};
+  r.onerror=function(){cb(new Error('文件读取失败'));};
+  r.readAsText(f,'UTF-8');
+ }catch(e){cb(new Error('文件读取异常'));}
+}
+function doImport(){
+ if(BUSY_R)return;
+ var title=trimS(val('imTitle'));
+ if(!title){msg('请输入标题');return;}
+ var cat=trimS(val('imCat'))||'未分类';
+ var f=null;
+ var fi=$('imFile');
+ if(fi&&fi.files&&fi.files.length){f=fi.files[0];}
+ var go=function(content){
+  if(!content||!trimS(content)){msg('内容为空');return;}
+  BUSY_R=true;msg('导入中（大文档可能稍慢，请勿关闭页面）...',true);
+  ajax('POST',API+'/reader/import',jsonStr({title:title,content:content,category:cat}),{'Content-Type':'application/json;charset=UTF-8'},function(err,code,text){
+   BUSY_R=false;
+   if(err){msg('导入失败：'+err.message);return;}
+   var d=jsonParse(text||'');
+   if(d&&d.success){msg('导入成功');hideImport();loadList();}
+   else{msg('导入失败：'+((d&&d.error)||'未知错误'));}
+  },300000);
+ };
+ if(f){
+  msg('读取文件中...',true);
+  readFileText(f,function(e,content){
+   if(e){msg('读取失败：'+e.message+'（可改用粘贴方式）');return;}
+   go(content);
+  });
+ }else{
+  go(val('imText'));
+ }
+}
+function showImport(){var b=$('importBox');if(b)b.style.display='block';}
+function hideImport(){var b=$('importBox');if(b)b.style.display='none';}
+
+function delDoc(id){
+ var d=findDoc(id);
+ if(!confirm('将「'+((d&&d.title)||id)+'」移入回收站？'))return;
+ ajax('DELETE',API+'/reader/delete?id='+encodeURIComponent(id),null,{},function(err,code,text){
+  if(err){msg('删除失败：'+err.message);return;}
+  msg('已移入回收站');loadList();
+ },15000);
+}
+function restoreDoc(id){
+ ajax('POST',API+'/reader/restore',jsonStr({id:id}),{'Content-Type':'application/json;charset=UTF-8'},function(err,code,text){
+  if(err){msg('恢复失败：'+err.message);return;}
+  msg('已恢复');loadList();
+ },15000);
+}
+function emptyTrash(){
+ if(!confirm('清空回收站会永久删除全部文档，确定？'))return;
+ ajax('POST',API+'/reader/empty-trash','{}',{'Content-Type':'application/json;charset=UTF-8'},function(err,code,text){
+  if(err){msg('清空失败：'+err.message);return;}
+  msg('已清空');loadList();renderTrash();
+ },30000);
+}
+function renameDoc(id){
+ var d=findDoc(id);if(!d)return;
+ var n=prompt('新名称',d.title||'');
+ if(n===null)return;
+ n=trimS(n);if(!n)return;
+ ajax('POST',API+'/reader/update',jsonStr({id:id,title:n}),{'Content-Type':'application/json;charset=UTF-8'},function(err,code,text){
+  if(err){msg('改名失败：'+err.message);return;}
+  d.title=n;msg('已改名');renderLib();
+ },15000);
+}
+function renderTrash(){
+ var el=$('trashList');if(!el)return;
+ var arr=[],i;
+ for(i=0;i<DOCS.length;i++){if(DOCS[i].deleted){arr.push(DOCS[i]);}}
+ var h='';
+ if(!arr.length){h='<div class="empty">回收站为空</div>';}
+ for(i=0;i<arr.length;i++){
+  var d=arr[i];
+  h+='<div class="doc"><span class="t">'+esc(d.title||d.id)+'</span><div class="m">删除于 '+(d.deletedAt?fmtDate(d.deletedAt):'')+'</div><div class="row"><button type="button" class="btn" onclick="restoreDoc(\''+attr(d.id)+'\')">恢复</button></div></div>';
+ }
+ el.innerHTML=h;
+}
+function showTrash(){renderTrash();show('trash');}
+
+function bind(){
+ on($('btnImport'),'click',showImport);
+ on($('btnImportCancel'),'click',hideImport);
+ on($('btnDoImport'),'click',doImport);
+ on($('btnTrash'),'click',showTrash);
+ on($('btnReload'),'click',function(){loadList();});
+ on($('btnBack'),'click',backToLib);
+ on($('btnBack2'),'click',function(){show('lib');renderLib();});
+ on($('btnPrev'),'click',prevPage);
+ on($('btnNext'),'click',nextPage);
+ on($('btnToc'),'click',toggleToc);
+ on($('btnGo'),'click',function(){var n=val('pgInput');if(n){goPage(n);var pi=$('pgInput');if(pi)pi.value='';}});
+ on($('pgInput'),'keyup',function(e){e=e||window.event;var k=e.keyCode||e.which;if(k===13){var n=this.value;if(n){goPage(n);this.value='';}}});
+ on($('btnFsUp'),'click',function(){setFs(RD_FS+1);});
+ on($('btnFsDown'),'click',function(){setFs(RD_FS-1);});
+ on($('btnLh'),'click',cycleLh);
+ on($('btnTheme'),'click',toggleTheme);
+ on($('btnEmpty'),'click',emptyTrash);
+ var rc=$('rdContent');
+ if(rc){
+  rc.onclick=function(){
+   try{if(window.getSelection){var s=window.getSelection();if(s&&String(s)!=='')return;}}catch(e){}
+   if(CUR&&PAGE<PAGES.length){nextPage();}
+  };
+ }
+}
+
+function init(){
+ var th=lsGet('rd_theme');setTheme(th==='dark'?'dark':'light');
+ var fs=parseInt(lsGet('rd_fs'),10);if(isNaN(fs))fs=18;setFs(fs,true);
+ var lh=parseFloat(lsGet('rd_lh'));if(!(lh>=1.4&&lh<=2.4))lh=1.8;RD_LH=lh;
+ var rc=$('rdContent');if(rc){rc.style.lineHeight=String(RD_LH);}
+ bind();
+ loadList();
+}
+init();
+</script>
+</body>
+</html>
