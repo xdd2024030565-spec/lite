@@ -645,7 +645,7 @@ function doSrcSearch(){
  showSrcSearch();
  var t0=new Date().getTime();
  var hitSrc=0,done=0,total=cand.length,searched=0;
- var el=S('srcResults');if(el){el.innerHTML='并发搜索 '+total+' 个书源（并发 '+CONC+'）<a href="javascript:srStop()" style="color:#c00">[停止]</a>';}
+ var el=$("srcResults");if(el){el.innerHTML='并发搜索 '+total+' 个书源（并发 '+CONC+'）<a href="javascript:srStop()" style="color:#c00">[停止]</a>';}
  function updStat(){
   setSrcStat('已搜 '+searched+'/'+total+' · 命中 '+hitSrc+' · 找到 '+SR_RESULTS.length+' 条 · 用时 '+elapsed(t0));
   if(el){el.innerHTML='并发搜索中... 已搜 '+searched+'/'+total+' · 命中 '+hitSrc+' 个源 · 找到 '+SR_RESULTS.length+' 条 · 用时 '+elapsed(t0)+' <a href="javascript:srStop()" style="color:#c00">[停止]</a>';}
