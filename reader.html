@@ -521,7 +521,7 @@ function srcImportFromUrl(u,lm){
  setSrcStat('下载书源包中...');
  var offset=SRC_PACK.offset||0;
  var spUrl=API+'/reader/sourcepack?url='+encodeURIComponent(u)+'&limit='+encodeURIComponent(lm)+'&offset='+offset;
- proxyFetch(spUrl,function(err,text){
+ ajax('GET',spUrl,null,{'Accept':'application/json'},function(err,code,text){
   if(err){SR_BUSY=false;msg('导入失败：'+err.message);setSrcStat('');return;}
   var d=jsonParse(text||'');
   if(!d||!d.ok||!(d.sources instanceof Array)){SR_BUSY=false;msg('导入失败：'+((d&&d.error)||'格式错误'));setSrcStat('');return;}
