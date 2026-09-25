@@ -183,7 +183,7 @@ function jsonParse(s){if(J.parse){try{return J.parse(s);}catch(e){return null;}}
 function jsonStr(o){if(J.stringify){return J.stringify(o);}return _js(o);}
 function _js(o){var t=typeof o;if(o===null||o===undefined)return 'null';if(t==='string')return '"'+o.replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/\r/g,'\\r').replace(/\n/g,'\\n')+'"';if(t==='number')return isFinite(o)?String(o):'null';if(t==='boolean')return String(o);var a=[],i,k,v;if(o instanceof Array){for(i=0;i<o.length;i++){a.push(_js(o[i]));}return '['+a.join(',')+']';}for(k in o){if(o.hasOwnProperty(k)){v=o[k];if(typeof v!=='function'&&typeof v!=='undefined'){a.push(_js(k)+':'+_js(v));}}}return '{'+a.join(',')+'}';}
 
-function ajax(method,url,body,headers,cb,timeoutMs){
+function ajax(method,url,body,headers,cb,timeoutMs,opts){
  var x=null,done=false,timer=null;
  try{if(window.XMLHttpRequest){x=new XMLHttpRequest();}else if(window.ActiveXObject){x=new ActiveXObject('Microsoft.XMLHTTP');}}catch(e){}
  if(!x){cb(new Error('XMLHttpRequest 不可用，请改用纯HTML模式'),0,null);return;}
@@ -191,6 +191,8 @@ function ajax(method,url,body,headers,cb,timeoutMs){
  try{
   x.open(method,url,true);
   if(headers){for(var k in headers){if(headers.hasOwnProperty(k)){try{x.setRequestHeader(k,headers[k]);}catch(e){}}}}
+  if(opts&&opts.up&&x.upload){try{x.upload.onprogress=function(ev){if(ev){opts.up(ev.loaded||0,ev.total||0,!!ev.lengthComputable);}};}catch(e){}}
+  if(opts&&opts.down){try{x.onprogress=function(ev){if(ev){opts.down(ev.loaded||0,ev.total||0,!!ev.lengthComputable);}};}catch(e){}}
   x.onreadystatechange=function(){if(x.readyState===4){if(x.status>=200&&x.status<300){finish(null,x.status,x.responseText);}else{finish(new Error('HTTP '+x.status),x.status,x.responseText);}}};
   timer=setTimeout(function(){if(!done){try{x.abort();}catch(e){}finish(new Error('网络超时'),0,null);}},timeoutMs||15000);
   if(body!==null&&body!==undefined){x.send(body);}else{x.send();}
@@ -199,6 +201,10 @@ function ajax(method,url,body,headers,cb,timeoutMs){
 
 function msg(s,keep){var el=$('topMsg');if(!el)return;el.innerHTML=s||'';el.style.display=s?'block':'none';if(msgTimer){clearTimeout(msgTimer);msgTimer=null;}if(s&&!keep){msgTimer=setTimeout(function(){el.style.display='none';},5000);}}
 function fmtDate(ts){if(!ts)return '';try{var d=new Date(ts);return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}catch(e){return '';}}
+function fmtSize(n){n=Number(n)||0;if(n<1024)return n+' B';if(n<1048576)return (Math.round(n/102.4)/10)+' KB';return (Math.round(n/104857.6)/10)+' MB';}
+function calcPct(a,b){if(!b)return '';return (Math.round(a*1000/b)/10)+'%';}
+function elapsed(t0){var s=Math.round((new Date().getTime()-t0)/100)/10;return s+' 秒';}
+function progressText(prefix,l,t,lc){if(lc&&t){return prefix+' '+calcPct(l,t)+'（'+fmtSize(l)+' / '+fmtSize(t)+'）';}return prefix+' '+fmtSize(l);}
 
 function pageize(text,perPage){
  var pages=[],off=0,len=text.length;
@@ -276,7 +282,8 @@ function renderLib(){
 
 function openDoc(id){
  if(!id)return;
- msg('打开中...',true);
+ var d0=findDoc(id);
+ msg('打开文档：'+((d0&&d0.title)||id)+' ...',true);
  ajax('GET',API+'/reader/get?id='+encodeURIComponent(id),null,{'Accept':'application/json'},function(err,code,text){
   if(err){msg('打开失败：'+err.message);return;}
   var d=jsonParse(text||'');
@@ -286,8 +293,8 @@ function openDoc(id){
   var total=PAGES.length;
   PAGE=Math.floor((d.progress||0)*total)+1;
   if(PAGE<1)PAGE=1;if(PAGE>total)PAGE=total;
-  msg('');
   renderReader();show('read');
+  msg('已打开《'+(CUR.title||'')+'》· 共 '+CONTENT.length+' 字 · '+total+' 页 · 当前位置 '+calcPct(PAGE,total));
  },60000);
 }
 
@@ -302,7 +309,7 @@ function renderReader(){
  setText('pgNow',PAGE);
  setText('pgTotal',PAGES.length);
  var rm=$('rdMeta');
- if(rm){rm.textContent='《'+(CUR.title||'')+'》 · 共 '+CONTENT.length+' 字 · 第 '+PAGE+' / '+PAGES.length+' 页';}
+ if(rm){rm.textContent='《'+(CUR.title||'')+'》 · 共 '+CONTENT.length+' 字 · 第 '+PAGE+' / '+PAGES.length+' 页（'+calcPct(PAGE,PAGES.length)+'）';}
  try{window.scrollTo(0,0);}catch(e){}
 }
 
@@ -320,17 +327,25 @@ function saveProgress(){
  CUR.progress=PAGE/PAGES.length;
  var d=findDoc(CUR.id);if(d){d.progress=CUR.progress;d.lastReadAt=new Date().getTime();}
  if(progTimer){clearTimeout(progTimer);}
+ setText('rdInfo','进度保存中...');
  progTimer=setTimeout(function(){
-  var pr=CUR.progress;var id=CUR.id;
-  ajax('POST',API+'/reader/progress',jsonStr({id:id,progress:pr}),{'Content-Type':'application/json;charset=UTF-8'},function(){},8000);
+  var pr=CUR.progress;var id=CUR.id;var pg=PAGE;var pt=PAGES.length;
+  ajax('POST',API+'/reader/progress',jsonStr({id:id,progress:pr}),{'Content-Type':'application/json;charset=UTF-8'},function(err){
+   if(err){setText('rdInfo','进度保存失败（稍后自动重试）');}
+   else{setText('rdInfo','进度已保存 '+calcPct(pg,pt)+'（第 '+pg+'/'+pt+' 页）');}
+  },8000);
  },1500);
 }
 function saveProgressNow(){
  if(!CUR||!PAGES.length)return;
  if(progTimer){clearTimeout(progTimer);progTimer=null;}
- var pr=PAGE/PAGES.length;var id=CUR.id;
- ajax('POST',API+'/reader/progress',jsonStr({id:id,progress:pr}),{'Content-Type':'application/json;charset=UTF-8'},function(){},8000);
+ var pr=PAGE/PAGES.length;var id=CUR.id;var pg=PAGE;var pt=PAGES.length;
  var d=findDoc(CUR.id);if(d){d.progress=pr;}
+ setText('rdInfo','进度保存中...');
+ ajax('POST',API+'/reader/progress',jsonStr({id:id,progress:pr}),{'Content-Type':'application/json;charset=UTF-8'},function(err){
+  if(err){setText('rdInfo','进度保存失败（稍后自动重试）');}
+  else{setText('rdInfo','进度已保存 '+calcPct(pg,pt)+'（第 '+pg+'/'+pt+' 页）');}
+ },8000);
 }
 function backToLib(){saveProgressNow();show('lib');renderLib();}
 
@@ -366,10 +381,11 @@ function cycleLh(){
 function setTheme(t){document.body.className=(t==='dark')?'theme-dark':'';lsSet('rd_theme',t||'light');}
 function toggleTheme(){var c=document.body.className||'';setTheme((c.indexOf('theme-dark')>=0)?'light':'dark');}
 
-function readFileText(f,cb){
+function readFileText(f,cb,cbProg){
  if(!window.FileReader){cb(new Error('浏览器不支持文件读取，请在文本框粘贴内容'));return;}
  try{
   var r=new FileReader();
+  r.onprogress=function(ev){if(cbProg){cbProg(ev.loaded||0,ev.total||0,!!ev.lengthComputable);}};
   r.onload=function(e){cb(null,String(e.target.result||''));};
   r.onerror=function(){cb(new Error('文件读取失败'));};
   r.readAsText(f,'UTF-8');
@@ -383,22 +399,26 @@ function doImport(){
  var f=null;
  var fi=$('imFile');
  if(fi&&fi.files&&fi.files.length){f=fi.files[0];}
+ var t0=new Date().getTime();
  var go=function(content){
   if(!content||!trimS(content)){msg('内容为空');return;}
-  BUSY_R=true;msg('导入中（大文档可能稍慢，请勿关闭页面）...',true);
+  BUSY_R=true;
+  var chars=content.length;
+  msg('准备上传（约 '+chars+' 字）...',true);
   ajax('POST',API+'/reader/import',jsonStr({title:title,content:content,category:cat}),{'Content-Type':'application/json;charset=UTF-8'},function(err,code,text){
    BUSY_R=false;
    if(err){msg('导入失败：'+err.message);return;}
    var d=jsonParse(text||'');
-   if(d&&d.success){msg('导入成功');hideImport();loadList();}
+   if(d&&d.success){msg('导入成功：《'+title+'》· 约 '+chars+' 字 · 用时 '+elapsed(t0));hideImport();loadList();}
    else{msg('导入失败：'+((d&&d.error)||'未知错误'));}
-  },300000);
+  },300000,{up:function(l,t,lc){msg(progressText('上传中',l,t,lc),true);}});
  };
  if(f){
-  msg('读取文件中...',true);
   readFileText(f,function(e,content){
    if(e){msg('读取失败：'+e.message+'（可改用粘贴方式）');return;}
    go(content);
+  },function(l,t,lc){
+   msg(progressText('读取中',l,t,lc),true);
   });
  }else{
   go(val('imText'));
@@ -517,6 +537,7 @@ var SRC_PACK={total:0,offset:0};
 function srcImportFromUrl(u,lm){
  if(SR_BUSY){msg('忙，请稍候');return;}
  SR_BUSY=true;
+ var t0=new Date().getTime();
  msg('下载书源包...',true);
  setSrcStat('下载书源包中...');
  var offset=SRC_PACK.offset||0;
@@ -534,18 +555,18 @@ function srcImportFromUrl(u,lm){
    for(var j=0;j<SRCS.length;j++){if(SRCS[j].bookSourceUrl===s.bookSourceUrl){dup=true;break;}}
    if(!dup){SRCS.push(s);added++;}
   }
-  msg('保存中...',true);
+  msg('保存书源到 GitHub...',true);
   saveSources(function(e2){
    SR_BUSY=false;
    if(e2){msg('保存失败：'+e2.message);return;}
    var done=SRC_PACK.offset>=(SRC_PACK.total||0);
-   var prog='已导入 '+SRC_PACK.offset+' / '+SRC_PACK.total+'（本批 '+added+'）';
+   var prog='已导入 '+SRC_PACK.offset+' / '+SRC_PACK.total+'（'+calcPct(SRC_PACK.offset,SRC_PACK.total)+'）· 本批 '+added+' 个';
    setSrcStat(prog);
-   msg((done?'书源导入完成：':'本批完成：')+prog+(done?'':'；再点一次「导入并保存」继续下一批'));
+   msg((done?'书源导入完成：':'本批完成：')+prog+' · 用时 '+elapsed(t0)+(done?'':'；再点一次「导入并保存」继续下一批'));
    renderSrcList();
    if(done){var ta=$('srcImport');if(ta)ta.value='';}
   });
- },180000);
+ },180000,{down:function(l,t,lc){setSrcStat(progressText('下载书源包',l,t,lc));}});
 }
 function importSrcJson(raw,cb){
  var d=jsonParse(raw);
@@ -592,7 +613,7 @@ function saveSources(cb){
        if(err2){cb(err2);return;}
        var d2=jsonParse(text2||'');if(d2&&d2.content&&d2.content.sha){SRC_SHA=d2.content.sha;}
        cb(null);
-      },20000);
+      },20000,{up:function(l,t,lc){msg(progressText('保存书源(重试)',l,t,lc),true);}});
      });
      return;
     }
@@ -600,7 +621,7 @@ function saveSources(cb){
    }
    var d=jsonParse(text||'');if(d&&d.content&&d.content.sha){SRC_SHA=d.content.sha;}
    cb(null);
-  },20000);
+  },20000,{up:function(l,t,lc){msg(progressText('保存书源',l,t,lc),true);}});
  });
 }
 
@@ -611,12 +632,15 @@ function doSrcSearch(){
  if(!SRCS.length){msg('请先导入书源（书源管理）');return;}
  SR_BUSY=true;SR_RESULTS=[];
  showSrcSearch();
- var el=$('srcResults');if(el){el.innerHTML='<div class="empty">搜索中...</div>';}
+ var t0=new Date().getTime();
+ var hitSrc=0;
+ var el=$('srcResults');if(el){el.innerHTML='<div class="empty">开始搜索（共 '+SRCS.length+' 个书源）...</div>';}
  var i=0;
  var step=function(){
   if(i>=SRCS.length){
    SR_BUSY=false;
-   setSrcStat('完成：'+SR_RESULTS.length+' 条结果');
+   setSrcStat('完成：'+SR_RESULTS.length+' 条 · 来自 '+hitSrc+'/'+SRCS.length+' 个书源 · 用时 '+elapsed(t0));
+   msg('搜索完成：'+SR_RESULTS.length+' 条结果（'+hitSrc+'/'+SRCS.length+' 个源有结果，用时 '+elapsed(t0)+'）');
    renderSrcResults();
    return;
   }
@@ -624,16 +648,18 @@ function doSrcSearch(){
   if(!s.searchUrl){step();return;}
   var u=buildSearchUrl(s,q);
   if(!u){step();return;}
-  if(el){el.innerHTML='<div class="empty">搜索中... '+(i-1)+'/'+SRCS.length+'（'+esc(s.bookSourceName||'')+'）</div>';}
+  if(el){el.innerHTML='<div class="empty">搜索中... '+(i-1)+'/'+SRCS.length+'（'+esc(s.bookSourceName||'')+'）· 已找到 '+SR_RESULTS.length+' 条 · 用时 '+elapsed(t0)+'</div>';}
   proxyFetch(u,function(err,text,finalUrl){
    if(!err&&text){
     try{
      var doc=htmlDoc(text);
      var items=doc?parseSearch(s,doc,finalUrl||u):[];
+     if(items.length){hitSrc++;}
      for(var k=0;k<items.length;k++){SR_RESULTS.push(items[k]);}
     }catch(e){}
    }
-   if(SR_RESULTS.length){setSrcStat('已找到 '+SR_RESULTS.length+' 条（已搜 '+(i)+'/'+SRCS.length+'）');renderSrcResults();}
+   setSrcStat('已搜 '+i+'/'+SRCS.length+' · 找到 '+SR_RESULTS.length+' 条 · 用时 '+elapsed(t0));
+   if(SR_RESULTS.length){renderSrcResults();}
    step();
   });
  };
@@ -840,7 +866,8 @@ function openChapter(i){
  var ch=SR_CHS[i];
  var s=SR_SEL?SR_SEL.bs:null;
  if(!s){SR_BUSY=false;return;}
- msg('加载章节...',true);
+ var t0=new Date().getTime();
+ msg('加载第 '+(i+1)+'/'+SR_CHS.length+' 章（'+calcPct(i+1,SR_CHS.length)+'）：'+ch.name+' ...',true);
  proxyFetch(ch.url,function(err,text,finalUrl){
   SR_BUSY=false;
   if(err){msg('章节加载失败：'+err.message);return;}
@@ -852,7 +879,7 @@ function openChapter(i){
   body=body.replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n');
   SR_CHIDX=i;
   var t=$('srcChapTitle');
-  if(t){t.textContent='第 '+(i+1)+'/'+SR_CHS.length+' 章 · '+ch.name;}
+  if(t){t.textContent='第 '+(i+1)+'/'+SR_CHS.length+' 章（'+calcPct(i+1,SR_CHS.length)+'）· '+ch.name+' · 本章 '+body.length+' 字 · 加载 '+elapsed(t0);}
   var c=$('srcContent');
   if(c){
    c.innerHTML='';
@@ -860,7 +887,7 @@ function openChapter(i){
    c.style.fontSize=RD_FS+'px';
    c.style.lineHeight=String(RD_LH);
   }
-  msg('');
+  msg('已加载：'+ch.name+'（本章 '+body.length+' 字，用时 '+elapsed(t0)+'）');
   showSrcRead();
   try{window.scrollTo(0,0);}catch(e){}
  });
