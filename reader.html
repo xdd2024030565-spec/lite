@@ -473,7 +473,7 @@ function renderTrash(){
 function showTrash(){renderTrash();show('trash');}
 
 // ===== 书源模块（网络书源：加载自 GitHub，正文不落地） =====
-var SRCS=[],SR_RESULTS=[],SR_SEL=null,SR_CHS=[],SR_CHIDX=-1,SR_BUSY=false,SRC_SHA=null;
+var SRCS=[],SR_RESULTS=[],SR_SEL=null,SR_CHS=[],SR_CHIDX=-1,SR_BUSY=false,SRC_SHA=null,SR_SEARCH_STOP=false;
 var SRC_LIST=[
  'sources.json',
  'https://nav.yongjiu.ccwu.cc/sources.json',
@@ -630,40 +630,76 @@ function doSrcSearch(){
  var q=trimS(val('srcQ'));
  if(!q){msg('请输入书名或作者');return;}
  if(!SRCS.length){msg('请先导入书源（书源管理）');return;}
- SR_BUSY=true;SR_RESULTS=[];
+ var cand=[];
+ for(var ii=0;ii<SRCS.length;ii++){
+  var ss=SRCS[ii];
+  if(!ss.searchUrl)continue;
+  var u=buildSearchUrl(ss,q);
+  if(!u)continue;
+  var tone=(ss._ok||0)-((ss._srcFail||0)*2);
+  cand.push({s:ss,u:u,tone:tone});
+ }
+ cand.sort(function(a,b){return b.tone-a.tone;});
+ var CONC=6;
+ SR_BUSY=true;SR_RESULTS=[];SR_SEARCH_STOP=false;
  showSrcSearch();
  var t0=new Date().getTime();
- var hitSrc=0;
- var el=$('srcResults');if(el){el.innerHTML='<div class="empty">开始搜索（共 '+SRCS.length+' 个书源）...</div>';}
- var i=0;
- var step=function(){
-  if(i>=SRCS.length){
-   SR_BUSY=false;
-   setSrcStat('完成：'+SR_RESULTS.length+' 条 · 来自 '+hitSrc+'/'+SRCS.length+' 个书源 · 用时 '+elapsed(t0));
-   msg('搜索完成：'+SR_RESULTS.length+' 条结果（'+hitSrc+'/'+SRCS.length+' 个源有结果，用时 '+elapsed(t0)+'）');
-   renderSrcResults();
-   return;
-  }
-  var s=SRCS[i];i++;
-  if(!s.searchUrl){step();return;}
-  var u=buildSearchUrl(s,q);
-  if(!u){step();return;}
-  if(el){el.innerHTML='<div class="empty">搜索中... '+(i-1)+'/'+SRCS.length+'（'+esc(s.bookSourceName||'')+'）· 已找到 '+SR_RESULTS.length+' 条 · 用时 '+elapsed(t0)+'</div>';}
+ var hitSrc=0,done=0,total=cand.length,searched=0;
+ var el=S('srcResults');if(el){el.innerHTML='并发搜索 '+total+' 个书源（并发 '+CONC+'）<a href="javascript:srStop()" style="color:#c00">[停止]</a>';}
+ function updStat(){
+  setSrcStat('已搜 '+searched+'/'+total+' · 命中 '+hitSrc+' · 找到 '+SR_RESULTS.length+' 条 · 用时 '+elapsed(t0));
+  if(el){el.innerHTML='并发搜索中... 已搜 '+searched+'/'+total+' · 命中 '+hitSrc+' 个源 · 找到 '+SR_RESULTS.length+' 条 · 用时 '+elapsed(t0)+' <a href="javascript:srStop()" style="color:#c00">[停止]</a>';}
+  if(SR_RESULTS.length){renderSrcResults();}
+ }
+ function worker(){
+  if(SR_SEARCH_STOP||done>=cand.length){return;}
+  var idx=done;done++;
+  if(idx>=cand.length){return;}
+  var c=cand[idx];var s=c.s,u=c.u;searched++;
   proxyFetch(u,function(err,text,finalUrl){
+   var ok=false;
    if(!err&&text){
     try{
      var doc=htmlDoc(text);
      var items=doc?parseSearch(s,doc,finalUrl||u):[];
-     if(items.length){hitSrc++;}
+     if(items.length){ok=true;hitSrc++;s._ok=(s._ok||0)+1;}
      for(var k=0;k<items.length;k++){SR_RESULTS.push(items[k]);}
-    }catch(e){}
+    }catch(e){ok=false;}
    }
-   setSrcStat('已搜 '+i+'/'+SRCS.length+' · 找到 '+SR_RESULTS.length+' 条 · 用时 '+elapsed(t0));
-   if(SR_RESULTS.length){renderSrcResults();}
-   step();
+   if(!ok){s._srcFail=(s._srcFail||0)+1;}
+   updStat();worker();
   });
- };
- step();
+ }
+ for(var w=0;w<CONC;w++){worker();}
+ var fin=setInterval(function(){
+  if(SR_SEARCH_STOP){
+   clearInterval(fin);SR_BUSY=false;
+   setSrcStat('已停止：已搜 '+searched+'/'+total+' · '+SR_RESULTS.length+' 条');
+   rankSrc();renderSrcResults();return;
+  }
+  if(done>=cand.length){
+   clearInterval(fin);
+   setTimeout(function(){
+    SR_BUSY=false;rankSrc();
+    setSrcStat('完成：'+SR_RESULTS.length+' 条 · 命中 '+hitSrc+'/'+total+' 源 · 用时 '+elapsed(t0));
+    msg('搜索完成：'+SR_RESULTS.length+' 条结果（命中 '+hitSrc+'/'+total+' 个源，用时 '+elapsed(t0)+'）');
+    renderSrcResults();
+   },400);
+  }
+ },120);
+}
+function srStop(){SR_SEARCH_STOP=true;}
+function rankSrc(){
+ var score=function(x){return x.bs?((x.bs._srcFail||0)*2-(x.bs._ok||0)):0;};
+ SR_RESULTS.sort(function(a,b){return score(a)-score(b);});
+ var seen={},out=[];
+ for(var i=0;i<SR_RESULTS.length;i++){
+  var r=SR_RESULTS[i];
+  var key=(r.name||'')+'|'+(r.author||'');
+  if(seen[key])continue;
+  seen[key]=1;out.push(r);
+ }
+ SR_RESULTS=out;
 }
 function buildSearchUrl(s,q){
  var t=String(s.searchUrl||'');
