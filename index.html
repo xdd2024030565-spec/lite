@@ -246,7 +246,7 @@ var SRC_LIST=[
  'https://xdd2024030565-spec.github.io/lite1/links.json'
 ];
 var WRITE_URL='https://api.yongjiu.ccwu.cc/repos/xdd2024030565-spec/lite1/contents/links.json';
-var AUTH_API='https://auth-api.xdd2024030565.workers.dev';
+var AUTH_API='https://auth-api.yongjiu.ccwu.cc'; // 默认走反代，init 后自动选优
 var DATA=null,CURCAT='all',Q='',ADMIN=false,TOKEN=null,FILE_SHA=null,BUSY=false,EDITID=null,UNDO=null,FS=16,TAB='links';
 var THEMES=['light','dark','ocean','forest','warm'];
 var msgTimer=null,memStore={};
@@ -620,6 +620,30 @@ function init(){
  if(!DATA){DATA={siteName:'网址储存',settings:{theme:'light',fontSize:16},categories:[{id:'default',name:'常用'}],links:[]};}
  bind();render();switchTab(tb);tryRestoreLogin();loadData();
 }
+// ====== 认证网关多域名选优（国内优先反代，失败自动切换）======
+var AUTH_POOL=['https://auth-api.yongjiu.ccwu.cc','https://auth-api2.yongjiu.ccwu.cc','https://auth-api.xdd2024030565.workers.dev'];
+(function(){
+  // 命中 10 分钟缓存则直用
+  try{ var _b=lsGet('lite_auth_best'), _t=+lsGet('lite_auth_best_ts')||0;
+    if(_b && AUTH_POOL.indexOf(_b)>=0 && Date.now()-_t<600000){ AUTH_API=_b; return; } }catch(e){}
+  var done=0, best=null, n=AUTH_POOL.length;
+  AUTH_POOL.forEach(function(u){
+    var ctrl=(typeof AbortController!=='undefined')?new AbortController():null;
+    var timer=setTimeout(function(){ if(ctrl)ctrl.abort(); fin(null); },3000);
+    var opts={method:'POST',cache:'no-store',headers:{'Content-Type':'application/json'},body:'{}'};
+    if(ctrl)opts.signal=ctrl.signal;
+    function fin(ok){ clearTimeout(timer); done++;
+      if(ok&&best===null){ best=u; AUTH_API=u;
+        try{ lsSet('lite_auth_best',u); lsSet('lite_auth_best_ts',String(Date.now())); }catch(e){}
+        try{ if(typeof window.__gwOnBest==='function') window.__gwOnBest(u); else if(typeof tryRestoreLogin==='function' && !ADMIN) tryRestoreLogin(); }catch(e){}
+      }
+    }
+    fetch(u+'/auth/verify',opts)
+      .then(function(r){ fin(r.ok||r.status===400||r.status===401||r.status===404); })
+      .catch(function(){ fin(false); });
+  });
+})();
+
 init();
 </script>
 </body>
