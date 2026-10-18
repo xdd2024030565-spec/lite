@@ -104,6 +104,35 @@ body.theme-ocean .gh{color:#5a7a9e}
 body.theme-forest .gh{color:#5a7a5e}
 body.theme-warm .gh{color:#8a7a5a}
 .empty{padding:40px 10px;text-align:center;color:#999}
+/* 折叠组 */
+.foldbox{border:1px solid #bbb;border-radius:8px;margin:12px 0;background:#fafafa}
+body.theme-dark .foldbox{background:#161616;border-color:#444}
+body.theme-ocean .foldbox{background:#f7fbff;border-color:#9dbcdc}
+body.theme-forest .foldbox{background:#f7fcf7;border-color:#a8c9ad}
+body.theme-warm .foldbox{background:#fffaf0;border-color:#d8c39a}
+.foldhead{padding:10px 12px;cursor:pointer;line-height:1.5;word-break:break-all}
+.foldbox.open .foldhead{border-bottom:1px solid #ddd}
+body.theme-dark .foldbox.open .foldhead{border-color:#2e2e2e}
+body.theme-ocean .foldbox.open .foldhead{border-color:#c4d9ef}
+body.theme-forest .foldbox.open .foldhead{border-color:#c6dfc9}
+body.theme-warm .foldbox.open .foldhead{border-color:#e4d3ae}
+.fh-name{font-weight:bold;margin:0 6px 0 2px}
+.fh-meta{font-size:.82em;color:#888}
+.fh-arrow{float:right;color:#888;font-size:.9em}
+.fh-acts{float:right;margin-right:8px;font-size:.85em}
+.fh-acts .minibtn{font-size:.85em;padding:3px 8px;margin:0 2px 0 0}
+.fstack{display:inline-block;position:relative;width:52px;height:26px;vertical-align:middle}
+.fchip{position:absolute;top:1px;width:24px;height:24px;border:1px solid #ccc;border-radius:5px;background:#eee;color:#666;font-size:12px;font-weight:bold;line-height:22px;text-align:center;overflow:hidden;font-style:normal}
+.fchip:nth-child(1){left:0}
+.fchip:nth-child(2){left:14px}
+.fchip:nth-child(3){left:28px}
+.fchip img{display:none;position:absolute;left:0;top:0;width:100%;height:100%;border:0}
+.fchip.hasimg{background:#fff}
+.fchip.hasimg img{display:block}
+.fmore{font-size:.78em;color:#888;margin-left:4px}
+.fold-empty{padding:12px;color:#999;font-size:.9em}
+.foldbox.open .card{padding-left:12px;padding-right:12px}
+
 .editbox{border:1px dashed #999;border-radius:8px;padding:10px;margin:8px 0}
 .msg{display:none;margin:8px 0;padding:10px 12px;border:1px solid #d9a300;border-radius:6px;background:#fff8e1;font-size:.92em}
 body.theme-dark .msg{background:#2a2410;border-color:#8a6d00}
@@ -160,29 +189,11 @@ body.theme-dark .swbtn{background:#232323;color:#e6e6e6;border-color:#666}
    <div class="box-title">添加网址</div>
    <input id="addUrl" type="text" placeholder="粘贴网址 https://..." autocomplete="off">
    <input id="addTitle" type="text" placeholder="标题（可选）" autocomplete="off">
-   <select id="addCat"></select>
+   <select id="addCat" onchange="fillAddFold()"></select>
+   <select id="addFold" onchange="foldSelChanged('addFold','addCat')"></select>
    <div class="row"><button class="btn primary" id="btnAdd" type="button">添加</button></div>
   </div>
-<div id="list"><div class="static-note">脚本未运行时的静态列表（生成时快照，可直接点击）</div>
-<div class="gh">常用</div>
-<div class="card"><a class="title" href="https://www.bing.com/">必应</a><div class="meta">bing.com · 常用</div></div>
-<div class="card"><a class="title" href="https://dash.cloudflare.com/b9865b22dc4d64174713371c293e700f/home">cloudflare</a><div class="meta">dash.cloudflare.com · 常用</div></div>
-<div class="card"><a class="title" href="http://www.github.com">github</a><div class="meta">github.com · 常用</div></div>
-<div class="gh">阅读</div>
-<div class="card"><a class="title" href="https://www.sudugu.cc/top/lastupdate/1.html">速读谷</a><div class="meta">sudugu.cc · 阅读</div></div>
-<div class="gh">节点管理</div>
-<div class="card"><a class="title" href="https://yongjiu.ccwu.cc/admin">edgetunnel-自建1</a><div class="meta">yongjiu.ccwu.cc · 节点管理</div></div>
-<div class="card"><a class="title" href="https://jfw6dhzm3i-bjy7cxrd.pages.dev/xdd12345678/login">BPB panel-自建2</a><div class="meta">jfw6dhzm3i-bjy7cxrd.pages.dev · 节点管理</div></div>
-<div class="gh">AI</div>
-<div class="card"><a class="title" href="https://cto.new/">cto</a><div class="meta">cto.new · AI</div></div>
-<div class="card"><a class="title" href="https://www.codebuddy.ai/agents">codebuddy</a><div class="meta">codebuddy.ai · AI</div></div>
-<div class="card"><a class="title" href="https://platform.deepseek.com/usage">deepseek</a><div class="meta">platform.deepseek.com · AI</div></div>
-<div class="card"><a class="title" href="https://huggingface.co/">huggingface</a><div class="meta">huggingface.co · AI</div></div>
-<div class="card"><a class="title" href="https://duck.ai/">DuckDuckGo AI Chat</a><div class="meta">duck.ai · AI</div></div>
-<div class="gh">MC</div>
-<div class="card"><a class="title" href="https://modrinth.com/discover/mods">modrinth</a><div class="meta">modrinth.com · MC</div></div>
-<div class="card"><a class="title" href="https://www.curseforge.com/minecraft">curseforge</a><div class="meta">curseforge.com · MC</div></div>
-<div class="card"><a class="title" href="https://www.mcmod.cn/v2/">mc百科</a><div class="meta">mcmod.cn · MC</div></div></div><!-- /list -->
+<div id="list"><div class="static-note">脚本未运行时的静态列表（生成时快照，可直接点击；折叠组以展开形态显示）</div><div class="gh">常用</div><div class="card"><a class="title" href="https://gitee.com/?svcp_stk=1_tRLJ5vpado4UGlb79rg9sVyYRJZVWfcJ7YI0cVWISNd_ZbDgZ_5Sa_-d1cgrj4zRpgxblGnmkPkW-bS3_6mN6cRdp78D3Slw95FF1jkN8fOrA359lAgRgZ8N9n6vfnqANhMcX2VbPoc4THAvUl9VbZhPYY7IC2MS0Oo_7VZQ-wugzyPZQID6T9g9FX1ZXCLP4wPTB-UZp-Grcgtv37dLlA%3D%3D">gitee</a><div class="meta">gitee.com · 常用 · 16 天前</div><div class="row"><a class="btn" href="https://gitee.com/?svcp_stk=1_tRLJ5vpado4UGlb79rg9sVyYRJZVWfcJ7YI0cVWISNd_ZbDgZ_5Sa_-d1cgrj4zRpgxblGnmkPkW-bS3_6mN6cRdp78D3Slw95FF1jkN8fOrA359lAgRgZ8N9n6vfnqANhMcX2VbPoc4THAvUl9VbZhPYY7IC2MS0Oo_7VZQ-wugzyPZQID6T9g9FX1ZXCLP4wPTB-UZp-Grcgtv37dLlA%3D%3D">打开</a></div></div><div class="card"><a class="title" href="https://discord.com/channels/@me">discord</a><div class="meta">discord.com · 常用 · 22 天前</div><div class="row"><a class="btn" href="https://discord.com/channels/@me">打开</a></div></div><div class="card"><a class="title" href="https://expert-acorn-xr9r5jrj59v4h64pj.github.dev/">GitHub虚拟机</a><div class="meta">expert-acorn-xr9r5jrj59v4h64pj.github.dev · 常用 · 22 天前</div><div class="row"><a class="btn" href="https://expert-acorn-xr9r5jrj59v4h64pj.github.dev/">打开</a></div></div><div class="card"><a class="title" href="https://www.bing.com/">必应</a><div class="meta">bing.com · 常用 · 1 个月前</div><div class="row"><a class="btn" href="https://www.bing.com/">打开</a></div></div><div class="card"><a class="title" href="https://dash.cloudflare.com/b9865b22dc4d64174713371c293e700f/home">cloudflare</a><div class="meta">dash.cloudflare.com · 常用 · 1 个月前</div><div class="row"><a class="btn" href="https://dash.cloudflare.com/b9865b22dc4d64174713371c293e700f/home">打开</a></div></div><div class="card"><a class="title" href="http://www.github.com">github</a><div class="meta">github.com · 常用 · 1 个月前</div><div class="row"><a class="btn" href="http://www.github.com">打开</a></div></div><div class="gh">阅读</div><div class="card"><a class="title" href="https://www.sudugu.cc/top/lastupdate/1.html">速读谷</a><div class="meta">sudugu.cc · 阅读 · 1 个月前</div><div class="row"><a class="btn" href="https://www.sudugu.cc/top/lastupdate/1.html">打开</a></div></div><div class="gh">节点管理</div><div class="card"><a class="title" href="https://yongjiu.ccwu.cc/admin">edgetunnel-自建1</a><div class="meta">yongjiu.ccwu.cc · 节点管理 · 1 个月前</div><div class="row"><a class="btn" href="https://yongjiu.ccwu.cc/admin">打开</a></div></div><div class="card"><a class="title" href="https://jfw6dhzm3i-bjy7cxrd.pages.dev/xdd12345678/login">BPB panel-自建2</a><div class="meta">jfw6dhzm3i-bjy7cxrd.pages.dev · 节点管理 · 1 个月前</div><div class="row"><a class="btn" href="https://jfw6dhzm3i-bjy7cxrd.pages.dev/xdd12345678/login">打开</a></div></div><div class="gh">AI</div><div class="foldbox open"><div class="foldhead"><span class="fstack"><i class="fchip hasimg">A<img src="https://www.google.com/s2/favicons?domain=apiranking.com&amp;sz=64" alt=""></i><i class="fchip hasimg">幻<img src="https://www.google.com/s2/favicons?domain=api.huanling.icu&amp;sz=64" alt=""></i><i class="fchip hasimg">D<img src="https://www.google.com/s2/favicons?domain=ai.docode.life&amp;sz=64" alt=""></i></span><span class="fmore">+2</span><span class="fh-name">中转</span><span class="fh-meta">AI · 5 个网址</span></div><div class="card"><a class="title" href="https://apiranking.com/">APIranking中转查询</a><div class="meta">apiranking.com · AI · 14 天前</div><div class="row"><a class="btn" href="https://apiranking.com/">打开</a></div></div><div class="card"><a class="title" href="https://api.huanling.icu/keys">幻灵中转站</a><div class="meta">api.huanling.icu · AI · 15 天前</div><div class="row"><a class="btn" href="https://api.huanling.icu/keys">打开</a></div></div><div class="card"><a class="title" href="https://ai.docode.life/console">docode中转站</a><div class="meta">ai.docode.life · AI · 15 天前</div><div class="row"><a class="btn" href="https://ai.docode.life/console">打开</a></div></div><div class="card"><a class="title" href="https://apitiantian.com/dashboard">天天中转站</a><div class="meta">apitiantian.com · AI · 15 天前</div><div class="row"><a class="btn" href="https://apitiantian.com/dashboard">打开</a></div></div><div class="card"><a class="title" href="https://www.hvoyai.com/sites/totokenscc/">禾维中转查询</a><div class="meta">hvoyai.com · AI · 15 天前</div><div class="row"><a class="btn" href="https://www.hvoyai.com/sites/totokenscc/">打开</a></div></div></div><div class="card"><a class="title" href="https://platform.sensenova.ai/console">商汤日日新（海外）</a><div class="meta">platform.sensenova.ai · AI · 15 天前</div><div class="row"><a class="btn" href="https://platform.sensenova.ai/console">打开</a></div></div><div class="card"><a class="title" href="https://platform.sensenova.cn/console">商汤日日新</a><div class="meta">platform.sensenova.cn · AI · 16 天前</div><div class="row"><a class="btn" href="https://platform.sensenova.cn/console">打开</a></div></div><div class="card"><a class="title" href="https://chatgpt.com/">Chatgpt</a><div class="meta">chatgpt.com · AI · 21 天前</div><div class="row"><a class="btn" href="https://chatgpt.com/">打开</a></div></div><div class="card"><a class="title" href="https://cto.new/">cto</a><div class="meta">cto.new · AI · 28 天前</div><div class="row"><a class="btn" href="https://cto.new/">打开</a></div></div><div class="card"><a class="title" href="https://www.codebuddy.ai/agents">codebuddy</a><div class="meta">codebuddy.ai · AI · 29 天前</div><div class="row"><a class="btn" href="https://www.codebuddy.ai/agents">打开</a></div></div><div class="card"><a class="title" href="https://platform.deepseek.com/usage">deepseek</a><div class="meta">platform.deepseek.com · AI · 1 个月前</div><div class="row"><a class="btn" href="https://platform.deepseek.com/usage">打开</a></div></div><div class="card"><a class="title" href="https://huggingface.co/">huggingface</a><div class="meta">huggingface.co · AI · 1 个月前</div><div class="row"><a class="btn" href="https://huggingface.co/">打开</a></div></div><div class="card"><a class="title" href="https://duck.ai/">DuckDuckGo AI Chat</a><div class="meta">duck.ai · AI · 1 个月前</div><div class="row"><a class="btn" href="https://duck.ai/">打开</a></div></div><div class="gh">MC</div><div class="card"><a class="title" href="https://mcjs.link/">mcjs：网页版mc</a><div class="meta">mcjs.link · MC · 22 天前</div><div class="row"><a class="btn" href="https://mcjs.link/">打开</a></div></div><div class="card"><a class="title" href="https://modrinth.com/discover/mods">modrinth</a><div class="meta">modrinth.com · MC · 28 天前</div><div class="row"><a class="btn" href="https://modrinth.com/discover/mods">打开</a></div></div><div class="card"><a class="title" href="https://www.curseforge.com/minecraft">curseforge</a><div class="meta">curseforge.com · MC · 28 天前</div><div class="row"><a class="btn" href="https://www.curseforge.com/minecraft">打开</a></div></div><div class="card"><a class="title" href="https://www.mcmod.cn/v2/">mc百科</a><div class="meta">mcmod.cn · MC · 1 个月前</div><div class="row"><a class="btn" href="https://www.mcmod.cn/v2/">打开</a></div></div><div class="gh">服务器</div><div class="card"><a class="title" href="https://dash.maoziyun.com/project/3918/stats">帽子云</a><div class="meta">dash.maoziyun.com · 服务器 · 16 天前</div><div class="row"><a class="btn" href="https://dash.maoziyun.com/project/3918/stats">打开</a></div></div><div class="card"><a class="title" href="https://wispbyte.com/client/servers/b53924da/console">wispbyte</a><div class="meta">wispbyte.com · 服务器 · 21 天前</div><div class="row"><a class="btn" href="https://wispbyte.com/client/servers/b53924da/console">打开</a></div></div><div class="card"><a class="title" href="https://sillydev.co.uk/panel/server/0488bc1c">silly development</a><div class="meta">sillydev.co.uk · 服务器 · 21 天前</div><div class="row"><a class="btn" href="https://sillydev.co.uk/panel/server/0488bc1c">打开</a></div></div></div><!-- /list -->
  </div><!-- /sec-links -->
  <div id="sec-search" style="display:none">
   <div class="bar"><input id="seQ" type="text" placeholder="输入关键词，全网搜索" autocomplete="off"></div>
@@ -238,14 +249,17 @@ body.theme-dark .swbtn{background:#232323;color:#e6e6e6;border-color:#666}
  <div class="foot"><span id="footInfo">兼容轻量版 · 数据与完整版互通 · 脚本不可用时显示静态快照</span></div>
 </div><!-- /wrap -->
 <script type="text/javascript">
-var SNP={"siteName":"网址储存","settings":{"theme":"light","fontSize":16},"categories":[{"id":"default","name":"常用"},{"id":"mto48v08thojk","name":"阅读"},{"id":"mto9jczb664su","name":"节点管理"},{"id":"mtpf5a1lzn0d3","name":"AI"},{"id":"mtybfaohc8dx5","name":"MC"}],"links":[{"id":"mu810qevqhchj","url":"https://cto.new/","title":"cto","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-19T06:48:43.447Z"},{"id":"mu7x5n8hwp1md","url":"https://modrinth.com/discover/mods","title":"modrinth","categoryId":"mtybfaohc8dx5","note":"","pinned":false,"added":"2026-09-19T05:00:34.145Z"},{"id":"mu7wmvqnl8756","url":"https://www.curseforge.com/minecraft","title":"curseforge","categoryId":"mtybfaohc8dx5","note":"","pinned":false,"added":"2026-09-19T04:45:58.703Z"},{"id":"mu72ilwy82vxo","url":"https://www.codebuddy.ai/agents","title":"codebuddy","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-18T14:42:50.866Z"},{"id":"mtyf7mifcd40z","url":"https://platform.deepseek.com/usage","title":"deepseek","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-12T13:28:17.847Z"},{"id":"mtybfh9jtevlf","url":"https://www.mcmod.cn/v2/","title":"mc百科","categoryId":"mtybfaohc8dx5","note":"","pinned":false,"added":"2026-09-12T11:42:25.831Z"},{"id":"mtybe371no69s","url":"https://huggingface.co/","title":"huggingface","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-12T11:41:20.941Z"},{"id":"mtpfbpir7ix4d","url":"https://www.bing.com/","title":"必应","categoryId":"default","note":"","pinned":false,"added":"2026-09-06T06:21:32.787Z"},{"id":"mtpf6q298jrsr","url":"https://duck.ai/","title":"DuckDuckGo AI Chat","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-06T06:17:40.209Z"},{"id":"mtoaw8ou5p5ci","url":"https://yongjiu.ccwu.cc/admin","title":"edgetunnel-自建1","categoryId":"mto9jczb664su","note":"","pinned":false,"added":"2026-09-05T11:29:46.494Z"},{"id":"mto9h349lb4bl","url":"https://jfw6dhzm3i-bjy7cxrd.pages.dev/xdd12345678/login","title":"BPB panel-自建2","categoryId":"mto9jczb664su","note":"","pinned":false,"added":"2026-09-05T10:49:59.817Z"},{"id":"mto47insy94sh","url":"https://dash.cloudflare.com/b9865b22dc4d64174713371c293e700f/home","title":"cloudflare","categoryId":"default","note":"","pinned":false,"added":"2026-09-05T08:22:35.320Z"},{"id":"mtnyjn2dwguob","url":"https://www.sudugu.cc/top/lastupdate/1.html","title":"速读谷","categoryId":"mto48v08thojk","note":"","pinned":false,"added":"2026-09-05T05:44:03.205Z"},{"id":"mtn1tz4kg63cl","url":"http://www.github.com","title":"github","categoryId":"default","note":"","pinned":false,"added":"2026-09-04T14:28:18.068Z"}]};
+var SNP={"siteName":"lite1","settings":{"theme":"auto","fontSize":16},"categories":[{"id":"default","name":"常用"},{"id":"mto48v08thojk","name":"阅读"},{"id":"mto9jczb664su","name":"节点管理"},{"id":"mtpf5a1lzn0d3","name":"AI"},{"id":"mtybfaohc8dx5","name":"MC"},{"id":"muicpu9tssv9s","name":"服务器"},{"id":"muo5mkstn4z73","name":"css主题"}],"folders":[{"id":"mus893b8v2fdy","name":"中转","categoryId":"mtpf5a1lzn0d3"}],"links":[{"id":"mus3si2r33mks","url":"https://apiranking.com/","title":"APIranking中转查询","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-10-03T08:01:41.763Z","fldId":"mus893b8v2fdy"},{"id":"muqvvk0020j3a","url":"https://api.huanling.icu/keys","title":"幻灵中转站","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-10-02T11:32:21.120Z","fldId":"mus893b8v2fdy"},{"id":"muqu6ovvjv32w","url":"https://ai.docode.life/console","title":"docode中转站","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-10-02T10:45:01.435Z","fldId":"mus893b8v2fdy"},{"id":"muqsgndhx8hnc","url":"https://apitiantian.com/dashboard","title":"天天中转站","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-10-02T09:56:46.805Z","fldId":"mus893b8v2fdy"},{"id":"muqrs1b8d15zr","url":"https://www.hvoyai.com/sites/totokenscc/","title":"禾维中转查询","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-10-02T09:37:38.468Z","fldId":"mus893b8v2fdy"},{"id":"muqj6o2plaiql","url":"https://platform.sensenova.ai/console","title":"商汤日日新（海外）","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-10-02T05:37:04.609Z"},{"id":"muplwj5fs9uvy","url":"https://dash.maoziyun.com/project/3918/stats","title":"帽子云","categoryId":"muicpu9tssv9s","note":"","pinned":false,"added":"2026-10-01T14:05:24.339Z"},{"id":"mupdcmpb0vgvt","url":"https://gitee.com/?svcp_stk=1_tRLJ5vpado4UGlb79rg9sVyYRJZVWfcJ7YI0cVWISNd_ZbDgZ_5Sa_-d1cgrj4zRpgxblGnmkPkW-bS3_6mN6cRdp78D3Slw95FF1jkN8fOrA359lAgRgZ8N9n6vfnqANhMcX2VbPoc4THAvUl9VbZhPYY7IC2MS0Oo_7VZQ-wugzyPZQID6T9g9FX1ZXCLP4wPTB-UZp-Grcgtv37dLlA%3D%3D","title":"gitee","categoryId":"default","note":"","pinned":false,"added":"2026-10-01T10:05:58.895Z"},{"id":"mup4a8cavno1b","url":"https://platform.sensenova.cn/console","title":"商汤日日新","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-10-01T05:52:10.426Z"},{"id":"muicqlhdfnxis","url":"https://wispbyte.com/client/servers/b53924da/console","title":"wispbyte","categoryId":"muicpu9tssv9s","note":"","pinned":false,"added":"2026-09-26T12:14:27.649Z"},{"id":"muibotoo5hj6t","url":"https://sillydev.co.uk/panel/server/0488bc1c","title":"silly development","categoryId":"muicpu9tssv9s","note":"","pinned":false,"added":"2026-09-26T11:45:05.352Z"},{"id":"mui0puzj1acma","url":"https://chatgpt.com/","title":"Chatgpt","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-26T06:37:57.919Z"},{"id":"mughz01pbyq9o","url":"https://discord.com/channels/@me","title":"discord","categoryId":"default","note":"","pinned":false,"added":"2026-09-25T05:05:25.501Z"},{"id":"mughltcadvsfk","url":"https://mcjs.link/","title":"mcjs：网页版mc","categoryId":"mtybfaohc8dx5","note":"","pinned":false,"added":"2026-09-25T04:55:10.282Z"},{"id":"mugegrqnl9ayv","url":"https://expert-acorn-xr9r5jrj59v4h64pj.github.dev/","title":"GitHub虚拟机","categoryId":"default","note":"","pinned":false,"added":"2026-09-25T03:27:16.079Z"},{"id":"mu810qevqhchj","url":"https://cto.new/","title":"cto","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-19T06:48:43.447Z"},{"id":"mu7x5n8hwp1md","url":"https://modrinth.com/discover/mods","title":"modrinth","categoryId":"mtybfaohc8dx5","note":"","pinned":false,"added":"2026-09-19T05:00:34.145Z"},{"id":"mu7wmvqnl8756","url":"https://www.curseforge.com/minecraft","title":"curseforge","categoryId":"mtybfaohc8dx5","note":"","pinned":false,"added":"2026-09-19T04:45:58.703Z"},{"id":"mu72ilwy82vxo","url":"https://www.codebuddy.ai/agents","title":"codebuddy","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-18T14:42:50.866Z"},{"id":"mtyf7mifcd40z","url":"https://platform.deepseek.com/usage","title":"deepseek","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-12T13:28:17.847Z"},{"id":"mtybfh9jtevlf","url":"https://www.mcmod.cn/v2/","title":"mc百科","categoryId":"mtybfaohc8dx5","note":"","pinned":false,"added":"2026-09-12T11:42:25.831Z"},{"id":"mtybe371no69s","url":"https://huggingface.co/","title":"huggingface","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-12T11:41:20.941Z"},{"id":"mtpfbpir7ix4d","url":"https://www.bing.com/","title":"必应","categoryId":"default","note":"","pinned":false,"added":"2026-09-06T06:21:32.787Z"},{"id":"mtpf6q298jrsr","url":"https://duck.ai/","title":"DuckDuckGo AI Chat","categoryId":"mtpf5a1lzn0d3","note":"","pinned":false,"added":"2026-09-06T06:17:40.209Z"},{"id":"mtoaw8ou5p5ci","url":"https://yongjiu.ccwu.cc/admin","title":"edgetunnel-自建1","categoryId":"mto9jczb664su","note":"","pinned":false,"added":"2026-09-05T11:29:46.494Z"},{"id":"mto9h349lb4bl","url":"https://jfw6dhzm3i-bjy7cxrd.pages.dev/xdd12345678/login","title":"BPB panel-自建2","categoryId":"mto9jczb664su","note":"","pinned":false,"added":"2026-09-05T10:49:59.817Z"},{"id":"mto47insy94sh","url":"https://dash.cloudflare.com/b9865b22dc4d64174713371c293e700f/home","title":"cloudflare","categoryId":"default","note":"","pinned":false,"added":"2026-09-05T08:22:35.320Z"},{"id":"mtnyjn2dwguob","url":"https://www.sudugu.cc/top/lastupdate/1.html","title":"速读谷","categoryId":"mto48v08thojk","note":"","pinned":false,"added":"2026-09-05T05:44:03.205Z"},{"id":"mtn1tz4kg63cl","url":"http://www.github.com","title":"github","categoryId":"default","note":"","pinned":false,"added":"2026-09-04T14:28:18.068Z"}]};
 var SRC_LIST=[
  '/lite1/links.json',
  'https://nav.yongjiu.ccwu.cc/links.json',
  'https://raw.githubusercontent.com/xdd2024030565-spec/lite1/main/links.json',
  'https://xdd2024030565-spec.github.io/lite1/links.json'
 ];
-var WRITE_URL='https://api.yongjiu.ccwu.cc/repos/xdd2024030565-spec/lite1/contents/links.json';
+var REPO_PATH='/repos/xdd2024030565-spec/lite1/contents/links.json';
+var API_POOL=['https://api.yongjiu.ccwu.cc','https://api2.yongjiu.ccwu.cc'];
+var API_IDX=0;
+function apiBase(){return API_POOL[API_IDX]||API_POOL[0];}
 var AUTH_API='https://auth-api.yongjiu.ccwu.cc'; // 默认走反代，init 后自动选优
 var DATA=null,CURCAT='all',Q='',ADMIN=false,TOKEN=null,FILE_SHA=null,BUSY=false,EDITID=null,UNDO=null,FS=16,TAB='links';
 var THEMES=['light','dark','ocean','forest','warm'];
@@ -352,13 +366,88 @@ function cardHTML(x){var h='<div class="card" id="c_'+attr(x.id)+'">';
  h+='</div></div>';
  return h;}
 
+
+// ====== 折叠组（与 lite1 同一份 folders/fldId 数据）======
+var FOLD_OPEN={};            // 展开状态只存内存：刷新后自动回到折叠
+function findFold(id){var f=DATA.folders||[];for(var i=0;i<f.length;i++){if(f[i]&&f[i].id===id)return f[i];}return null;}
+function foldIdsInScope(){ // 当前分类下可见的组 id 集合
+ var m={},f=DATA.folders||[],i;
+ for(i=0;i<f.length;i++){if(f[i]&&(CURCAT==='all'||f[i].categoryId===CURCAT)){m[f[i].id]=1;}}
+ return m;
+}
+function linksInFold(id){var l=DATA.links||[],out=[],i;for(i=0;i<l.length;i++){if(l[i].fldId===id)out.push(l[i]);}return out;}
+function isFoldOpen(fid){return Q?FOLD_OPEN[fid]!==false:FOLD_OPEN[fid]===true;} // 搜索时默认展开
+function toggleFold(fid){var box=$('fb_'+fid);var open=box?(box.className.indexOf('open')>=0):isFoldOpen(fid);FOLD_OPEN[fid]=!open;renderList();}
+function favIcon(u){return 'https://www.google.com/s2/favicons?domain='+encodeURIComponent(getDomain(u))+'&sz=64';}
+// 堆叠图标：组内网址 favicon 从左到右叠放；字母兜底；失败隐藏图片只留字母
+function foldStackHtml(items){
+ var n=items.length>3?3:items.length,i,x,h='<span class="fstack">';
+ if(!n){h+='<i class="fchip">空</i>';}
+ for(i=0;i<n;i++){x=items[i];
+  h+='<i class="fchip">'+esc((x.title||x.url||'?').substring(0,1).toUpperCase())+'<img src="'+attr(favIcon(x.url))+'" alt="" onload="this.parentNode.className=\'fchip hasimg\'" onerror="this.parentNode.className=\'fchip noimg\'"></i>';}
+ h+='</span>';
+ if(items.length>3){h+='<span class="fmore">+'+(items.length-3)+'</span>';}
+ return h;}
+function foldHeadHtml(f,cnt){
+ var open=isFoldOpen(f.id);
+ var h='<div class="foldhead" onclick="toggleFold(\''+attr(f.id)+'\')">';
+ h+=foldStackHtml(linksInFold(f.id));
+ h+='<span class="fh-name">'+esc(f.name)+'</span>';
+ h+='<span class="fh-meta">'+catName(f.categoryId)+' · '+cnt+' 个网址</span>';
+ h+='<span class="fh-arrow">'+(open?'▾':'▸')+'</span>';
+ if(ADMIN){h+='<span class="fh-acts">';
+  h+='<a class="minibtn" href="javascript:void(0)" onclick="event.stopPropagation();foldRename(\''+attr(f.id)+'\')">改名</a>';
+  h+='<a class="minibtn" href="javascript:void(0)" onclick="event.stopPropagation();foldDisband(\''+attr(f.id)+'\')">解散</a>';
+  h+='</span>';}
+ h+='</div>';
+ return h;}
+function foldRename(fid){if(!ADMIN)return;var f=findFold(fid);if(!f)return;var n=trimS(prompt('重命名折叠组',f.name));if(!n)return;f.name=n;render();saveData(function(){});}
+function foldDisband(fid){if(!ADMIN)return;var f=findFold(fid);if(!f)return;var items=linksInFold(fid);
+ if(!confirm('解散折叠组「'+f.name+'」？组内 '+items.length+' 个网址回到原分类，不会被删除。'))return;
+ var i,l=DATA.links;for(i=0;i<l.length;i++){if(l[i].fldId===fid){delete l[i].fldId;}}
+ var nf=[],af=DATA.folders||[];for(i=0;i<af.length;i++){if(af[i].id!==fid)nf.push(af[i]);}DATA.folders=nf;
+ render();saveData(function(){});}
+function newFoldNamed(catId){var n=trimS(prompt('新建折叠组名称',''));if(!n)return null;
+ var f={id:'fd'+new Date().getTime(),name:n,categoryId:catId||defaultCatId()};
+ if(!(DATA.folders instanceof Array)){DATA.folders=[];}
+ DATA.folders.push(f);return f;}
+function foldOptionsHtml(selCat,cur){var f=DATA.folders||[],h='<option value="">不归入折叠</option>',i;
+ for(i=0;i<f.length;i++){if(!f[i])continue;if(selCat!=='all'&&f[i].categoryId!==selCat)continue;
+  h+='<option value="'+attr(f[i].id)+'"'+(f[i].id===cur?' selected':'')+'>'+esc(f[i].name)+'</option>';}
+ h+='<option value="__new__">＋ 新建折叠组…</option>';return h;}
+function foldSelChanged(selId,catSelId){var sel=$(selId);if(!sel)return;
+ if(sel.value==='__new__'){var catId=catSelId?val(catSelId):'';var f=newFoldNamed(catId||defaultCatId());
+  if(f){sel.innerHTML=foldOptionsHtml('all',f.id);msg('已创建折叠组「'+f.name+'」');}
+  else{sel.value='';}}}
+
 function renderList(){if(!DATA)return;var el=$('list');if(!el)return;
  EDITID=null;
  var links=filtered();var h='';var i,j;
- if(!links.length){h='<div class="empty">没有匹配的网址</div>';}
+ var fmap=foldIdsInScope();
+ var foldGroups=[],foldIds=[],k;
+ for(k in fmap){if(fmap.hasOwnProperty(k)){foldIds.push(k);}}
+ // 保持 folders 原始顺序
+ var ord=[],af=DATA.folders||[];for(i=0;i<af.length;i++){if(af[i]&&fmap[af[i].id])ord.push(af[i]);}
+ var inFold=[],plain=[];
+ for(i=0;i<links.length;i++){if(links[i].fldId&&fmap[links[i].fldId]){inFold.push(links[i]);}else{plain.push(links[i]);}}
+ for(i=0;i<ord.length;i++){foldGroups.push({f:ord[i],items:[]});}
+ for(i=0;i<inFold.length;i++){for(j=0;j<foldGroups.length;j++){if(foldGroups[j].f.id===inFold[i].fldId){foldGroups[j].items.push(inFold[i]);break;}}}
+ if(!links.length&&!foldGroups.length){h='<div class="empty">没有匹配的网址</div>';}
  else{
+  if(Q){var fgv=[];for(i=0;i<foldGroups.length;i++){if(foldGroups[i].items.length)fgv.push(foldGroups[i]);}foldGroups=fgv;}
+  if(foldGroups.length){
+   h+='<div class="gh">折叠组</div>';
+   for(i=0;i<foldGroups.length;i++){var fg=foldGroups[i];
+    h+='<div class="foldbox'+(isFoldOpen(fg.f.id)?' open':'')+'" id="fb_'+attr(fg.f.id)+'">';
+    h+=foldHeadHtml(fg.f,fg.items.length);
+    if(isFoldOpen(fg.f.id)){
+     if(!fg.items.length){h+='<div class="fold-empty">这个折叠组还是空的</div>';}
+     else{for(j=0;j<fg.items.length;j++){h+=cardHTML(fg.items[j]);}}
+    }
+    h+='</div>';}
+  }
   var pinned=[],rest=[];
-  for(i=0;i<links.length;i++){if(links[i].pinned){pinned.push(links[i]);}else{rest.push(links[i]);}}
+  for(i=0;i<plain.length;i++){if(plain[i].pinned){pinned.push(plain[i]);}else{rest.push(plain[i]);}}
   if(pinned.length){h+='<div class="gh">置顶</div>';for(i=0;i<pinned.length;i++){h+=cardHTML(pinned[i]);}}
   var g={today:[],week:[],earlier:[]};
   for(i=0;i<rest.length;i++){g[groupOf(rest[i].added)].push(rest[i]);}
@@ -370,7 +459,10 @@ function renderList(){if(!DATA)return;var el=$('list');if(!el)return;
  fillAddCat();
 }
 
-function fillAddCat(){var sel=$('addCat');if(!sel||!DATA)return;var cats=DATA.categories||[];var last=lsGet('lite_lastcat');if(!last)last=defaultCatId();var h='';for(var i=0;i<cats.length;i++){h+='<option value="'+attr(cats[i].id)+'"'+(cats[i].id===last?' selected':'')+'>'+esc(cats[i].name)+'</option>';}sel.innerHTML=h;}
+function fillAddCat(){var sel=$('addCat');if(!sel||!DATA)return;var cats=DATA.categories||[];var last=lsGet('lite_lastcat');if(!last)last=defaultCatId();var h='';for(var i=0;i<cats.length;i++){h+='<option value="'+attr(cats[i].id)+'"'+(cats[i].id===last?' selected':'')+'>'+esc(cats[i].name)+'</option>';}sel.innerHTML=h;
+ fillAddFold();}
+function fillAddFold(){var sel=$('addFold');if(!sel||!DATA)return;var prev=sel.value;
+ sel.innerHTML=foldOptionsHtml('all',(prev&&prev!=='__new__')?prev:'');}
 
 function syncAdminUI(){
  var b1=$('btnLogin'),b2=$('btnLogout'),ab=$('addBox'),ca=$('catAdmin');
@@ -403,22 +495,26 @@ function undoDel(){if(!UNDO||!ADMIN)return;DATA.links.splice(UNDO.i,0,UNDO.x);UN
 function showEdit(id){if(!ADMIN)return;if(EDITID===id){hideEdit();return;}hideEdit();var x=findLink(id);if(!x)return;var el=$('c_'+id);if(!el)return;EDITID=id;
  var opts='';var cats=DATA.categories||[];for(var i=0;i<cats.length;i++){opts+='<option value="'+attr(cats[i].id)+'"'+(cats[i].id===x.categoryId?' selected':'')+'>'+esc(cats[i].name)+'</option>';}
  var d=document.createElement('div');d.className='editbox';d.id='e_'+id;
- d.innerHTML='<input type="text" id="et_'+attr(id)+'" value="'+attr(x.title)+'" placeholder="标题"><input type="text" id="eu_'+attr(id)+'" value="'+attr(x.url)+'" placeholder="网址"><select id="ec_'+attr(id)+'">'+opts+'</select><input type="text" id="en_'+attr(id)+'" value="'+attr(x.note||'')+'" placeholder="备注"><div class="row"><button type="button" class="btn primary" onclick="saveEdit()">完成</button><button type="button" class="btn" onclick="hideEdit()">取消</button></div>';
+ d.innerHTML='<input type="text" id="et_'+attr(id)+'" value="'+attr(x.title)+'" placeholder="标题"><input type="text" id="eu_'+attr(id)+'" value="'+attr(x.url)+'" placeholder="网址"><select id="ec_'+attr(id)+'">'+opts+'</select><select id="ef_'+attr(id)+'" onchange="foldSelChanged(\'ef_'+attr(id)+'\',\'ec_'+attr(id)+'\')">'+foldOptionsHtml('all',x.fldId||'')+'</select><input type="text" id="en_'+attr(id)+'" value="'+attr(x.note||'')+'" placeholder="备注"><div class="row"><button type="button" class="btn primary" onclick="saveEdit()">完成</button><button type="button" class="btn" onclick="hideEdit()">取消</button></div>';
  el.appendChild(d);}
 
 function hideEdit(){if(EDITID){var e=$('e_'+EDITID);if(e&&e.parentNode){e.parentNode.removeChild(e);}EDITID=null;}}
 
-function saveEdit(){var id=EDITID;if(!id)return;var x=findLink(id);if(!x)return;var t=val('et_'+id),u=val('eu_'+id),c=val('ec_'+id),n=val('en_'+id);
+function saveEdit(){var id=EDITID;if(!id)return;var x=findLink(id);if(!x)return;var t=val('et_'+id),u=val('eu_'+id),c=val('ec_'+id),n=val('en_'+id),f=val('ef_'+id);
  u=trimS(u);if(!u){alert('网址不能为空');return;}
  if(!/^https?:\/\//i.test(u)){u='https://'+u;}
  x.title=trimS(t)||u;x.url=u;if(c){x.categoryId=c;}x.note=trimS(n);
+ if(f){var ff=findFold(f);if(ff){x.fldId=f;x.categoryId=ff.categoryId;}}else{delete x.fldId;}
  hideEdit();render();saveData(function(){});}
 
 function addLink(){if(!ADMIN||BUSY)return;var u=trimS(val('addUrl')),t=trimS(val('addTitle'));var c=val('addCat')||defaultCatId();
  if(!u){msg('请输入网址');return;}
  if(!/^https?:\/\//i.test(u)){u='https://'+u;}
  var id='g'+new Date().getTime()+Math.floor(Math.random()*10000);
- DATA.links.unshift({id:id,url:u,title:t||getDomain(u),categoryId:c,note:'',pinned:false,added:isoNow()});
+ var af=$('addFold')?$('addFold').value:'';var ff2=af?findFold(af):null;
+ var nl={id:id,url:u,title:t||getDomain(u),categoryId:(ff2?ff2.categoryId:c),note:'',pinned:false,added:isoNow()};
+ if(ff2){nl.fldId=ff2.id;}
+ DATA.links.unshift(nl);
  lsSet('lite_lastcat',c);
  var iu=$('addUrl'),it=$('addTitle');if(iu)iu.value='';if(it)it.value='';
  render();BUSY=true;
@@ -439,25 +535,35 @@ function delCat(id){if(!ADMIN)return;var c=findCat(id);if(!c)return;var cnt=0;va
  if(CURCAT===id){CURCAT='all';}
  render();saveData(function(){});}
 
-function fetchSha(cb){ajax('GET','https://api.yongjiu.ccwu.cc/repos/xdd2024030565-spec/lite1/contents/links.json?ref=main&t='+(new Date().getTime()),null,{'Accept':'application/vnd.github.v3+json'},function(err,code,text){if(!err){var d=jsonParse(text||'');if(d&&d.sha){FILE_SHA=d.sha;}}cb(err);},10000);}
+function fetchSha(cb){ajax('GET',apiBase()+REPO_PATH+'?ref=main&t='+(new Date().getTime()),null,{'Accept':'application/vnd.github.v3+json'},function(err,code,text){if(!err){var d=jsonParse(text||'');if(d&&d.sha){FILE_SHA=d.sha;}}cb(err);},10000);}
 
 function saveData(cb){
  if(!ADMIN){if(cb)cb(new Error('需要管理员权限'));return;}
  msg('保存中...',true);
+ doSave(0,cb);
+}
+function nextApiBase(){
+ API_IDX=(API_IDX+1)%API_POOL.length;
+ try{lsSet('lite_api_best',String(API_IDX));}catch(e){}
+}
+function doSave(attempt,cb){
  fetchSha(function(e0){
-  if(e0){msg('保存失败：无法连接数据服务');if(cb)cb(e0);return;}
-  var payload={siteName:DATA.siteName,settings:DATA.settings,categories:DATA.categories,links:DATA.links};
+  if(e0){
+   if(attempt+1<API_POOL.length){nextApiBase();doSave(attempt+1,cb);return;}
+   msg('保存失败：无法连接数据服务');if(cb)cb(e0);return;}
+  var payload={siteName:DATA.siteName,settings:DATA.settings,categories:DATA.categories,folders:DATA.folders||[],links:DATA.links};
   var content=b64enc(jsonStr(payload));
   var body={message:'更新数据（兼容版）',content:content,branch:'main'};
   if(FILE_SHA){body.sha=FILE_SHA;}
-  ajax('PUT',WRITE_URL,jsonStr(body),{'Content-Type':'application/json;charset=UTF-8','Accept':'application/vnd.github.v3+json'},function(err,code,text){
+  ajax('PUT',apiBase()+REPO_PATH,jsonStr(body),{'Content-Type':'application/json;charset=UTF-8','Accept':'application/vnd.github.v3+json'},function(err,code,text){
    if(err){
     var txt=String(text||'');
+    if((code===0||!code)&&attempt+1<API_POOL.length){nextApiBase();doSave(attempt+1,cb);return;}
     if(code===409||code===422||txt.indexOf('does not match')>=0){
      fetchSha(function(){
       var body2={message:'更新数据（兼容版·重试）',content:content,branch:'main'};
       if(FILE_SHA){body2.sha=FILE_SHA;}
-      ajax('PUT',WRITE_URL,jsonStr(body2),{'Content-Type':'application/json;charset=UTF-8','Accept':'application/vnd.github.v3+json'},function(err2,code2,text2){
+      ajax('PUT',apiBase()+REPO_PATH,jsonStr(body2),{'Content-Type':'application/json;charset=UTF-8','Accept':'application/vnd.github.v3+json'},function(err2,code2,text2){
        if(err2){msg('保存失败：'+err2.message);if(cb)cb(err2);return;}
        var d2=jsonParse(text2||'');if(d2&&d2.content&&d2.content.sha){FILE_SHA=d2.content.sha;}
        msg('已保存');if(cb)cb(null);
@@ -479,6 +585,7 @@ function loadFrom(i,done){if(i>=SRC_LIST.length){done(new Error('全部数据源
   if(err){loadFrom(i+1,done);return;}
   var d=jsonParse(text||'');
   if(!d||!d.links){loadFrom(i+1,done);return;}
+  if(!(d.folders instanceof Array)){d.folders=[];}
   DATA=d;lsSet('lite_cache',text);
   done(null,i);
  },8000);}
@@ -573,6 +680,7 @@ function doImport(){
  DATA.siteName=d.siteName||DATA.siteName;
  DATA.settings=d.settings||DATA.settings;
  DATA.categories=d.categories;
+ DATA.folders=(d.folders instanceof Array)?d.folders:DATA.folders;
  DATA.links=d.links;
  render();
  saveData(function(e){if(e){msg('导入保存失败：'+e.message);}else{msg('导入成功');}});
@@ -612,12 +720,14 @@ function bind(){
 }
 
 function init(){
+ var ab=parseInt(lsGet('lite_api_best'),10);if(!isNaN(ab)&&ab>=0&&ab<API_POOL.length){API_IDX=ab;}
  var th=lsGet('lite_theme');setTheme(th||'light',true);
  var fs=parseInt(lsGet('lite_fs'),10);if(isNaN(fs))fs=16;setFont(fs,true);
  var c=lsGet('lite_cat');CURCAT=c||'all';
  var tb=lsGet('lite_tab');if(tb!=='search'&&tb!=='settings'){tb='links';}
  if(!DATA){if(SNP&&SNP.links){DATA=SNP;}else{var cached=lsGet('lite_cache');var d0=cached?jsonParse(cached):null;if(d0&&d0.links){DATA=d0;}}}
- if(!DATA){DATA={siteName:'网址储存',settings:{theme:'light',fontSize:16},categories:[{id:'default',name:'常用'}],links:[]};}
+ if(!DATA){DATA={siteName:'网址储存',settings:{theme:'light',fontSize:16},categories:[{id:'default',name:'常用'}],folders:[],links:[]};}
+ if(!(DATA.folders instanceof Array)){DATA.folders=[];}
  bind();render();switchTab(tb);tryRestoreLogin();loadData();
 }
 // ====== 认证网关多域名选优（国内优先反代，失败自动切换）======

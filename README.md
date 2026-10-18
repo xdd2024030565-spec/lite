@@ -18,3 +18,29 @@
 ## 配套阅读器
 - 📖 适配版阅读器（站内）: https://lite-3d8c30u.maozi.io/reader.html
 - 📄 纯HTML模式（无需脚本）: https://reader.yongjiu.ccwu.cc/reader/web/list
+## 折叠组
+兼容版已支持与完整版同构的折叠组：折叠时显示 favicon 横向堆叠 + 组内网址总数角标，与普通网址行同样大小、同样对齐；点击整行原地向下展开为折叠条 + 组内网址列表，再点顶部折叠条收起（带高度过渡，`prefers-reduced-motion` 时不做动画）。
+
+- 折叠状态只存在内存里，刷新页面自动全部折叠
+- 展开时组名右侧带「改名 / 解散」，旧浏览器也保留这两个入口
+- 搜索命中组内的网址时，该组自动展开
+- 添加面板与编辑面板都有折叠组选择，可「＋ 新建折叠组…」就地建组；编辑面板切换分类时折叠组自动联动
+- 折叠组在列表中的位置由组内最新一条网址决定
+
+## 静态快照
+脚本不可用时（老设备 / 关闭 JS）页面直接用内嵌的静态快照渲染，样式与主页面一致，折叠组会以「折叠条 + 组内网址」的展开形式列出。
+
+重新生成快照（读取线上 links.json，写入内联数据与静态列表）：
+
+```bash
+# 默认读 https://api.yongjiu.ccwu.cc 上的 links.json
+python3 tools/gen_static.py
+
+# 或用本地/已导出的 JSON
+python3 tools/gen_static.py ./links.json
+```
+
+仓库内不放 links.json 副本，进仓库的只有生成后的 index.html。
+
+## 数据写入
+数据写入走 API 双域名兜底：`api.yongjiu.ccwu.cc` 失败自动切到 `api2.yongjiu.ccwu.cc`，选中的域名记在 `localStorage['lite_api_best']`，下次打开优先使用。
