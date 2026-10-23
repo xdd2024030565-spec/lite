@@ -732,7 +732,8 @@ function init(){
 }
 // ====== 认证网关多域名选优（国内优先反代，失败自动切换）======
 var AUTH_POOL=['https://auth-api.yongjiu.ccwu.cc','https://auth-api2.yongjiu.ccwu.cc','https://auth-api.xdd2024030565.workers.dev'];
-(function(){
+init();
+try{(function(){
   // 命中 10 分钟缓存则直用
   try{ var _b=lsGet('lite_auth_best'), _t=+lsGet('lite_auth_best_ts')||0;
     if(_b && AUTH_POOL.indexOf(_b)>=0 && Date.now()-_t<600000){ AUTH_API=_b; return; } }catch(e){}
@@ -748,13 +749,12 @@ var AUTH_POOL=['https://auth-api.yongjiu.ccwu.cc','https://auth-api2.yongjiu.ccw
         try{ if(typeof window.__gwOnBest==='function') window.__gwOnBest(u); else if(typeof tryRestoreLogin==='function' && !ADMIN) tryRestoreLogin(); }catch(e){}
       }
     }
-    fetch(u+'/auth/verify',opts)
+    if(typeof fetch!=='function'){ fin(false); return; }
+    try{ fetch(u+'/auth/verify',opts)
       .then(function(r){ fin(r.ok||r.status===400||r.status===401||r.status===404); })
-      .catch(function(){ fin(false); });
+      .catch(function(){ fin(false); }); }catch(e){ fin(false); }
   });
-})();
-
-init();
+})();}catch(e){}
 </script>
 </body>
 </html>
