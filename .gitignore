@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 _lite_check.js
+node_modules/
+node_modules.orig/

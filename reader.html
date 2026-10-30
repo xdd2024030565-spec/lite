@@ -75,67 +75,30 @@ body.theme-dark .rd-top{background:rgba(18,18,18,.96);border-color:rgba(255,255,
 .rd-tb.r{float:right}
 .rd-tt{display:inline-block;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
  vertical-align:top;font-size:13px;opacity:.7;padding:0 4px}
-/* 底栏 */
+/* 底栏（默认藏在屏幕下缘，与顶栏同步弹出/收起） */
 .rd-foot{position:absolute;left:0;right:0;bottom:0;z-index:3;background:rgba(253,253,251,.96);
  border-top:1px solid rgba(0,0,0,.09);padding-bottom:0;
- transform:translateY(0);-webkit-transform:translateY(0);
- transition:transform .2s ease-out;-webkit-transition:-webkit-transform .2s ease-out}
+ visibility:hidden;transform:translateY(100%);-webkit-transform:translateY(100%);
+ transition:transform .2s ease-out,visibility .2s ease-out;-webkit-transition:-webkit-transform .2s ease-out,visibility .2s ease-out}
 body.theme-dark .rd-foot{background:rgba(18,18,18,.96);border-color:rgba(255,255,255,.12)}
-.rd-foot.hide{transform:translateY(100%);-webkit-transform:translateY(100%)}
+.rd-foot.show{visibility:visible;transform:translateY(0);-webkit-transform:translateY(0)}
 .rd-fi{display:table;width:100%;table-layout:fixed;height:51px}
 .rd-fc{display:table-cell;width:76px;vertical-align:middle;padding:0 10px}
 .rd-fc.r{text-align:right}
 .rd-fp{display:table-cell;vertical-align:middle;text-align:center;font-size:13px;opacity:.72;
- cursor:pointer;line-height:1.25}
+ line-height:1.25}
 .rd-nav{display:inline-block;min-width:56px;height:42px;line-height:40px;font-size:20px;padding:0 6px;
  background:transparent;border:1px solid rgba(0,0,0,.18);border-radius:11px;color:inherit;cursor:pointer;
  font-family:inherit;vertical-align:middle;-webkit-tap-highlight-color:transparent}
 body.theme-dark .rd-nav{border-color:rgba(255,255,255,.22)}
 .rd-nav:active{background:rgba(0,0,0,.1)}
 .rd-nav[disabled]{opacity:.28}
-.rd-slide{position:absolute;left:0;right:0;bottom:100%;padding:10px 14px 12px;
- background:rgba(253,253,251,.98);border-top:1px solid rgba(0,0,0,.09);
- visibility:hidden;transform:translateY(8px);-webkit-transform:translateY(8px);opacity:0;
- transition:transform .18s ease-out,opacity .18s ease-out,visibility .18s ease-out;
- -webkit-transition:-webkit-transform .18s ease-out,opacity .18s ease-out,visibility .18s ease-out}
-body.theme-dark .rd-slide{background:rgba(18,18,18,.98);border-color:rgba(255,255,255,.12)}
-.rd-foot.open .rd-slide{visibility:visible;transform:translateY(0);-webkit-transform:translateY(0);opacity:1}
+/* 页内进度滑杆：常驻底栏内（随底栏整体弹出/收起） */
+.rd-slide{position:static;left:auto;right:auto;bottom:auto;padding:10px 14px 0;
+ background:transparent;border-top:none}
+body.theme-dark .rd-slide{background:transparent;border-color:transparent}
 .rd-slide input[type=range]{display:block;width:100%;margin:0;padding:0}
-.rd-rail{position:absolute;right:0;top:50%;margin-top:-34px;width:18px;height:68px;z-index:3;
- display:none;line-height:68px;text-align:center;font-size:15px;cursor:pointer;
- color:rgba(0,0,0,.3);-webkit-tap-highlight-color:transparent}
-body.theme-dark .rd-rail{color:rgba(255,255,255,.35)}
-.rd-rail.show{display:block}
-/* 亮度遮罩 */
-.rd-menu{position:fixed;left:0;right:0;bottom:0;z-index:85;background:#ffffff;color:#111111;
- border-radius:14px 14px 0 0;box-shadow:0 -3px 16px rgba(0,0,0,.22);
- padding:10px 14px 14px;padding-bottom:calc(14px + env(safe-area-inset-bottom));
- visibility:hidden;transform:translateY(100%);-webkit-transform:translateY(100%);
- transition:transform .22s ease-out,visibility .22s ease-out;-webkit-transition:-webkit-transform .22s ease-out,visibility .22s ease-out}
-body.theme-dark .rd-menu{background:#151515;color:#e6e6e6}
-.rd-menu.show{visibility:visible;transform:translateY(0);-webkit-transform:translateY(0)}
-.rd-mcenter{text-align:center;padding:0 4px}
-.rd-mbig{width:64px;height:64px;border-radius:50%;border:1px solid rgba(0,0,0,.18);background:#ffffff;
- color:#111111;font-size:26px;line-height:60px;cursor:pointer;font-family:inherit;padding:0;
- box-shadow:0 2px 8px rgba(0,0,0,.15);-webkit-tap-highlight-color:transparent}
-body.theme-dark .rd-mbig{background:#1e1e1e;color:#e6e6e6;border-color:rgba(255,255,255,.2)}
-.rd-mbig:active{transform:scale(.94)}
-.rd-hint{position:absolute;top:50%;margin-top:-16px;z-index:4;width:30px;height:32px;line-height:32px;text-align:center;
- font-size:16px;color:rgba(0,0,0,.28);pointer-events:none;display:none}
-body.theme-dark .rd-hint{color:rgba(255,255,255,.32)}
-.rd-hint.l{left:2px}.rd-hint.r{right:2px}
-.rd-hint.show{display:block}
-.rd-mgrid{display:table;width:100%;table-layout:fixed}
-.rd-mc{display:table-cell;text-align:center;padding:0 4px}
-.rd-mbtn{display:block;width:100%;padding:14px 4px;font-size:14px;line-height:1.3;background:rgba(0,0,0,.05);
- border:1px solid rgba(0,0,0,.14);border-radius:10px;color:inherit;cursor:pointer;font-family:inherit;
- -webkit-tap-highlight-color:transparent}
-body.theme-dark .rd-mbtn{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16)}
-.rd-mbtn:active{background:rgba(0,102,204,.18)}
-.rd-mbtn .ic{display:block;font-size:20px;margin-bottom:2px}
-.rd-mdone{margin-top:10px;width:100%;padding:12px;font-size:15px;background:transparent;border:1px solid rgba(0,0,0,.18);
- border-radius:10px;color:inherit;cursor:pointer;font-family:inherit}
-body.theme-dark .rd-mdone{border-color:rgba(255,255,255,.2)}
+.rd-foot .rd-fi{height:47px}
 /* 亮度遮罩 */
 .rd-dim{position:fixed;left:0;top:0;right:0;bottom:0;background:#000000;opacity:0;
  pointer-events:none;z-index:2}
@@ -223,16 +186,13 @@ body.reading #topMsg{position:fixed;left:8px;right:8px;top:8px;z-index:9;margin:
    <div class="rd-stage" id="rdStage"><div class="rd-clip" id="rdClip"><div class="rd-flow" id="rdFlow"></div></div></div>
    <div class="rd-dim" id="rdDim"></div>
    <div class="rd-foot" id="rdFoot">
+    <div class="rd-slide"><input type="range" id="rdRange" min="1" max="1" value="1"></div>
     <div class="rd-fi">
      <div class="rd-fc"><button class="rd-nav" id="btnPrev" type="button" title="上一页">‹</button></div>
      <div class="rd-fp" id="rdProgWrap"><span id="rdProg">1 / 1</span></div>
      <div class="rd-fc r"><button class="rd-nav" id="btnNext" type="button" title="下一页">›</button></div>
     </div>
-    <div class="rd-slide"><input type="range" id="rdRange" min="1" max="1" value="1"></div>
    </div>
-   <div class="rd-rail" id="rdRail">⋮</div>
-   <div class="rd-hint l" id="hintL">‹</div>
-   <div class="rd-hint r" id="hintR">›</div>
   </div>
   <div class="rd-mask" id="rdMask"></div>
   <div class="rd-toc" id="rdToc">
@@ -243,13 +203,6 @@ body.reading #topMsg{position:fixed;left:8px;right:8px;top:8px;z-index:9;margin:
   <div class="rd-set" id="rdSet">
    <div class="rd-dh"><span>阅读设置</span><button class="rd-tb r" id="btnSetClose" type="button">✕</button></div>
    <div class="rd-sbody" id="rdSetBody"></div>
-  </div>
-  <div class="rd-menu" id="rdMenu">
-   <div class="rd-mgrid">
-    <div class="rd-mc"><button class="rd-nav" id="mPrev" type="button" style="height:64px;line-height:62px;font-size:26px;width:100%">‹</button></div>
-    <div class="rd-mcenter"><button class="rd-mbig" id="mCenter" type="button" aria-label="收起菜单">✓</button></div>
-    <div class="rd-mc"><button class="rd-nav" id="mNext" type="button" style="height:64px;line-height:62px;font-size:26px;width:100%">›</button></div>
-   </div>
   </div>
  <div id="vTrash" style="display:none">
   <div class="bar">
@@ -296,6 +249,7 @@ body.reading #topMsg{position:fixed;left:8px;right:8px;top:8px;z-index:9;margin:
    </div>
    <div class="rd-stage" id="srcStage"><div class="rd-clip" id="srcClip"><div class="rd-flow" id="srcFlow"></div></div></div>
    <div class="rd-foot" id="srcFoot">
+    <div class="rd-slide"><input type="range" id="srcRange" min="1" max="1" value="1"></div>
     <div class="rd-fi">
      <div class="rd-fc"><button class="rd-nav" id="btnRdPrev2" type="button" title="上一页">‹</button></div>
      <div class="rd-fp" id="srcProgWrap"><span id="srcProg">1 / 1</span></div>
@@ -953,6 +907,7 @@ function openChapter(i){
   showSrcRead();
   VIEW.src.defTitle=ch.name;
   VIEW.src.setDoc(body,0,true);
+  rdShowUI(1);
   msg('已加载：'+ch.name+'（本章 '+body.length+' 字，用时 '+elapsed(t0)+'）');
  });
 }
@@ -1001,14 +956,10 @@ function bind(){
  on($('btnTocClose'),'click',rdCloseDrawers);
  on($('btnSetClose'),'click',rdCloseDrawers);
  on($('rdMask'),'click',rdCloseDrawers);
- on($('rdRail'),'click',function(){rdPokeTop();});
- on($('mCenter'),'click',function(){rdOpenMenu(false);});
- on($('mPrev'),'click',function(){rdOpenMenu(false);var v=rdActive();if(v)v.prev();});
- on($('mNext'),'click',function(){rdOpenMenu(false);var v=rdActive();if(v)v.next();});
- on($('btnPrev'),'click',function(){VIEW.doc.prev();});
- on($('btnNext'),'click',function(){VIEW.doc.next();});
- on($('rdProgWrap'),'click',function(){var f=$('rdFoot');if(f)f.className=(f.className.indexOf('open')>=0)?'rd-foot':'rd-foot open';});
- on($('rdRange'),'change',function(){var n=parseInt(this.value,10);if(!n||!VIEW.doc)return;VIEW.doc.gotoLocal(VIEW.doc.pageOff[n]||0,true);if(VIEW.doc.onMove)VIEW.doc.onMove();});
+ on($('btnPrev'),'click',function(){VIEW.doc.prev();rdTouchUI();});
+ on($('btnNext'),'click',function(){VIEW.doc.next();rdTouchUI();});
+ on($('rdRange'),'change',function(){var n=parseInt(this.value,10);if(!n||!VIEW.doc)return;VIEW.doc.gotoLocal(VIEW.doc.pageOff[n]||0,true);if(VIEW.doc.onMove)VIEW.doc.onMove();rdTouchUI();});
+ on($('rdRange'),'input',function(){rdScheduleAutoHide();});
  on($('rdTocQ'),'keyup',function(){rdTocRender();});
  on($('btnEmpty'),'click',emptyTrash);
  on($('btnSource'),'click',function(){show('source');loadSources();});
@@ -1020,10 +971,12 @@ function bind(){
  on($('srcQ'),'keyup',function(e){e=e||window.event;var k=e.keyCode||e.which;if(k===13){doSrcSearch();}});
  on($('btnTocBack'),'click',function(){showSrcSearch();});
  on($('btnRdBack'),'click',function(){showSrcToc();});
- on($('btnRdPrev'),'click',prevChapter);
- on($('btnRdNext'),'click',nextChapter);
- on($('btnRdPrev2'),'click',function(){VIEW.src.prev();});
- on($('btnRdNext2'),'click',function(){VIEW.src.next();});
+ on($('btnRdPrev'),'click',function(){prevChapter();rdTouchUI();});
+ on($('btnRdNext'),'click',function(){nextChapter();rdTouchUI();});
+ on($('btnRdPrev2'),'click',function(){VIEW.src.prev();rdTouchUI();});
+ on($('btnRdNext2'),'click',function(){VIEW.src.next();rdTouchUI();});
+ on($('srcRange'),'change',function(){var n=parseInt(this.value,10);if(!n||!VIEW.src)return;VIEW.src.gotoLocal(VIEW.src.pageOff[n]||0,true);rdTouchUI();});
+ on($('srcRange'),'input',function(){rdScheduleAutoHide();});
  on(window,'resize',function(){rdChrome();var v=rdActive();if(v)v.relayout();});
  on(document,'keydown',rdKeys);
 }
@@ -1033,7 +986,7 @@ function init(){
  rdApply();
  VIEW.doc=rdViewer({stage:$('rdStage'),flow:$('rdFlow'),progEl:$('rdProg'),navPrev:$('btnPrev'),navNext:$('btnNext'),range:$('rdRange'),titleEl:$('rdTitle')});
  VIEW.doc.onMove=function(){rdSaveProg(0);};
- VIEW.src=rdViewer({stage:$('srcStage'),flow:$('srcFlow'),progEl:$('srcProg'),navPrev:$('btnRdPrev2'),navNext:$('btnRdNext2')});
+ VIEW.src=rdViewer({stage:$('srcStage'),flow:$('srcFlow'),progEl:$('srcProg'),navPrev:$('btnRdPrev2'),navNext:$('btnRdNext2'),range:$('srcRange')});
  VIEW.src.atEnd=function(){if(SR_CHIDX>=0&&SR_CHIDX<SR_CHS.length-1){nextChapter();return 1;}return 0;};
  VIEW.src.atStart=function(){if(SR_CHIDX>0){prevChapter();return 1;}return 0;};
  rdBindView(VIEW.doc);rdBindView(VIEW.src);
@@ -1043,14 +996,14 @@ function init(){
  loadSources(false);
 }
 /* ===================== 阅读核心 v3（分段按屏分页） ===================== */
-var RD_CFG_DEF={tap:'lr',swipe:1,anim:'none',fs:18,lh:1.8,ls:0,pad:16,gap:2,ind:1,align:'justify',wide:0,font:'sys',theme:'paper',bright:100,imm:1,foot:1,prog:'both'};
-var RD_CFG={},RD_COLMODE=1,RD_REDUCE=0,RD_VPAD=12,RD_TOPON=0,RD_DRAW='',RD_READING=0;
+var RD_CFG_DEF={tap:'lr',swipe:1,anim:'none',fs:18,lh:1.8,ls:0,pad:16,gap:2,ind:1,align:'justify',wide:0,font:'sys',theme:'paper',bright:100,prog:'both'};
+var RD_CFG={},RD_COLMODE=1,RD_REDUCE=0,RD_VPAD=12,RD_UI_ON=0,RD_DRAW='',RD_READING=0;
 var RD_PARTSZ=26000;
 var VIEW={doc:null,src:null};
 var RD_FONTS={sys:'inherit',hei:'"PingFang SC","Microsoft YaHei",Roboto,sans-serif',song:'"Songti SC","SimSun","Times New Roman",serif',kai:'"Kaiti SC","KaiTi","STKaiti",serif'};
 var RD_SET_DEF=[
  ['grp','翻页'],
- ['seg','tap','点按翻页',[['lr','左前·右后'],['all','整页下一页'],['off','关闭点按']]],
+ ['seg','tap','点按屏幕',[['lr','左翻上页·右翻下页'],['all','点任意处下一页'],['off','关闭点按']]],
  ['seg','swipe','滑动翻页',[[1,'开'],[0,'关']]],
  ['seg','anim','翻页动画',[['none','无'],['fade','淡化'],['slide','滑动'],['cover','覆盖'],['sim','仿真']]],
  ['grp','排版'],
@@ -1066,8 +1019,6 @@ var RD_SET_DEF=[
  ['grp','外观'],
  ['seg','theme','主题',[['paper','纸白'],['sepia','羊皮'],['green','护眼'],['night','夜间'],['black','纯黑']]],
  ['num','bright','亮度',60,100,5],
- ['seg','imm','顶部工具栏',[[1,'自动隐藏'],[0,'常显']]],
- ['seg','foot','底部按钮',[[1,'常显'],[0,'隐藏']]],
  ['seg','prog','进度显示',[['both','页码+百分比'],['page','仅页码'],['pct','仅百分比']]]
 ];
 function rdReduce(){try{return (window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)?1:0;}catch(e){return 0;}}
@@ -1423,7 +1374,17 @@ function rdViewer(o){
   v.doc=text||'';
   v.segs=rdBuildSegs(v.doc);
   v.seg=0;v.cur='';v.off=0;v.page=1;v.pages=1;v.pageOff=[0];
-  if(!v.geom())return;
+  if(!v.geom()){
+   /* 版面尚未就绪（视口/键盘动画中、容器刚显示）时不自暴自弃：
+      稍后重试若干次，避免整本书白屏 */
+   if(!v.rtry)v.rtry=0;
+   if(v.rtry<8){
+    v.rtry++;
+    setTimeout(function(){v.setDoc(text,ratio,noAnim);},180);
+   }
+   return;
+  }
+  v.rtry=0;
   v.gotoAbs(Math.round((ratio||0)*v.doc.length),noAnim);
  };
  v.relayout=function(){if(v.cur){if(!v.geom())return;v.layoutLocal(v.off,true);}};
@@ -1447,30 +1408,32 @@ function rdSetDef(k){for(var i=0;i<RD_SET_DEF.length;i++){var d=RD_SET_DEF[i];if
 function rdActive(){var rp=$('srcReadPane');if(rp&&rp.style.display==='block')return VIEW.src;return VIEW.doc;}
 function rdRelayout(){var v=rdActive();if(v)v.relayout();}
 function rdChrome(){
- var top=$('rdTop'),foot=$('rdFoot'),rail=$('rdRail');
- var showTop=((RD_CFG.imm*1)?0:1)||RD_TOPON;
- if(top)top.className=showTop?'rd-top show':'rd-top';
- if(foot)foot.className=(RD_CFG.foot*1)?'rd-foot':'rd-foot hide';
- if(rail)rail.className=(showTop&&(RD_CFG.foot*1))?'rd-rail':'rd-rail show';
- var stop=$('srcTop');if(stop)stop.className='rd-top show';
- var sf=$('srcFoot');if(sf)sf.className='rd-foot';
+ var u=RD_UI_ON;
+ var top=$('rdTop'),foot=$('rdFoot');
+ if(top)top.className=u?'rd-top show':'rd-top';
+ if(foot)foot.className=u?'rd-foot show':'rd-foot';
+ var stop=$('srcTop'),sf=$('srcFoot');
+ if(stop)stop.className=u?'rd-top show':'rd-top';
+ if(sf)sf.className=u?'rd-foot show':'rd-foot';
 }
-var RD_TOPT=0;
-function rdPokeTop(){
- if(!(RD_CFG.imm*1))return;
- RD_TOPON=1;rdChrome();
- if(RD_TOPT){try{clearTimeout(RD_TOPT);}catch(e){}}
- RD_TOPT=setTimeout(function(){
-  RD_TOPT=0;
-  if(RD_DRAW)return;
-  RD_TOPON=0;rdChrome();
- },2600);
-}
-function rdToggleTop(){
- if(!(RD_CFG.imm*1))return;
- if(RD_TOPT){try{clearTimeout(RD_TOPT);}catch(e){}RD_TOPT=0;}
- RD_TOPON=RD_TOPON?0:1;
+var RD_UIT=0;
+function rdShowUI(on){
+ RD_UI_ON=on?1:0;
  rdChrome();
+ rdScheduleAutoHide();
+}
+function rdScheduleAutoHide(){
+ if(RD_UIT){try{clearTimeout(RD_UIT);}catch(e){}RD_UIT=0;}
+ if(!RD_UI_ON)return;
+ RD_UIT=setTimeout(function(){
+  RD_UIT=0;
+  if(RD_DRAW)return;
+  RD_UI_ON=0;rdChrome();
+ },3500);
+}
+function rdTouchUI(){
+ if(RD_DRAW)return;
+ RD_UI_ON=1;rdChrome();rdScheduleAutoHide();
 }
 function rdSetTitle(){
  var t=$('rdTocTitle');
@@ -1490,14 +1453,6 @@ function rdDrawer(w){
   if(b&&s){try{b.style.maxHeight=Math.max(200,s.offsetHeight-54)+'px';}catch(e){b.style.maxHeight='70vh';}}
  }
 }
-var RD_MENU=0;
-function rdOpenMenu(on){
- RD_MENU=on?1:0;
- var m=$('rdMenu');if(m){m.className=on?'rd-menu show':'rd-menu';}
- var hl=$('hintL'),hr=$('hintR');
- if(hl)hl.className=on?'rd-hint l show':'rd-hint l';
- if(hr)hr.className=on?'rd-hint r show':'rd-hint r';
-}
 function rdCycleTheme(){
  var order=['paper','sepia','green','night','black'];
  var i=0;for(var k=0;k<order.length;k++){if(order[k]===RD_CFG.theme)i=k;}
@@ -1505,13 +1460,8 @@ function rdCycleTheme(){
  rdCfgSave();rdApply();
  msg('主题：'+({'paper':'纸白','sepia':'羊皮','green':'护眼','night':'夜间','black':'纯黑'}[RD_CFG.theme]));
 }
-function rdToggleSlider(){
- var f=$('rdFoot');if(!f)return;
- f.className=(f.className.indexOf('open')>=0)?'rd-foot':'rd-foot open';
-}
 function rdCloseDrawers(){
  RD_DRAW='';
- rdOpenMenu(false);
  var m=$('rdMask');if(m)m.className='rd-mask';
  var t=$('rdToc');if(t)t.className='rd-toc';
  var s=$('rdSet');if(s)s.className='rd-set';
@@ -1544,6 +1494,8 @@ function rdSetK(k,val){
  if(typeof val==='string'&&/^-?[0-9]+(\.[0-9]+)?$/.test(val))val=parseFloat(val);
  RD_CFG[k]=val;
  rdCfgSave();rdApply();rdSetRender();rdChrome();rdRelayout();
+ try{if(VIEW.doc&&VIEW.doc.sync)VIEW.doc.sync();}catch(e){}
+ try{if(VIEW.src&&VIEW.src.sync)VIEW.src.sync();}catch(e){}
 }
 function rdNum(k,delta){
  var d=rdSetDef(k);if(!d)return;
@@ -1592,7 +1544,7 @@ function rdTap(v,e){
  var st=v.stage;if(!st)return;
  var r=st.getBoundingClientRect();
  var x=((e.clientX||0)-(r.left||0))/(r.width||1);
- if(x<0.3)v.prev();else if(x>0.7)v.next();else{rdOpenMenu(!RD_MENU);}
+ if(x<0.3)v.prev();else if(x>0.7)v.next();else{RD_UI_ON=!RD_UI_ON;rdChrome();rdScheduleAutoHide();}
 }
 function rdBindView(v){
  var st=v.stage;if(!st)return;
@@ -1615,8 +1567,9 @@ function rdKeys(e){
  var k=e.keyCode||e.which;
  if(k===27){if(RD_DRAW)rdCloseDrawers();return;}
  if(RD_DRAW)return;
+ if(k===84){RD_UI_ON=!RD_UI_ON;rdChrome();rdScheduleAutoHide();if(e.preventDefault)e.preventDefault();return;}
  var v=rdActive();if(!v)return;
- if(k===37||k===33){v.prev();}else if(k===39||k===34||k===32){v.next();}else{return;}
+ if(k===37||k===33){v.prev();rdTouchUI();}else if(k===39||k===34||k===32){v.next();rdTouchUI();}else{return;}
  if(e.preventDefault)e.preventDefault();
 }
 /* ---------- 进度 ---------- */
@@ -1653,7 +1606,7 @@ function rdOpenContent(d){
   v.onMove=function(){rdSaveProg(0);};
   rdSetTitle();
   v.setDoc(CONTENT,d.progress||0,true);
-  rdPokeTop();
+  rdShowUI(1);
   var n=(v.segs?v.segs.length:1);
   msg('已打开《'+(CUR.title||'')+'》· 共 '+CONTENT.length+' 字 · '+n+' 段 · 当前 '+(Math.round((d.progress||0)*1000)/10)+'%');
  },30);
