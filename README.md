@@ -15,6 +15,32 @@
 - Worker 代理地址: https://lite-proxy.xdd2024030565.workers.dev/
 - 自定义域名: https://lite.yongjiu.ccwu.cc/
 
+## AI 助手（ai.html · 兼容版）
+
+移植自完整版 [lite1](https://github.com/xdd2024030565-spec/lite1) 的 `ai.html`，按兼容版约束**重写**：
+**纯 ES5**（无 const/let/箭头函数/Promise/fetch/模板字符串），老设备与内嵌 WebView 可直接跑。
+
+### 保留的功能（直接可用的部分）
+
+- **多提供商**：DeepSeek 网页版（内置免密钥）、任意 OpenAI 兼容接口
+- **流式对话**：用 `XMLHttpRequest` 的 `readyState===3` 增量读取，不需要 `fetch`
+- **多会话**：列表 / 新建 / 改名（点标题）/ 清空 / 删除
+- **消息操作**：复制 / 重试 / 编辑重发 / 删除
+- **Markdown 精简渲染**：粗体、斜体、行内代码、代码块、链接、列表（先转义再渲染，防注入）
+- **设置**：温度 / 最大 Tokens / 流式开关；配置导出导入（文本框形式，老浏览器无 Blob 也能用）
+- **主题**：亮 / 暗切换，与 `reader.html` 同一套配色
+- **网络健壮性**：请求超时（非流式 60s / 流式 180s）、错误分类提示（超时 / 网络错误 / HTTP 码）
+
+### 刻意去掉的部分
+
+MCP、OpenAPI 插件、能力市场、工具调用（function calling）、上下文自动压缩、多账号池、
+Promise/async 请求管线 —— 这些要么依赖现代语法，要么在电子墨水屏上收益极低。
+
+### 访问
+
+- 站内：`ai.html`（首页导航栏「💬 AI 助手」进入）
+- 后端反代：`https://deepseek-web.yongjiu.ccwu.cc/v1`（详见 lite1 仓库 `worker/deepseek/`）
+
 ## 配套阅读器
 - 📖 适配版阅读器（站内）: https://lite-3d8c30u.maozi.io/reader.html
 - 📄 纯HTML模式（无需脚本）: https://reader.yongjiu.ccwu.cc/reader/web/list
