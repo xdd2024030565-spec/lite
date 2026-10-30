@@ -461,7 +461,7 @@ function showTrash(){renderTrash();show('trash');}
 
 // ===== 书源模块（网络书源：加载自 GitHub，正文不落地） =====
 var SRCS=[],SR_RESULTS=[],SR_SEL=null,SR_CHS=[],SR_CHIDX=-1,SR_BUSY=false,SRC_SHA=null,SR_SEARCH_STOP=false,SR_FAILS=[];
-var SR_MAX=60,SR_HEALTH={};
+var SR_MAX=60,SR_HEALTH={},SRC_LOADED=false;
 function srHealthLoad(){
  var m=null;try{m=jsonParse(lsGet('rd_src_health')||'null');}catch(e){m=null;}
  SR_HEALTH=(m&&typeof m==='object')?m:{};
@@ -510,8 +510,8 @@ function loadSrcFrom(i,done){
  ajax('GET',url,null,{'Accept':'application/json'},function(err,code,text){
   if(err){loadSrcFrom(i+1,done);return;}
   var d=jsonParse(text||'');
-  if(d&&(d instanceof Array)){SRCS=d;srcTagLevels();done(null);return;}
-  if(d&&d.sources&&(d.sources instanceof Array)){SRCS=d.sources;srcTagLevels();done(null);return;}
+  if(d&&(d instanceof Array)){SRCS=d;SRC_LOADED=true;srcTagLevels();done(null);return;}
+  if(d&&d.sources&&(d.sources instanceof Array)){SRCS=d.sources;SRC_LOADED=true;srcTagLevels();done(null);return;}
   loadSrcFrom(i+1,done);
  },30000);
 }
@@ -657,7 +657,12 @@ function saveSources(cb){
  fetchSrcSha(function(e0){
   if(e0){cb(e0);return;}
   var payload=jsonStr(srClean());
-  /* 防呆：远端已有大列表时，若本次要写入的明显更小，先确认，避免把线上书源覆盖成一小撮 */
+  /* 防呆 1（根因防护）：从没成功加载过线上书源列表时，内存里的这一小撮很可能只是
+     导入/部分加载的结果；此时保存会把线上几千个书源整体覆盖掉，必须先明确确认。 */
+  if(!SRC_LOADED){
+   if(!confirm('尚未成功加载线上书源列表（可能是网络中断或文件太大）。\n当前内存只有 '+SRCS.length+' 个源，保存会用它们**覆盖线上全部书源**。\n\n确定要继续吗？')){cb(new Error('已取消保存'));return;}
+  }
+  /* 防呆 2：远端已有大列表时，若本次要写入的明显更小，先确认 */
   if(SRC_SIZE>50000&&payload.length<SRC_SIZE*0.6){
    if(!confirm('注意：线上书源约 '+Math.round(SRC_SIZE/1024)+'KB，本次只写入约 '+Math.round(payload.length/1024)+'KB（'+SRCS.length+' 个源）。\n继续会覆盖线上书源，确定？')){cb(new Error('已取消保存'));return;}
   }
