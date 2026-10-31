@@ -97,74 +97,20 @@
     bestIdx: -1                 /* 自动选择时选中的目标下标 */
   };
 
+  /* 手动模式：只测当前选中的那一个。
+   * 统一走 probeOne，避免两套探测实现不一致（缓存、超时、colo 解析）。 */
   function probe(cb) {
     if (state.idx < 0) state.idx = 0;
-    var t = TARGETS[state.idx % TARGETS.length];
-    var tryStart = state.idx;
-    var x = null, done = false, timer = null, t0 = now();
-
-    function finish(ok, colo, ip, ms) {
-      if (done) return;
-      done = true;
-      if (timer) { clearTimeout(timer); timer = null; }
-      if (!ok) {
-        /* 这个入口失败就立刻换下一个候选，全部试过才算真的不可用。
-         * 实测单个入口约 20% 概率偶然失败，顺着切换即可显著提高成功率。 */
-        var tried = state.idx - tryStart;
-        if (tried < TARGETS.length - 1) {
-          state.idx++;
-          probeRetry(cb);
-          return;
-        }
-      }
-      state.ok = ok;
-      state.colo = colo || '';
-      state.ip = ip || '';
-      state.ms = ms || 0;
+    var i = state.idx % TARGETS.length;
+    var t = TARGETS[i];
+    probeOne(t, function (r) {
+      state.ok = r.ok;
+      state.colo = r.colo || '';
+      state.ms = r.ms || 0;
       state.host = t.name || '';
+      state.results[i] = r;
       if (cb) cb();
-    }
-    function probeRetry(next) {
-      /* 换个入口再探一次（递归深度由 TARGETS 长度封顶） */
-      setTimeout(function () { probe(next); }, 60);
-    }
-
-    try {
-      x = window.XMLHttpRequest ? new XMLHttpRequest() : null;
-    } catch (e) { x = null; }
-    if (!x) { finish(false); return; }
-
-    x.open('GET', t.url, true);
-    x.onreadystatechange = function () {
-      if (x.readyState !== 4) return;
-      var ms = now() - t0;
-      /* 只要能拿到 cf-ray 就算连通 —— 不管业务状态码。
-       * 很多子域的 /health 其实是 404，但 Cloudflare 照样回了 cf-ray，
-       * 说明「到 CF 节点的链路是通的」，这正是悬浮球要显示的东西。 */
-      var ray = '';
-      try { ray = x.getResponseHeader('cf-ray') || ''; } catch (e) { ray = ''; }
-      var colo = '';
-      if (ray) {
-        var parts = String(ray).split('-');
-        if (parts.length > 1) colo = parts[parts.length - 1].toUpperCase();
-      }
-      /* 自带 /cfnode 的入口会在响应体里给出 colo，优先采用 */
-      if (!colo && t.node) {
-        try {
-          var j = JSON.parse(x.responseText || '{}');
-          if (j && j.colo) colo = String(j.colo).toUpperCase();
-        } catch (e) {}
-      }
-      /* 只要有响应就算通（即使业务码是 404/401，链路也是好的） */
-      if (colo || (x.status > 0 && x.status < 500)) finish(true, colo, '', ms);
-      else finish(false, '', '', ms);
-    };
-    timer = setTimeout(function () {
-      if (done) return;
-      finish(false);
-      try { x.abort(); } catch (e) {}
-    }, TIMEOUT_MS);
-    try { x.send(); } catch (e) { finish(false); }
+    });
   }
 
   /* ---------------- 样式 ---------------- */
@@ -338,6 +284,16 @@
     t.style.left = left + 'px';
     t.style.top = top + 'px';
 
+    /* 首次打开且还没有任何测速结果时，自动跑一次，避免全是「—」 */
+    var hasAny = false;
+    for (var q = 0; q < state.results.length; q++) {
+      if (state.results[q]) { hasAny = true; break; }
+    }
+    if (!hasAny && !state.testing) {
+      testAll(function () { if (panelOpen()) showPanel(); });
+      return;
+    }
+
     /* 绑定面板内的点击 */
     var items = t.getElementsByTagName('div');
     for (var i = 0; i < items.length; i++) {
@@ -462,8 +418,12 @@
         var x = parseFloat(el.style.left) || 0, y = parseFloat(el.style.top) || 0;
         savePos(x, y);
       } else {
-        /* 没拖动 = 点击：刷新 */
-        refresh();
+        /* 没拖动 = 点击：打开/关闭面板 */
+        if (panelOpen()) {
+          hidePanel();
+        } else {
+          showPanel();
+        }
       }
     }
 
@@ -553,7 +513,12 @@
     }
     try { x = window.XMLHttpRequest ? new XMLHttpRequest() : null; } catch (e) { x = null; }
     if (!x) { fin(false); return; }
-    x.open('GET', t.url, true);
+    /* 必须破缓存：命中缓存会在十几毫秒内返回，测出来的延迟毫无意义。
+     * 两道保险：① 追加时间戳参数 ② 设置 no-cache 请求头 */
+    var url = t.url + (t.url.indexOf('?') >= 0 ? '&' : '?') + '_t=' + now();
+    x.open('GET', url, true);
+    try { x.setRequestHeader('Cache-Control', 'no-cache, no-store'); } catch (e) {}
+    try { x.setRequestHeader('Pragma', 'no-cache'); } catch (e) {}
     x.onreadystatechange = function () {
       if (x.readyState !== 4) return;
       var ms = now() - t0;
@@ -588,9 +553,7 @@
 
   function refresh() {
     if (state.busy || state.testing) return;
-    state.busy = true;
-    render();
-    /* 自动模式：整体测速一遍并跟随最快；手动模式：只测当前选中的那个 */
+    /* 自动模式：整体测速一遍并跟随最快 */
     if (state.auto) {
       testAll(function () {
         state.busy = false;
@@ -598,6 +561,8 @@
       });
       return;
     }
+    state.busy = true;
+    render();
     probe(function () {
       state.busy = false;
       render();
