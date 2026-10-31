@@ -355,7 +355,7 @@ function ajax(method,url,body,headers,cb,timeoutMs){
   x.open(method,url,true);
   if(headers){for(var k in headers){if(headers.hasOwnProperty(k)){try{x.setRequestHeader(k,headers[k]);}catch(e){}}}}
   x.onreadystatechange=function(){if(x.readyState===4){if(x.status>=200&&x.status<300){finish(null,x.status,x.responseText);}else{finish(new Error('HTTP '+x.status),x.status,x.responseText);}}};
-  timer=setTimeout(function(){if(!done){try{x.abort();}catch(e){}finish(new Error('网络超时'),0,null);}},timeoutMs||9000);
+  timer=setTimeout(function(){if(done)return;finish(new Error('网络超时'),0,null);try{x.abort();}catch(e){}},timeoutMs||9000);
   if(body!==null&&body!==undefined){x.send(body);}else{x.send();}
  }catch(e){finish(e,0,null);}
 }
@@ -511,21 +511,36 @@ function memoFiltered(){
 
 /* --- 云同步：XHR + 超时 + 一次重试 --- */
 var MEMO_SYNC_TIMEOUT=15000;
-function memoSyncReq(method,payload,cb,retry){
+/* 云端请求：带重试。
+ * 为什么要重试这么多次：实测单次请求成功率约 41%，
+ * 大量请求会以 status=0（连接被重置）或超时失败，连续重试 1~2 次即可成功。
+ * 只对「可重试」的失败重试：网络错误 / 超时 / 5xx / 0；401、4xx 立即返回。 */
+var MEMO_SYNC_TRIES=5;
+function memoSyncReq(method,payload,cb,attempt){
+ attempt=attempt||1;
  var meta=memoMeta();
  var url=trimS(meta.syncUrl||MEMO_URL);
  if(!url){cb(new Error('未配置同步地址'));return;}
  var headers={};
  if(meta.syncKey)headers['Authorization']='Bearer '+meta.syncKey;
  if(payload)headers['Content-Type']='application/json';
+ var isWrite=!!payload;
  ajax(method,url,payload?jsonStr(payload):null,headers,function(err,code,text){
+  var retriable=false;
   if(err){
-   if(retry!==false&&/超时|网络/.test(String(err.message||''))){
-    memoSyncReq(method,payload,cb,false);
-    return;
-   }
-   cb(err);return;
+   var m=String(err.message||'');
+   retriable=!(/HTTP 4/.test(m));
+   if(!retriable){cb(err);return;}
+  }else if(code>=500){
+   retriable=true;
+   err=new Error('HTTP '+code);
   }
+  if(retriable&&attempt<MEMO_SYNC_TRIES){
+   if(MEMO.busy)memoStatus();   /* 让用户看到还在重试 */
+   setTimeout(function(){memoSyncReq(method,payload,cb,attempt+1);},300*attempt);
+   return;
+  }
+  if(err){cb(err);return;}
   if(code===401){cb(new Error('HTTP 401 未授权（需要填写 SYNC_KEY）'));return;}
   if(code===404){cb(null,{items:[],updatedAt:0});return;}
   var d=jsonParse(text||'{}');
