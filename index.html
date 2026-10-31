@@ -584,22 +584,27 @@ function memoCollectRemote(remote){
  return list;
 }
 /* 上传：先拉回来合并（避免覆盖另一台设备的改动），再整体写回 */
+/* 上传：把**本机**这份完整推上去。
+ * 注意语义：上传 = 本机覆盖云端，不先拉取。
+ * （早期写成「先 GET 合并再 PUT」，结果在空页面点上传会把云端的内容拉下来填满列表，
+ *   看起来像在下载，完全违反直觉。） */
 function memoUpload(){
  if(MEMO.busy)return;
+ if(!MEMO.items.length){
+  if(!confirm('本机还没有备忘录，上传会把云端清空。\n\n如果你是想把云端的取下来，请点「⬇ 从云端拉取」。\n\n确定要清空云端吗？'))return;
+ }
  memoSetBusy(true);
- memoSyncReq('GET',null,function(err,remote){
-  if(err){memoSetBusy(false);msg('上传失败：'+memoErrText(err));return;}
-  var merged=memoMerge(MEMO.items,memoCollectRemote(remote));
-  memoSyncReq('PUT',{items:merged,updatedAt:new Date().getTime()},function(e2){
-   memoSetBusy(false);
-   if(e2){msg('上传失败：'+memoErrText(e2));return;}
-   MEMO.items=merged;memoSort();memoSave();
-   memoSetMeta({lastSyncAt:new Date().getTime()});
-   memoRender();msg('✅ 已上传到云端（'+merged.length+' 条）');
-  });
+ var payload={items:MEMO.items,updatedAt:new Date().getTime()};
+ memoSyncReq('PUT',payload,function(err){
+  memoSetBusy(false);
+  if(err){msg('上传失败：'+memoErrText(err));return;}
+  memoSetMeta({lastSyncAt:new Date().getTime()});
+  memoRender();msg('✅ 已上传 '+MEMO.items.length+' 条到云端');
  });
 }
 /* 拉取：合并到本地（同 id 取更新时间较新的） */
+/* 拉取：用云端这份**覆盖**本机（「从云端拉取」就该是拿到云端的样子）。
+ * 如果本机有云端没有的东西，会提示，避免直接丢数据。 */
 function memoDownload(){
  if(MEMO.busy)return;
  memoSetBusy(true);
@@ -607,10 +612,18 @@ function memoDownload(){
   memoSetBusy(false);
   if(err){msg('拉取失败：'+memoErrText(err));return;}
   var remoteList=memoCollectRemote(remote);
-  MEMO.items=memoMerge(MEMO.items,remoteList);
+  /* 找出「本机有、云端没有」的条目 */
+  var rmap={},i;
+  for(i=0;i<remoteList.length;i++)rmap[remoteList[i].id]=true;
+  var localOnly=0;
+  for(i=0;i<MEMO.items.length;i++){if(!rmap[MEMO.items[i].id])localOnly++;}
+  if(localOnly>0){
+   if(!confirm('云端有 '+remoteList.length+' 条，本机有 '+localOnly+' 条是云端没有的。\n\n继续拉取会用云端内容覆盖本机，那 '+localOnly+' 条会丢失。\n（想保留的话请先点「⬆ 上传云端」）\n\n确定拉取？'))return;
+  }
+  MEMO.items=remoteList;
   memoSort();memoSave();
   memoSetMeta({lastSyncAt:new Date().getTime()});
-  memoRender();msg('✅ 已从云端拉取（云端 '+remoteList.length+' 条）');
+  memoRender();msg('✅ 已从云端拉取 '+remoteList.length+' 条');
  });
 }
 
