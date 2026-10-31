@@ -15,6 +15,40 @@
 - Worker 代理地址: https://lite-proxy.xdd2024030565.workers.dev/
 - 自定义域名: https://lite.yongjiu.ccwu.cc/
 
+## CF 节点悬浮球（cf-bubble.js）
+
+全站通用的浏览器小挂件，**任何页面只加一行**即可，不用逐页写代码：
+
+```html
+<script type="text/javascript" src="cf-bubble.js"></script>
+```
+
+目前 `index.html` / `ai.html` / `reader*.html` 都已接入。
+
+### 功能
+
+- **实时显示当前 Cloudflare 边缘节点**（三字码，如 `AMS` 阿姆斯特丹 / `HKG` 香港），下方是响应耗时
+- **可拖动**到任意位置，位置记住（localStorage），刷新/换页后还在原处
+- **拖到屏幕边缘自动半透明并贴边收起**，只露一角；鼠标移上去自动展开
+- **点击刷新**，手动重新探测并切换备用入口
+- 每 60 秒自动刷新一次；页面在后台时不探测
+
+### 实现要点
+
+节点信息**不能**靠读 `cf-ray` 响应头——跨域时浏览器只放行少数安全响应头，
+`cf-ray` 默认读不到（`getResponseHeader('cf-ray')` 恒为空）。因此：
+
+1. Worker 侧加了 `GET /cfnode`，直接返回 `{"colo":"AMS",...}`（取自 `request.cf.colo`）
+2. 并给 CORS 补上 `Access-Control-Expose-Headers: cf-ray`
+
+悬浮球优先读 `/cfnode`；失败时依次切换备用入口（单入口约 20% 概率偶发失败，
+自动换目标后基本一次就成）。全站探测入口可在 `window.CF_BUBBLE_TARGETS` 覆盖。
+
+### 兼容性
+
+纯 ES5：无 const/let/箭头函数/Promise/fetch，用 `XMLHttpRequest`；
+同时支持 `addEventListener` 与 `attachEvent`。老设备与内嵌 WebView 可用。
+
 ## 备忘录（index.html · 备忘录页签）
 
 移植自完整版的线上备忘录，**与完整版共享同一份云端数据**（同一个 vault-sync 地址与 token），
