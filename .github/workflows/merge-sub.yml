@@ -66,6 +66,8 @@ jobs:
           N=$(grep -c '^  - {name:' merged.yaml || true)
           git add merged.yaml
           git commit -m "chore(sub): 自动合并订阅（$N 个节点）"
+          # 抓订阅要花几分钟，期间仓库可能被别人推过 —— 先 rebase 再推，避免 non-fast-forward
+          git pull --rebase --autostash origin main || true
           git push
           echo "### ✅ 已更新，共 $N 个节点" >> $GITHUB_STEP_SUMMARY
           echo "订阅地址：https://raw.githubusercontent.com/${{ github.repository }}/main/merged.yaml" >> $GITHUB_STEP_SUMMARY
