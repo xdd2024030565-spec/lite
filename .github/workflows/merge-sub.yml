@@ -33,14 +33,21 @@ jobs:
           node-version: '20'
 
       - name: 生成合并订阅
+        # 订阅地址写在仓库变量里（Settings → Variables），也可用 Secrets。
+        # 都没有就用下面的默认值 —— 这两个订阅地址本身不是机密。
         env:
-          SUB_A: ${{ secrets.SUB_A_URL }}
-          SUB_B: ${{ secrets.SUB_B_URL }}
+          SA_SECRET: ${{ secrets.SUB_A_URL }}
+          SB_SECRET: ${{ secrets.SUB_B_URL }}
+          SA_VAR: ${{ vars.SUB_A_URL }}
+          SB_VAR: ${{ vars.SUB_B_URL }}
+          SA_DEF: 'https://jfw6dhzm3i-bjy7cxrd.pages.dev/xdd12345678/sub/normal?app=clash'
+          SB_DEF: 'https://yongjiu.ccwu.cc/sub?token=6c86e6abb22e5e08ce0510eb0d6a0f88&clash=1'
         run: |
-          if [ -z "$SUB_A" ] || [ -z "$SUB_B" ]; then
-            echo "::error title=缺少订阅地址::请到 Settings → Secrets 添加 SUB_A_URL 与 SUB_B_URL"
-            exit 1
-          fi
+          set -e
+          SUB_A="${SA_SECRET:-${SA_VAR:-$SA_DEF}}"
+          SUB_B="${SB_SECRET:-${SB_VAR:-$SB_DEF}}"
+          echo "A: ${SUB_A%%\?*}"
+          echo "B: ${SUB_B%%\?*}"
           node merge-sub.js --a "$SUB_A" --b "$SUB_B" -o merged.yaml --interval 300
 
       - name: 校验产物
