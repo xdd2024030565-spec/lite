@@ -15,6 +15,31 @@
 - Worker 代理地址: https://lite-proxy.xdd2024030565.workers.dev/
 - 自定义域名: https://lite.yongjiu.ccwu.cc/
 
+## 备忘录（index.html · 备忘录页签）
+
+移植自完整版的线上备忘录，**与完整版共享同一份云端数据**（同一个 vault-sync 地址与 token），
+手机/电脑/两个站点之间互通。同样按兼容版约束实现：**纯 ES5**、同步用 `XMLHttpRequest`。
+
+### 功能
+
+- 新建 / 编辑 / 删除（进回收站）/ 恢复 / 彻底删除
+- 置顶、分类（文件夹）、标签、标题正文全文搜索
+- **⬆ 上传云端**：先拉取合并再整体写回（避免覆盖另一台设备的改动）
+- **⬇ 从云端拉取**：按 id 合并，同一条取 `updatedAt` 较新的
+- 导出 / 导入 JSON（用文本框，不依赖 Blob / File API）
+- 同步设置：可自定义云端地址与口令
+- 本地优先：所有内容先存 `localStorage`，断网也能用
+
+### 与完整版的差异
+
+不做内联实时编辑（改为表单编辑）、不做登录鉴权（兼容版本本身无登录）、
+不做文件夹/标签下拉筛选（用全文搜索代替）。
+
+### 云端
+
+`https://vault-sync.yongjiu.ccwu.cc/memo/<token>`，CORS 白名单需包含本站域名，
+否则浏览器会**静默失败**（见 lite1 仓库 `worker/wrangler.toml` 的 `ALLOW_ORIGIN`）。
+
 ## AI 助手（ai.html · 兼容版）
 
 移植自完整版 [lite1](https://github.com/xdd2024030565-spec/lite1) 的 `ai.html`，按兼容版约束**重写**：
