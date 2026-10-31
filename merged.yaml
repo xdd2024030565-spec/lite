@@ -24,153 +24,153 @@ dns:
     - 1.1.1.1
 
 proxies:
-  - {name: "A·💦 1. VLESS - Domain : 443", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfw6dHzM3i-BjY7CXrD.pAgEs.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/qfa8qh4ri7f1aZLFQnRXXj, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 2. VLESS - IPv4 : 443", server: 172.66.45.31, port: 443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JFW6dhZm3i-bjY7CxrD.pAgEs.deV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/HDjjVXzZwKC3Z3Jp00jSM, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 3. VLESS - IPv4 : 443", server: 172.66.46.225, port: 443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfw6dhZm3i-BjY7cxRD.PagEs.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/poRRTLEiGVNZfeACT, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 4. VLESS - Clean IP : 443", server: www.speedtest.net, port: 443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JfW6DhZM3I-BjY7cxRd.pAgEs.deV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/jp7Ne0Uascl6ZzBVzxi9NbGuTXzrOI, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 5. VLESS - Domain : 8443", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 8443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JfW6dHzm3i-BJY7cxrD.pAges.Dev, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/z3R1sNvkuN4ER8pTirYyZePtP97JMIN, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 6. VLESS - IPv4 : 8443", server: 172.66.45.31, port: 8443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JFW6dHZm3i-BJy7CxRd.PaGES.DEv, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/Ys3lXNvSk9plq17i73xT0RnK1bpkQ, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 7. VLESS - IPv4 : 8443", server: 172.66.46.225, port: 8443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JFw6dHZm3I-bjy7CxRD.pAGEs.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/7yfBIjp0u7ewktnJlfj3w, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 8. VLESS - Clean IP : 8443", server: www.speedtest.net, port: 8443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFw6dHZm3I-Bjy7CxRd.pages.DEv, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/pbG8VQAWCYzrMXSw9wwWqBKX, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 9. VLESS - Domain : 2053", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2053, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: Jfw6DhZm3I-BJY7cXrd.PaGes.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/1tsQVfyA6zXo4Bpegq, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 10. VLESS - IPv4 : 2053", server: 172.66.45.31, port: 2053, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFW6DHzm3i-bJY7cXrd.PageS.Dev, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/lUelkyKIbveIDdGero5ESuShdJ1oQ, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 11. VLESS - IPv4 : 2053", server: 172.66.46.225, port: 2053, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfw6DHZM3i-Bjy7cXrD.PageS.DEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/MjqE0IXmUx6RaDAGQ7zhPjVQW86jtA, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 12. VLESS - Clean IP : 2053", server: www.speedtest.net, port: 2053, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: Jfw6dHzM3I-BJY7cxrD.pagEs.dEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/u0BdwV0IQhyHYKwW5Eyrl1apb4F9Z, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 13. VLESS - Domain : 2083", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2083, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFW6dhzm3I-bjY7cXRd.paGes.deV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/8iQ8vBp0fAfpwbWIFnrlb989H5, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 14. VLESS - IPv4 : 2083", server: 172.66.45.31, port: 2083, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFW6DHzM3i-Bjy7Cxrd.PaGEs.dEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/5NjevIJD8R5wMr1eNHKM, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 15. VLESS - IPv4 : 2083", server: 172.66.46.225, port: 2083, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JFw6DhZm3i-BJY7cxRD.PaGeS.deV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/KqRYb6AiDN7MS8t38xlig, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 16. VLESS - Clean IP : 2083", server: www.speedtest.net, port: 2083, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFw6DHzM3i-bJY7CxrD.PagES.dEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/7QQJBMCuSCSR7xTNEmYMpS8L, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 17. VLESS - Domain : 2087", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2087, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfW6Dhzm3I-bjy7CxRD.pAGes.dev, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/z8LdVj0n7L9s1un6x, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 18. VLESS - IPv4 : 2087", server: 172.66.45.31, port: 2087, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfw6dhzM3I-bJy7CxrD.PAges.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/D4uf6KaMKs1VvQwyQQ6f5fDBt0FiSh, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 19. VLESS - IPv4 : 2087", server: 172.66.46.225, port: 2087, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFW6dhZM3I-BjY7cXRd.PAgEs.dEv, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/QjKvNHVeg15pfBKQ2H1Qi4wz, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 20. VLESS - Clean IP : 2087", server: www.speedtest.net, port: 2087, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFw6DHZm3i-BJY7cxRd.PAges.DEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/Chkg2MPrHVnGTwU2huXCfnNRT1H, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 21. VLESS - Domain : 2096", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2096, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFW6dHZm3I-bJy7CXRd.PAGeS.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/y2H9LS1j8bSRW1czA8pKuLIA7eyQkbdr, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 22. VLESS - IPv4 : 2096", server: 172.66.45.31, port: 2096, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFW6dhzM3i-bjY7Cxrd.pAgES.deV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/Ihd80FBJV6XeVWLBIYKsgnnYWEj, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 23. VLESS - IPv4 : 2096", server: 172.66.46.225, port: 2096, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfw6DhZm3I-BJy7cxRd.pagES.DEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/iGUS4Vp5rJBPDJtB6C, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 24. VLESS - Clean IP : 2096", server: www.speedtest.net, port: 2096, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JfW6dHzM3I-bjy7CXrd.PaGES.deV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/tvyE13xOUpVVpuSrycvluN3y4, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 1. Trojan - Domain : 443", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JfW6Dhzm3I-BJY7CXRD.pAGEs.DEV, ws-opts: {path: /tr/ClU9kf1gBxiuioSmYhkj4GDM, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 2. Trojan - IPv4 : 443", server: 172.66.45.31, port: 443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfW6dHzM3I-Bjy7cxRd.paGEs.dEv, ws-opts: {path: /tr/l1cxclSfkz6OZvHFNBeWZDPMcXkA, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 3. Trojan - IPv4 : 443", server: 172.66.46.225, port: 443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jFw6dHZm3i-bJy7CXrD.pAges.deV, ws-opts: {path: /tr/TUJ2sNlmBiapydA5S4n, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 4. Trojan - Clean IP : 443", server: www.speedtest.net, port: 443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jFW6dHzM3i-bJY7CXRd.pages.dev, ws-opts: {path: /tr/mtDvdfPsTNcMqVzo9S1nz, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 5. Trojan - Domain : 8443", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 8443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFW6dhZM3I-bjY7cXrd.pAGes.dev, ws-opts: {path: /tr/FseebmQpTEtfx5K5Pz, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 6. Trojan - IPv4 : 8443", server: 172.66.45.31, port: 8443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFw6dhzm3i-bjy7Cxrd.pagES.DEV, ws-opts: {path: /tr/miBXE8O1JFs7pPppr0xrAX, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 7. Trojan - IPv4 : 8443", server: 172.66.46.225, port: 8443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jFW6DHZM3i-bJY7CXrD.pagES.Dev, ws-opts: {path: /tr/9eAUGmAWwx1f9EQd, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 8. Trojan - Clean IP : 8443", server: www.speedtest.net, port: 8443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfw6dhzM3i-BjY7CXrD.PaGES.dev, ws-opts: {path: /tr/wupquUTouwphJeIy, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 9. Trojan - Domain : 2053", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2053, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfw6dHZM3I-bjy7CxRD.paGeS.Dev, ws-opts: {path: /tr/kWhDGYHRLC2DfDPpgxjaeyH7Bjfedsuz, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 10. Trojan - IPv4 : 2053", server: 172.66.45.31, port: 2053, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfW6DHzm3I-Bjy7CXRd.pagES.DeV, ws-opts: {path: /tr/2eBsDTpdvStLqKo20vuthVKEEt2ah, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 11. Trojan - IPv4 : 2053", server: 172.66.46.225, port: 2053, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFW6dhZm3I-bJy7CXRD.PAgES.DEV, ws-opts: {path: /tr/uMdwKktNVXYAQFYebiiptvv9U, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 12. Trojan - Clean IP : 2053", server: www.speedtest.net, port: 2053, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfW6Dhzm3i-bjy7cxrd.PAGES.DEv, ws-opts: {path: /tr/Pc7yuOL5D8nEEKtGJ8gX0N, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 13. Trojan - Domain : 2083", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2083, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFw6dhZm3I-Bjy7CXRD.pagEs.dEV, ws-opts: {path: /tr/lzJbGZtSpqm5oIuwI, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 14. Trojan - IPv4 : 2083", server: 172.66.45.31, port: 2083, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfw6dhzM3I-BJY7CXrD.pAges.dEv, ws-opts: {path: /tr/kLINdOvGF5Vo7B3gl7JX6zS0, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 15. Trojan - IPv4 : 2083", server: 172.66.46.225, port: 2083, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFW6dhZM3I-BJy7cXRd.Pages.dev, ws-opts: {path: /tr/jO6RU63otigne1NC, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 16. Trojan - Clean IP : 2083", server: www.speedtest.net, port: 2083, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFW6Dhzm3I-BJy7cXRd.PageS.DEV, ws-opts: {path: /tr/NjtIUB6IeMJwDqlAkmbchiU4cYftmB8d, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 17. Trojan - Domain : 2087", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2087, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfw6DhZm3I-bjy7CXrD.pAGes.dev, ws-opts: {path: /tr/4OTJX2SkpE8CXvWwU8USW, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 18. Trojan - IPv4 : 2087", server: 172.66.45.31, port: 2087, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JfW6DhZM3i-Bjy7cXRd.PAges.deV, ws-opts: {path: /tr/wgOUdl4uO08Ys7GtxX5rm, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 19. Trojan - IPv4 : 2087", server: 172.66.46.225, port: 2087, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfW6dHzM3I-BJy7CXrD.paGES.DEV, ws-opts: {path: /tr/Jr4ukAZ3yBhCBka1rB45rbvw, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 20. Trojan - Clean IP : 2087", server: www.speedtest.net, port: 2087, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jFW6DhZM3I-bJY7Cxrd.PaGeS.deV, ws-opts: {path: /tr/hoT1X5S4deQC2zUeUi65dEB, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 21. Trojan - Domain : 2096", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2096, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFw6Dhzm3i-bjy7CXRd.pAges.DEv, ws-opts: {path: /tr/NfKHo66cLYUTyX82VaA34Oz, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 22. Trojan - IPv4 : 2096", server: 172.66.45.31, port: 2096, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JfW6DhzM3i-BJY7cXrd.pAges.deV, ws-opts: {path: /tr/4grmVUbusg0F5bSehH5BIeQ, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 23. Trojan - IPv4 : 2096", server: 172.66.46.225, port: 2096, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jFw6dHZm3I-BJy7CxrD.PAGEs.Dev, ws-opts: {path: /tr/hkgOhejdRxhq79ZYVhCr8sPGgnf, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "A·💦 24. Trojan - Clean IP : 2096", server: www.speedtest.net, port: 2096, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JfW6dHzM3I-BJy7CXRd.PAgES.Dev, ws-opts: {path: /tr/IZUwmJYuH0nsL9NJtBdeLFNk6s9q, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
-  - {name: "B·CF电信优选1", server: 104.18.42.241, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选2", server: 104.18.35.244, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选3", server: 104.18.38.23, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选4", server: 172.64.229.78, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选5", server: 172.64.154.181, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选6", server: 8.35.211.11, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选7", server: 104.18.45.19, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选8", server: 188.164.248.146, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选9", server: 172.64.151.164, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选10", server: 172.66.214.204, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选11", server: 172.64.146.164, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选12", server: 172.64.150.155, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选13", server: 104.18.40.36, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选14", server: 172.64.159.206, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选15", server: 172.64.159.238, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选16", server: 104.18.38.143, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选17", server: 104.17.154.127, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选18", server: 104.18.45.14, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选19", server: 104.18.41.235, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选20", server: 104.16.249.154, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选21", server: 104.18.33.173, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选22", server: 172.64.156.38, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选23", server: 104.17.145.72, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选24", server: 172.66.214.229, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选25", server: 104.18.40.203, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选26", server: 104.19.17.67, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选27", server: 104.17.215.185, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选28", server: 188.164.248.89, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选29", server: 104.19.2.50, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选30", server: 172.64.159.82, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选31", server: 172.66.3.112, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选32", server: 104.16.205.55, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选33", server: 8.35.211.70, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选34", server: 104.18.35.204, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选35", server: 104.17.215.156, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选36", server: 172.64.153.214, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选37", server: 104.16.218.83, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选38", server: 104.16.249.203, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选39", server: 104.18.42.73, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选40", server: 104.18.40.138, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选41", server: 172.66.214.188, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选42", server: 104.18.42.251, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选43", server: 8.35.211.102, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选44", server: 188.164.248.62, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选45", server: 172.64.146.75, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选46", server: 104.18.41.64, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选47", server: 172.64.156.136, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选48", server: 104.18.40.187, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选49", server: 104.18.45.132, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选50", server: 172.64.146.251, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选51", server: 172.64.154.81, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选52", server: 104.17.156.26, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选53", server: 172.64.153.126, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选54", server: 172.66.214.183, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选55", server: 104.18.47.248, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选56", server: 172.64.159.169, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选57", server: 104.17.138.164, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选58", server: 188.164.248.22, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选59", server: 104.18.40.65, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选60", server: 172.64.156.92, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选61", server: 104.19.2.216, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选62", server: 104.17.215.243, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选63", server: 172.66.214.34, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选64", server: 104.17.138.49, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选65", server: 104.18.42.162, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选66", server: 172.66.2.199, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选67", server: 104.16.249.27, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选68", server: 172.64.154.221, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选69", server: 104.18.33.124, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选70", server: 172.64.229.151, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选71", server: 172.64.153.128, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选72", server: 104.19.17.233, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选73", server: 104.18.35.194, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选74", server: 104.17.148.20, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选75", server: 8.35.211.141, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选76", server: 172.64.153.223, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选77", server: 104.19.2.187, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选78", server: 172.64.150.44, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选79", server: 172.64.156.3, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选80", server: 172.64.146.161, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选81", server: 172.64.159.40, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选82", server: 104.17.159.212, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选83", server: 172.64.153.177, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选84", server: 104.18.41.88, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选85", server: 104.18.35.174, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选86", server: 104.16.205.70, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选87", server: 104.16.249.70, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选88", server: 172.64.153.78, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选89", server: 172.64.156.124, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选90", server: 104.18.42.199, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选91", server: 172.64.154.227, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选92", server: 104.18.47.203, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选93", server: 172.64.151.150, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选94", server: 104.19.17.60, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选95", server: 172.64.153.22, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选96", server: 172.64.150.104, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选97", server: 172.64.156.248, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选98", server: 172.64.156.37, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
-  - {name: "B·CF电信优选99", server: 172.66.214.206, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "A·💦 1. VLESS - Domain : 443", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JfW6dHZm3i-bjY7cxRD.pagEs.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/DyTNgUaJZpLDOX1mqPpfilxkk67, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 2. VLESS - IPv4 : 443", server: 172.66.46.225, port: 443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JFW6DHzM3i-bjY7cXrd.pAGeS.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/75U2rTTt92GU150QrYF8rosQta3Tl, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 3. VLESS - IPv4 : 443", server: 172.66.45.31, port: 443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: Jfw6Dhzm3I-bJY7CxRD.paGeS.Dev, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/UyTBVa882sGBY86ug9Z5YN9akXCLq, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 4. VLESS - Clean IP : 443", server: www.speedtest.net, port: 443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfW6dHzM3I-bjy7CXRD.pagEs.DEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/neYJqIwolFI0B3g3duqlTReMB, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 5. VLESS - Domain : 8443", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 8443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFw6dhzm3i-BJy7CXRD.pAges.DEv, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/5naLeVB76I35lLeL4nSF1ZVli5mGe, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 6. VLESS - IPv4 : 8443", server: 172.66.46.225, port: 8443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfw6DhZM3i-Bjy7CXRD.paGEs.deV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/wzA2w3aOdaLxo1aprnFRur, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 7. VLESS - IPv4 : 8443", server: 172.66.45.31, port: 8443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JfW6dHZm3I-Bjy7cXRD.paGes.DEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/BdUTQTMPAR72dCHlWPUy6, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 8. VLESS - Clean IP : 8443", server: www.speedtest.net, port: 8443, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: Jfw6DHzm3I-BJY7cXrd.PAgeS.DEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/n7rf3sr4nTRvsmmtnD77MZ8kV84hp8s, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 9. VLESS - Domain : 2053", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2053, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfw6DhZM3i-BJY7cxRd.PAgEs.dEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/psYXwlDmGiPFOd9nvGSd, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 10. VLESS - IPv4 : 2053", server: 172.66.46.225, port: 2053, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFw6DHZM3I-bJy7CXrd.paGES.dEv, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/XvV7cptdUCpsoszfW, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 11. VLESS - IPv4 : 2053", server: 172.66.45.31, port: 2053, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfW6dhzm3i-BjY7CxrD.PaGES.deV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/pxxdVMk6W8xIz6ox8C3RfAFtjl, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 12. VLESS - Clean IP : 2053", server: www.speedtest.net, port: 2053, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfW6dhZM3I-BJY7CXRD.pagEs.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/XJ2XicqluewDD9GimjS40yge, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 13. VLESS - Domain : 2083", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2083, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JFW6DHzm3I-BJy7CxRD.PAgeS.DEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/mrhd3zdhDRYtZgQL4pe9i3, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 14. VLESS - IPv4 : 2083", server: 172.66.46.225, port: 2083, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JFw6dHzm3i-BJY7cxRd.PAges.deV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/zctHniCaNUjOFpT559ajfSp, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 15. VLESS - IPv4 : 2083", server: 172.66.45.31, port: 2083, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JFw6DhZm3i-BjY7cXRD.pAgES.deV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/sJ7prZVrcSCgWlol1kVzwak, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 16. VLESS - Clean IP : 2083", server: www.speedtest.net, port: 2083, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFw6dHzm3i-BJY7cXrD.pagEs.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/VNiD4rUCfut7T6BbE7Gt, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 17. VLESS - Domain : 2087", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2087, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JFw6Dhzm3I-BJY7cXRD.PAges.DEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/Nsdl5Pnuwojv3NHNGl6, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 18. VLESS - IPv4 : 2087", server: 172.66.46.225, port: 2087, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFw6DHZM3i-bJY7cxRD.PAgeS.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/gRJ3nczReO4a9cuImAd4Bzt, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 19. VLESS - IPv4 : 2087", server: 172.66.45.31, port: 2087, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFW6DHZm3i-BjY7cxRD.paGeS.DeV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/w6AW1El9p4oMRiyxYfvPynkdx, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 20. VLESS - Clean IP : 2087", server: www.speedtest.net, port: 2087, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JfW6dHZM3i-bjY7cXrd.pAgEs.DEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/rRIc2mdVop1EQeshq7e0gmQ4hu, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 21. VLESS - Domain : 2096", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2096, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jfW6dHzM3I-bjY7cXRd.pAGeS.Dev, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/6NWyHIxPQKrzPHVfv8oPH18ESnnG, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 22. VLESS - IPv4 : 2096", server: 172.66.46.225, port: 2096, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: Jfw6DhZm3I-BJY7CXRD.pAGEs.DEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/lgW90cHANgIFD5Cn9ri4Ohq33t6CIM, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 23. VLESS - IPv4 : 2096", server: 172.66.45.31, port: 2096, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: JFW6dHZM3I-BjY7CXRd.PaGes.dEV, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/1Pol1pOugIX0V6CKhoE, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 24. VLESS - Clean IP : 2096", server: www.speedtest.net, port: 2096, type: vless, uuid: 8fcbcebb-d734-4f2d-a0c1-708ba2d360ca, tls: true, skip-cert-verify: false, servername: jFW6dHzM3i-bJY7CXrd.PagEs.DEv, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, packet-encoding: "", encryption: "", ws-opts: {path: /vl/kZBX2HslOphG8PEzkurNL, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 1. Trojan - Domain : 443", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFW6dHzM3i-BJY7cxRD.pageS.dEV, ws-opts: {path: /tr/Ic3PJAAs2NxGLA3B, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 2. Trojan - IPv4 : 443", server: 172.66.46.225, port: 443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfW6dhZm3i-bjy7CXRD.PaGeS.deV, ws-opts: {path: /tr/qfQaaksImhO9gysV1diXCrF2YG, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 3. Trojan - IPv4 : 443", server: 172.66.45.31, port: 443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jFw6dhZM3i-bJy7cXrD.pAGeS.Dev, ws-opts: {path: /tr/DjfTipaewgXJ0ji8t0yna, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 4. Trojan - Clean IP : 443", server: www.speedtest.net, port: 443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JfW6dhzM3I-bjY7CXrd.PAgeS.DeV, ws-opts: {path: /tr/a4prpPROslwAsYDsWrg93XJSQErPNpZ, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 5. Trojan - Domain : 8443", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 8443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jFw6Dhzm3I-BJy7cxrd.pagEs.dEV, ws-opts: {path: /tr/zodMNBC48MHSK0d1LUNy, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 6. Trojan - IPv4 : 8443", server: 172.66.46.225, port: 8443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: Jfw6DHzM3I-BJY7cxrD.pAgEs.dEV, ws-opts: {path: /tr/xyWFHscTMPegxUrXeATxxkMXPPwJ, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 7. Trojan - IPv4 : 8443", server: 172.66.45.31, port: 8443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFw6DHzM3i-bjY7Cxrd.PAGeS.dEV, ws-opts: {path: /tr/QN8bubolVY692ialcTdD9uV7YC5mgfJ, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 8. Trojan - Clean IP : 8443", server: www.speedtest.net, port: 8443, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfw6DHZm3I-BJY7Cxrd.PAGes.DEV, ws-opts: {path: /tr/DfCttzNsP9iMPYvkdZ6cvUv5Rtfr, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 9. Trojan - Domain : 2053", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2053, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jFw6DHZm3i-BJy7CXRd.PagES.Dev, ws-opts: {path: /tr/GicHg7lyuc1BIHxamgV3, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 10. Trojan - IPv4 : 2053", server: 172.66.46.225, port: 2053, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfW6dHZm3i-BjY7cxRd.pAGes.Dev, ws-opts: {path: /tr/G85gOmQ41qzmTSqcATegXwk0gnC3Np3, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 11. Trojan - IPv4 : 2053", server: 172.66.45.31, port: 2053, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFW6dhZM3I-bJY7cxrd.PagES.dEv, ws-opts: {path: /tr/Y74YTcTfWILpMzfY6, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 12. Trojan - Clean IP : 2053", server: www.speedtest.net, port: 2053, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jFw6dHzm3i-bjy7CxRD.PaGES.deV, ws-opts: {path: /tr/xkRF4SK8IQuWkGzk, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 13. Trojan - Domain : 2083", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2083, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFw6DhZM3i-BJy7CXrD.pAgES.DeV, ws-opts: {path: /tr/AimhGQ0oWdrYYrTjjOoWJel6QxCUcfP, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 14. Trojan - IPv4 : 2083", server: 172.66.46.225, port: 2083, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfw6DHZm3i-bJY7cXrD.pAGEs.DEv, ws-opts: {path: /tr/F3QjxB5i7WRwqbP2Ta5, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 15. Trojan - IPv4 : 2083", server: 172.66.45.31, port: 2083, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfW6dHzM3I-Bjy7CXRD.pageS.DEV, ws-opts: {path: /tr/u3hsKOaJ5hJaJG7b, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 16. Trojan - Clean IP : 2083", server: www.speedtest.net, port: 2083, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFw6dHzM3i-bjY7cxrD.PaGEs.deV, ws-opts: {path: /tr/cUGUqCz2P9xQaHvJTYNbbaQzKD1, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 17. Trojan - Domain : 2087", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2087, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfW6DhzM3i-bjy7CXRD.pAGEs.dev, ws-opts: {path: /tr/TsWe6yTkTNN9xf3YxvTaSJV4lWA, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 18. Trojan - IPv4 : 2087", server: 172.66.46.225, port: 2087, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: Jfw6Dhzm3I-Bjy7Cxrd.pagES.dev, ws-opts: {path: /tr/W1vCLKL9JnwqJ6Y9EVi7krCzEML8tK, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 19. Trojan - IPv4 : 2087", server: 172.66.45.31, port: 2087, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JfW6dHZm3i-BjY7CXrd.PAges.dEV, ws-opts: {path: /tr/9aykaTGKlzFggESjTBz15J3yl365Yn, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 20. Trojan - Clean IP : 2087", server: www.speedtest.net, port: 2087, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jFw6DHzM3I-bJY7cxrd.pAGeS.Dev, ws-opts: {path: /tr/t9JuT5TdXVQVnmEwetmdO, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 21. Trojan - Domain : 2096", server: jfw6dhzm3i-bjy7cxrd.pages.dev, port: 2096, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfW6dHzm3i-Bjy7CxRd.PAges.dev, ws-opts: {path: /tr/7vrcH42RTgqNtDwxvGgIgMIcT, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 22. Trojan - IPv4 : 2096", server: 172.66.46.225, port: 2096, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jFw6dHzM3I-Bjy7Cxrd.PAgEs.DEv, ws-opts: {path: /tr/m6YJK3l09uLpbZnoD9T5xKz, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 23. Trojan - IPv4 : 2096", server: 172.66.45.31, port: 2096, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: jfW6DHzm3I-bjy7cxrD.pAges.dEV, ws-opts: {path: /tr/WashtTnxqaq7BHp1rpwJa45Ym9QJID, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "A·💦 24. Trojan - Clean IP : 2096", server: www.speedtest.net, port: 2096, type: trojan, password: "uE8lOc3EM:bRXehQOk", tls: true, skip-cert-verify: false, client-fingerprint: chrome, network: ws, alpn: [http/1.1], udp: false, tfo: false, ip-version: ipv4, sni: JFw6DHZm3I-bJY7cxRd.pageS.DEV, ws-opts: {path: /tr/YLbNHxFbY7wrGvHedPOeQ, max-early-data: 2560, early-data-header-name: Sec-WebSocket-Protocol, headers: {Host: jfw6dhzm3i-bjy7cxrd.pages.dev}}}
+  - {name: "B·CF官方优选1", server: 8.39.125.209, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选2", server: 104.19.51.85, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选3", server: 104.26.9.203, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选4", server: 172.67.156.3, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选5", server: 172.64.156.42, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选6", server: 188.164.248.12, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选7", server: 104.16.148.215, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选8", server: 172.66.214.214, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选9", server: 172.64.153.172, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选10", server: 172.66.208.63, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选11", server: 104.20.30.85, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选12", server: 172.66.129.241, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选13", server: 162.159.39.73, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选14", server: 172.67.154.226, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选15", server: 104.17.166.105, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选16", server: 104.19.150.207, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选17", server: 172.64.156.248, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选18", server: 104.17.140.45, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选19", server: 162.159.38.213, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选20", server: 104.19.58.165, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选21", server: 172.64.159.157, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选22", server: 172.64.229.159, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选23", server: 162.159.138.162, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选24", server: 172.64.229.205, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选25", server: 104.17.173.243, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选26", server: 104.19.57.249, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选27", server: 172.67.154.151, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选28", server: 104.19.49.130, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选29", server: 104.16.218.170, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选30", server: 172.64.67.68, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选31", server: 172.66.214.144, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选32", server: 162.159.38.208, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选33", server: 172.67.154.24, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选34", server: 104.19.59.170, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选35", server: 172.64.83.110, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选36", server: 172.64.83.91, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选37", server: 104.19.39.41, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选38", server: 104.19.39.158, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选39", server: 162.159.236.175, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选40", server: 104.17.30.116, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选41", server: 8.35.211.57, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选42", server: 172.64.159.129, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选43", server: 104.17.126.94, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选44", server: 172.66.1.229, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选45", server: 104.17.132.54, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选46", server: 104.19.168.122, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选47", server: 104.17.25.247, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选48", server: 172.64.156.6, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选49", server: 104.16.154.231, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选50", server: 162.159.138.226, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选51", server: 104.17.187.15, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选52", server: 172.64.83.95, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选53", server: 104.17.183.237, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选54", server: 104.19.148.42, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选55", server: 104.17.138.18, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选56", server: 172.66.208.21, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选57", server: 104.19.39.53, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选58", server: 104.17.21.35, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选59", server: 162.159.236.250, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选60", server: 104.17.191.177, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选61", server: 104.18.40.145, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选62", server: 172.64.159.129, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选63", server: 172.64.229.132, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选64", server: 162.159.46.50, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选65", server: 104.17.137.2, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选66", server: 172.67.163.2, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选67", server: 104.19.58.155, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选68", server: 172.67.65.10, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选69", server: 104.19.46.11, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选70", server: 104.19.2.61, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选71", server: 104.19.17.142, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选72", server: 104.19.46.69, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选73", server: 104.19.168.81, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选74", server: 104.18.33.198, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选75", server: 104.16.245.131, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选76", server: 108.162.198.74, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选77", server: 172.64.154.177, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选78", server: 172.64.156.47, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选79", server: 104.18.33.57, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选80", server: 104.18.47.66, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选81", server: 104.17.154.163, port: 2087, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选82", server: 172.67.251.178, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选83", server: 172.67.163.217, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选84", server: 104.19.52.121, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选85", server: 162.159.39.190, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选86", server: 172.67.154.176, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选87", server: 172.64.229.25, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选88", server: 104.17.138.71, port: 2096, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选89", server: 104.17.28.243, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选90", server: 162.159.39.235, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选91", server: 104.18.35.81, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选92", server: 172.67.163.251, port: 8443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选93", server: 162.159.138.89, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选94", server: 104.18.45.173, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选95", server: 104.19.46.58, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选96", server: 104.17.126.198, port: 2083, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选97", server: 172.67.68.93, port: 2053, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选98", server: 172.64.229.236, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
+  - {name: "B·CF官方优选99", server: 104.20.30.222, port: 443, type: vless, uuid: fe79de23-695c-493a-8d6e-8fda0ced84d5, tls: true, skip-cert-verify: false, servername: yongjiu.ccwu.cc, client-fingerprint: chrome, network: ws, ws-opts: {path: /, headers: {Host: yongjiu.ccwu.cc}}}
 
 proxy-groups:
   - name: "🚀 节点选择"
@@ -237,105 +237,105 @@ proxy-groups:
       - "A·💦 22. Trojan - IPv4 : 2096"
       - "A·💦 23. Trojan - IPv4 : 2096"
       - "A·💦 24. Trojan - Clean IP : 2096"
-      - "B·CF电信优选1"
-      - "B·CF电信优选2"
-      - "B·CF电信优选3"
-      - "B·CF电信优选4"
-      - "B·CF电信优选5"
-      - "B·CF电信优选6"
-      - "B·CF电信优选7"
-      - "B·CF电信优选8"
-      - "B·CF电信优选9"
-      - "B·CF电信优选10"
-      - "B·CF电信优选11"
-      - "B·CF电信优选12"
-      - "B·CF电信优选13"
-      - "B·CF电信优选14"
-      - "B·CF电信优选15"
-      - "B·CF电信优选16"
-      - "B·CF电信优选17"
-      - "B·CF电信优选18"
-      - "B·CF电信优选19"
-      - "B·CF电信优选20"
-      - "B·CF电信优选21"
-      - "B·CF电信优选22"
-      - "B·CF电信优选23"
-      - "B·CF电信优选24"
-      - "B·CF电信优选25"
-      - "B·CF电信优选26"
-      - "B·CF电信优选27"
-      - "B·CF电信优选28"
-      - "B·CF电信优选29"
-      - "B·CF电信优选30"
-      - "B·CF电信优选31"
-      - "B·CF电信优选32"
-      - "B·CF电信优选33"
-      - "B·CF电信优选34"
-      - "B·CF电信优选35"
-      - "B·CF电信优选36"
-      - "B·CF电信优选37"
-      - "B·CF电信优选38"
-      - "B·CF电信优选39"
-      - "B·CF电信优选40"
-      - "B·CF电信优选41"
-      - "B·CF电信优选42"
-      - "B·CF电信优选43"
-      - "B·CF电信优选44"
-      - "B·CF电信优选45"
-      - "B·CF电信优选46"
-      - "B·CF电信优选47"
-      - "B·CF电信优选48"
-      - "B·CF电信优选49"
-      - "B·CF电信优选50"
-      - "B·CF电信优选51"
-      - "B·CF电信优选52"
-      - "B·CF电信优选53"
-      - "B·CF电信优选54"
-      - "B·CF电信优选55"
-      - "B·CF电信优选56"
-      - "B·CF电信优选57"
-      - "B·CF电信优选58"
-      - "B·CF电信优选59"
-      - "B·CF电信优选60"
-      - "B·CF电信优选61"
-      - "B·CF电信优选62"
-      - "B·CF电信优选63"
-      - "B·CF电信优选64"
-      - "B·CF电信优选65"
-      - "B·CF电信优选66"
-      - "B·CF电信优选67"
-      - "B·CF电信优选68"
-      - "B·CF电信优选69"
-      - "B·CF电信优选70"
-      - "B·CF电信优选71"
-      - "B·CF电信优选72"
-      - "B·CF电信优选73"
-      - "B·CF电信优选74"
-      - "B·CF电信优选75"
-      - "B·CF电信优选76"
-      - "B·CF电信优选77"
-      - "B·CF电信优选78"
-      - "B·CF电信优选79"
-      - "B·CF电信优选80"
-      - "B·CF电信优选81"
-      - "B·CF电信优选82"
-      - "B·CF电信优选83"
-      - "B·CF电信优选84"
-      - "B·CF电信优选85"
-      - "B·CF电信优选86"
-      - "B·CF电信优选87"
-      - "B·CF电信优选88"
-      - "B·CF电信优选89"
-      - "B·CF电信优选90"
-      - "B·CF电信优选91"
-      - "B·CF电信优选92"
-      - "B·CF电信优选93"
-      - "B·CF电信优选94"
-      - "B·CF电信优选95"
-      - "B·CF电信优选96"
-      - "B·CF电信优选97"
-      - "B·CF电信优选98"
-      - "B·CF电信优选99"
+      - "B·CF官方优选1"
+      - "B·CF官方优选2"
+      - "B·CF官方优选3"
+      - "B·CF官方优选4"
+      - "B·CF官方优选5"
+      - "B·CF官方优选6"
+      - "B·CF官方优选7"
+      - "B·CF官方优选8"
+      - "B·CF官方优选9"
+      - "B·CF官方优选10"
+      - "B·CF官方优选11"
+      - "B·CF官方优选12"
+      - "B·CF官方优选13"
+      - "B·CF官方优选14"
+      - "B·CF官方优选15"
+      - "B·CF官方优选16"
+      - "B·CF官方优选17"
+      - "B·CF官方优选18"
+      - "B·CF官方优选19"
+      - "B·CF官方优选20"
+      - "B·CF官方优选21"
+      - "B·CF官方优选22"
+      - "B·CF官方优选23"
+      - "B·CF官方优选24"
+      - "B·CF官方优选25"
+      - "B·CF官方优选26"
+      - "B·CF官方优选27"
+      - "B·CF官方优选28"
+      - "B·CF官方优选29"
+      - "B·CF官方优选30"
+      - "B·CF官方优选31"
+      - "B·CF官方优选32"
+      - "B·CF官方优选33"
+      - "B·CF官方优选34"
+      - "B·CF官方优选35"
+      - "B·CF官方优选36"
+      - "B·CF官方优选37"
+      - "B·CF官方优选38"
+      - "B·CF官方优选39"
+      - "B·CF官方优选40"
+      - "B·CF官方优选41"
+      - "B·CF官方优选42"
+      - "B·CF官方优选43"
+      - "B·CF官方优选44"
+      - "B·CF官方优选45"
+      - "B·CF官方优选46"
+      - "B·CF官方优选47"
+      - "B·CF官方优选48"
+      - "B·CF官方优选49"
+      - "B·CF官方优选50"
+      - "B·CF官方优选51"
+      - "B·CF官方优选52"
+      - "B·CF官方优选53"
+      - "B·CF官方优选54"
+      - "B·CF官方优选55"
+      - "B·CF官方优选56"
+      - "B·CF官方优选57"
+      - "B·CF官方优选58"
+      - "B·CF官方优选59"
+      - "B·CF官方优选60"
+      - "B·CF官方优选61"
+      - "B·CF官方优选62"
+      - "B·CF官方优选63"
+      - "B·CF官方优选64"
+      - "B·CF官方优选65"
+      - "B·CF官方优选66"
+      - "B·CF官方优选67"
+      - "B·CF官方优选68"
+      - "B·CF官方优选69"
+      - "B·CF官方优选70"
+      - "B·CF官方优选71"
+      - "B·CF官方优选72"
+      - "B·CF官方优选73"
+      - "B·CF官方优选74"
+      - "B·CF官方优选75"
+      - "B·CF官方优选76"
+      - "B·CF官方优选77"
+      - "B·CF官方优选78"
+      - "B·CF官方优选79"
+      - "B·CF官方优选80"
+      - "B·CF官方优选81"
+      - "B·CF官方优选82"
+      - "B·CF官方优选83"
+      - "B·CF官方优选84"
+      - "B·CF官方优选85"
+      - "B·CF官方优选86"
+      - "B·CF官方优选87"
+      - "B·CF官方优选88"
+      - "B·CF官方优选89"
+      - "B·CF官方优选90"
+      - "B·CF官方优选91"
+      - "B·CF官方优选92"
+      - "B·CF官方优选93"
+      - "B·CF官方优选94"
+      - "B·CF官方优选95"
+      - "B·CF官方优选96"
+      - "B·CF官方优选97"
+      - "B·CF官方优选98"
+      - "B·CF官方优选99"
 
   - name: "🅰 仅A自动"
     type: url-test
@@ -398,105 +398,105 @@ proxy-groups:
     interval: 300
     tolerance: 50
     proxies:
-      - "B·CF电信优选1"
-      - "B·CF电信优选2"
-      - "B·CF电信优选3"
-      - "B·CF电信优选4"
-      - "B·CF电信优选5"
-      - "B·CF电信优选6"
-      - "B·CF电信优选7"
-      - "B·CF电信优选8"
-      - "B·CF电信优选9"
-      - "B·CF电信优选10"
-      - "B·CF电信优选11"
-      - "B·CF电信优选12"
-      - "B·CF电信优选13"
-      - "B·CF电信优选14"
-      - "B·CF电信优选15"
-      - "B·CF电信优选16"
-      - "B·CF电信优选17"
-      - "B·CF电信优选18"
-      - "B·CF电信优选19"
-      - "B·CF电信优选20"
-      - "B·CF电信优选21"
-      - "B·CF电信优选22"
-      - "B·CF电信优选23"
-      - "B·CF电信优选24"
-      - "B·CF电信优选25"
-      - "B·CF电信优选26"
-      - "B·CF电信优选27"
-      - "B·CF电信优选28"
-      - "B·CF电信优选29"
-      - "B·CF电信优选30"
-      - "B·CF电信优选31"
-      - "B·CF电信优选32"
-      - "B·CF电信优选33"
-      - "B·CF电信优选34"
-      - "B·CF电信优选35"
-      - "B·CF电信优选36"
-      - "B·CF电信优选37"
-      - "B·CF电信优选38"
-      - "B·CF电信优选39"
-      - "B·CF电信优选40"
-      - "B·CF电信优选41"
-      - "B·CF电信优选42"
-      - "B·CF电信优选43"
-      - "B·CF电信优选44"
-      - "B·CF电信优选45"
-      - "B·CF电信优选46"
-      - "B·CF电信优选47"
-      - "B·CF电信优选48"
-      - "B·CF电信优选49"
-      - "B·CF电信优选50"
-      - "B·CF电信优选51"
-      - "B·CF电信优选52"
-      - "B·CF电信优选53"
-      - "B·CF电信优选54"
-      - "B·CF电信优选55"
-      - "B·CF电信优选56"
-      - "B·CF电信优选57"
-      - "B·CF电信优选58"
-      - "B·CF电信优选59"
-      - "B·CF电信优选60"
-      - "B·CF电信优选61"
-      - "B·CF电信优选62"
-      - "B·CF电信优选63"
-      - "B·CF电信优选64"
-      - "B·CF电信优选65"
-      - "B·CF电信优选66"
-      - "B·CF电信优选67"
-      - "B·CF电信优选68"
-      - "B·CF电信优选69"
-      - "B·CF电信优选70"
-      - "B·CF电信优选71"
-      - "B·CF电信优选72"
-      - "B·CF电信优选73"
-      - "B·CF电信优选74"
-      - "B·CF电信优选75"
-      - "B·CF电信优选76"
-      - "B·CF电信优选77"
-      - "B·CF电信优选78"
-      - "B·CF电信优选79"
-      - "B·CF电信优选80"
-      - "B·CF电信优选81"
-      - "B·CF电信优选82"
-      - "B·CF电信优选83"
-      - "B·CF电信优选84"
-      - "B·CF电信优选85"
-      - "B·CF电信优选86"
-      - "B·CF电信优选87"
-      - "B·CF电信优选88"
-      - "B·CF电信优选89"
-      - "B·CF电信优选90"
-      - "B·CF电信优选91"
-      - "B·CF电信优选92"
-      - "B·CF电信优选93"
-      - "B·CF电信优选94"
-      - "B·CF电信优选95"
-      - "B·CF电信优选96"
-      - "B·CF电信优选97"
-      - "B·CF电信优选98"
-      - "B·CF电信优选99"
+      - "B·CF官方优选1"
+      - "B·CF官方优选2"
+      - "B·CF官方优选3"
+      - "B·CF官方优选4"
+      - "B·CF官方优选5"
+      - "B·CF官方优选6"
+      - "B·CF官方优选7"
+      - "B·CF官方优选8"
+      - "B·CF官方优选9"
+      - "B·CF官方优选10"
+      - "B·CF官方优选11"
+      - "B·CF官方优选12"
+      - "B·CF官方优选13"
+      - "B·CF官方优选14"
+      - "B·CF官方优选15"
+      - "B·CF官方优选16"
+      - "B·CF官方优选17"
+      - "B·CF官方优选18"
+      - "B·CF官方优选19"
+      - "B·CF官方优选20"
+      - "B·CF官方优选21"
+      - "B·CF官方优选22"
+      - "B·CF官方优选23"
+      - "B·CF官方优选24"
+      - "B·CF官方优选25"
+      - "B·CF官方优选26"
+      - "B·CF官方优选27"
+      - "B·CF官方优选28"
+      - "B·CF官方优选29"
+      - "B·CF官方优选30"
+      - "B·CF官方优选31"
+      - "B·CF官方优选32"
+      - "B·CF官方优选33"
+      - "B·CF官方优选34"
+      - "B·CF官方优选35"
+      - "B·CF官方优选36"
+      - "B·CF官方优选37"
+      - "B·CF官方优选38"
+      - "B·CF官方优选39"
+      - "B·CF官方优选40"
+      - "B·CF官方优选41"
+      - "B·CF官方优选42"
+      - "B·CF官方优选43"
+      - "B·CF官方优选44"
+      - "B·CF官方优选45"
+      - "B·CF官方优选46"
+      - "B·CF官方优选47"
+      - "B·CF官方优选48"
+      - "B·CF官方优选49"
+      - "B·CF官方优选50"
+      - "B·CF官方优选51"
+      - "B·CF官方优选52"
+      - "B·CF官方优选53"
+      - "B·CF官方优选54"
+      - "B·CF官方优选55"
+      - "B·CF官方优选56"
+      - "B·CF官方优选57"
+      - "B·CF官方优选58"
+      - "B·CF官方优选59"
+      - "B·CF官方优选60"
+      - "B·CF官方优选61"
+      - "B·CF官方优选62"
+      - "B·CF官方优选63"
+      - "B·CF官方优选64"
+      - "B·CF官方优选65"
+      - "B·CF官方优选66"
+      - "B·CF官方优选67"
+      - "B·CF官方优选68"
+      - "B·CF官方优选69"
+      - "B·CF官方优选70"
+      - "B·CF官方优选71"
+      - "B·CF官方优选72"
+      - "B·CF官方优选73"
+      - "B·CF官方优选74"
+      - "B·CF官方优选75"
+      - "B·CF官方优选76"
+      - "B·CF官方优选77"
+      - "B·CF官方优选78"
+      - "B·CF官方优选79"
+      - "B·CF官方优选80"
+      - "B·CF官方优选81"
+      - "B·CF官方优选82"
+      - "B·CF官方优选83"
+      - "B·CF官方优选84"
+      - "B·CF官方优选85"
+      - "B·CF官方优选86"
+      - "B·CF官方优选87"
+      - "B·CF官方优选88"
+      - "B·CF官方优选89"
+      - "B·CF官方优选90"
+      - "B·CF官方优选91"
+      - "B·CF官方优选92"
+      - "B·CF官方优选93"
+      - "B·CF官方优选94"
+      - "B·CF官方优选95"
+      - "B·CF官方优选96"
+      - "B·CF官方优选97"
+      - "B·CF官方优选98"
+      - "B·CF官方优选99"
 
   - name: "🔀 故障转移"
     type: fallback
