@@ -99,6 +99,19 @@ body.theme-dark .rd-nav{border-color:rgba(255,255,255,.22)}
 body.theme-dark .rd-slide{background:transparent;border-color:transparent}
 .rd-slide input[type=range]{display:block;width:100%;margin:0;padding:0}
 .rd-foot .rd-fi{height:47px}
+/* 书内搜索面板（复用目录面板样式） */
+.rd-find{position:fixed;right:0;top:0;bottom:0;width:86%;max-width:420px;z-index:80;
+ background:#ffffff;color:#111111;box-shadow:-3px 0 14px rgba(0,0,0,.22);overflow:hidden;
+ visibility:hidden;transform:translateX(100%);-webkit-transform:translateX(100%);
+ transition:transform .22s ease-out,visibility .22s ease-out;-webkit-transition:-webkit-transform .22s ease-out,visibility .22s ease-out}
+body.theme-dark .rd-find{background:#151515;color:#e6e6e6}
+.rd-find.show{visibility:visible;transform:translateX(0);-webkit-transform:translateX(0)}
+.rd-fcl{position:absolute;left:0;right:0;top:101px;bottom:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.rd-fi{padding:10px 12px;border-bottom:1px solid rgba(0,0,0,.07);font-size:14px;cursor:pointer;line-height:1.5}
+body.theme-dark .rd-fi{border-color:rgba(255,255,255,.08)}
+.rd-fi:active{background:rgba(0,102,204,.12)}
+.rd-fi .hit{color:#e03030;font-weight:bold}
+.rd-fi .ch{font-size:.78em;opacity:.6;display:block;margin-top:2px}
 /* 亮度遮罩 */
 .rd-dim{position:fixed;left:0;top:0;right:0;bottom:0;background:#000000;opacity:0;
  pointer-events:none;z-index:2}
@@ -181,6 +194,7 @@ body.reading #topMsg{position:fixed;left:8px;right:8px;top:8px;z-index:9;margin:
     <button class="rd-tb" id="btnBack" type="button">« 书库</button>
     <span class="rd-tt" id="rdTitle"></span>
     <button class="rd-tb r" id="btnSet" type="button">⚙</button>
+    <button class="rd-tb r" id="btnFind" type="button">🔍</button>
     <button class="rd-tb r" id="btnToc" type="button">目录</button>
    </div>
    <div class="rd-stage" id="rdStage"><div class="rd-clip" id="rdClip"><div class="rd-flow" id="rdFlow"></div></div></div>
@@ -199,6 +213,11 @@ body.reading #topMsg{position:fixed;left:8px;right:8px;top:8px;z-index:9;margin:
    <div class="rd-dh"><span id="rdTocTitle">目录</span><button class="rd-tb r" id="btnTocClose" type="button">✕</button></div>
    <div class="rd-tcw"><input id="rdTocQ" type="text" placeholder="搜索章节标题" autocomplete="off"></div>
    <div class="rd-tcl" id="rdTocList"></div>
+  </div>
+  <div class="rd-find" id="rdFind">
+   <div class="rd-dh"><span>书内搜索</span><button class="rd-tb r" id="btnFindClose" type="button">✕</button></div>
+   <div class="rd-tcw"><input id="rdFindQ" type="text" placeholder="输入关键词，回车搜索" autocomplete="off"></div>
+   <div class="rd-fcl" id="rdFindList"></div>
   </div>
   <div class="rd-set" id="rdSet">
    <div class="rd-dh"><span>阅读设置</span><button class="rd-tb r" id="btnSetClose" type="button">✕</button></div>
@@ -237,7 +256,9 @@ body.reading #topMsg{position:fixed;left:8px;right:8px;top:8px;z-index:9;margin:
    <div class="bar">
     <button class="btn" id="btnTocBack" type="button">« 返回结果</button>
     <span class="mini" id="srcBookTitle"></span>
+    <button class="btn" id="btnSwapSrc" type="button" style="display:none">换源</button>
    </div>
+   <div id="srcBookInfo" class="box" style="display:none"></div>
    <div id="srcTocList"></div>
   </div>
   <div class="rd" id="srcReadPane" style="display:none">
@@ -324,7 +345,10 @@ function show(view){
  if(v2)v2.style.display=(view==='read')?'block':'none';
  if(v3)v3.style.display=(view==='trash')?'block':'none';
  if(v4)v4.style.display=(view==='source')?'block':'none';
+ var wasRd=RD_READING;
  RD_READING=(view==='read'||view==='source')?1:0;
+ if(!wasRd&&RD_READING)statStart();
+ if(wasRd&&!RD_READING)statStop();
  var de=document.documentElement;
  if(de)de.style.overflow=RD_READING?'hidden':'';
  try{rdApply();}catch(e){}
@@ -460,7 +484,7 @@ function renderTrash(){
 function showTrash(){renderTrash();show('trash');}
 
 // ===== 书源模块（网络书源：加载自 GitHub，正文不落地） =====
-var SRCS=[],SR_RESULTS=[],SR_SEL=null,SR_CHS=[],SR_CHIDX=-1,SR_BUSY=false,SRC_SHA=null,SR_SEARCH_STOP=false,SR_FAILS=[];
+var SR_INFO={},SRCS=[],SR_RESULTS=[],SR_SEL=null,SR_CHS=[],SR_CHIDX=-1,SR_BUSY=false,SRC_SHA=null,SR_SEARCH_STOP=false,SR_FAILS=[];
 var SR_MAX=60,SR_HEALTH={},SRC_LOADED=false;
 function srHealthLoad(){
  var m=null;try{m=jsonParse(lsGet('rd_src_health')||'null');}catch(e){m=null;}
@@ -530,7 +554,7 @@ function renderSrcList(){
  }
  h+='<div class="mini">共 '+SRCS.length+' 个：可用 '+ok+' · 需 JS '+js+' · 规则不全 '+pt+'</div>';
  if(!SRCS.length){h+='<div class="mini">还没有书源。可粘贴 legado 书源 JSON 导入，或粘贴书源包链接。</div>';}
- h+='<div class="mini" style="margin:6px 0"><button type="button" class="btn" onclick="srcFilter(\'all\')">全部</button><button type="button" class="btn" onclick="srcFilter(\'ok\')">只看可用</button><button type="button" class="btn" onclick="srDelJs()">一键移除需 JS 的源</button><button type="button" class="btn" onclick="srSetMax()">搜索源数上限（'+SR_MAX+'）</button></div>';
+ h+='<div class="mini" style="margin:6px 0"><button type="button" class="btn" onclick="srcFilter(\'all\')">全部</button><button type="button" class="btn" onclick="srcFilter(\'ok\')">只看可用</button><button type="button" class="btn" onclick="srDelJs()">一键移除需 JS 的源</button><button type="button" class="btn" onclick="srSetMax()">搜索源数上限（'+SR_MAX+'）</button>'+'<button type="button" class="btn" onclick="'+(HC_RUNNING?'hcStop()':'hcRun()')+'">'+(HC_RUNNING?('停止检查（'+HC_DONE+'/'+HC_TOTAL+'）'):'健康检查全部书源')+'</button></div>';
  var shown=0;
  for(i=0;i<SRCS.length;i++){
   var s=SRCS[i];
@@ -539,6 +563,8 @@ function renderSrcList(){
   if(shown>=SR_LIST_MAX)break;
   shown++;
   var badge=lv2==='ok'?'<span style="color:#0a0">可用</span>':(lv2==='js'?'<span style="color:#c60">需 JS</span>':(lv2==='nosearch'?'<span style="color:#999">无搜索</span>':'<span style="color:#c60">规则不全</span>'));
+  var hstat=HC_HEALTH[String(s.bookSourceUrl||'')];
+  if(hstat){ badge+=(hstat.ok?' <span style="color:#0a0">✔已测通</span>':' <span style="color:#c00">✘测不通</span>'); }
   h+='<div class="doc"><span class="t" style="font-size:1em">'+esc(s.bookSourceName||s.bookSourceUrl||('书源'+(i+1)))+'</span> <span class="mini">'+badge+'</span>';
   h+='<div class="m">'+esc(s.bookSourceUrl||'')+'</div>';
   h+='<div class="row"><button type="button" class="btn" onclick="delSource('+i+')">删除</button></div></div>';
@@ -707,7 +733,7 @@ function doSrcSearch(){
   var req=rdBuildReq(ss.searchUrl,ss.bookSourceUrl||'',q);
   if(!req.url){skippedNo++;continue;}
   /* 先按“结构完整度”分层（可用 > 规则不全），层内按历史健康度 */
-  var tone=((lv==='ok')?100000:0)+srScore(ss);
+  var tone=((lv==='ok')?100000:0)+srScore(ss)*100+hcScore(ss)*1000;
   cand.push({s:ss,req:req,tone:tone});
  }
  cand.sort(function(a,b){return b.tone-a.tone;});
@@ -773,15 +799,28 @@ function doSrcSearch(){
  },120);
 }
 function srStop(){SR_SEARCH_STOP=true;}
+/* 排序 + 同名书聚合。
+ * 以前同名书直接丢掉多余的，用户不知道"其实还有 3 个源有这本"。
+ * 现在合成一条，用 srcCount 标出来源数量，sources 存全部候选，供换源用。 */
 function rankSrc(){
  var score=function(x){return x.bs?((x.bs._srcFail||0)*2-(x.bs._ok||0)):0;};
  SR_RESULTS.sort(function(a,b){return score(a)-score(b);});
- var seen={},out=[];
- for(var i=0;i<SR_RESULTS.length;i++){
-  var r=SR_RESULTS[i];
-  var key=(r.name||'')+'|'+(r.author||'');
-  if(seen[key])continue;
-  seen[key]=1;out.push(r);
+ var map={},order=[],i,r,key;
+ for(i=0;i<SR_RESULTS.length;i++){
+  r=SR_RESULTS[i];
+  key=(r.name||'')+'|'+(r.author||'');
+  if(!map[key]){
+   map[key]={name:r.name,author:r.author,url:r.url,bs:r.bs,srcName:r.srcName,sources:[r]};
+   order.push(key);
+  }else{
+   map[key].sources.push(r);
+  }
+ }
+ var out=[];
+ for(i=0;i<order.length;i++){
+  var g=map[order[i]];
+  g.srcCount=g.sources.length;
+  out.push(g);
  }
  SR_RESULTS=out;
 }
@@ -832,6 +871,7 @@ function proxyFetch(url,cb,timeoutMs,req){
   if(req.body)q+='&body='+encodeURIComponent(req.body);
   if(req.charset)q+='&charset='+encodeURIComponent(req.charset);
   if(req.headers)q+='&headers='+encodeURIComponent(jsonStr(req.headers));
+  if(req.ttl)q+='&ttl='+encodeURIComponent(String(req.ttl));
  }
  try{
   x.open('GET',q,true);
@@ -957,6 +997,10 @@ function rdStep(step){
 }
 function rdSel(body){
  body=trimS(body);var m;
+ /* 书源里常见前缀写法，去掉后才能交给 querySelectorAll：
+  *   @css:选择器   css:选择器   @css 选择器
+  * 该前缀全局有 257 处使用，不剥离会导致这些规则全部静默失效。 */
+ body=body.replace(/^@?css\s*:\s*/i,'');
  if((m=body.match(/^class\.([\s\S]+)$/)))return '.'+m[1];
  if((m=body.match(/^id\.([\s\S]+)$/)))return '#'+m[1];
  if((m=body.match(/^tag\.([\s\S]+)$/)))return m[1];
@@ -1016,7 +1060,30 @@ function rdQuery(node,body){
   return out;
  }
  if(!node.querySelectorAll)return out;
- try{list=node.querySelectorAll(rdSel(body));}catch(e){return out;}
+ /* :contains(...) 是 jQuery 扩展，原生 querySelectorAll 会直接抛 SyntaxError。
+  * 书源里用了 36 处，这里降级成「按文本过滤」的实现，避免整条规则失效。 */
+ var sels=rdSel(body),need=null,mm=sels.match(/:contains\(([^)]*)\)/);
+ if(mm){
+  need=String(mm[1]).replace(/^['"]|['"]$/g,'');
+  try{sels=sels.replace(/:contains\([^)]*\)/g,'');}catch(e){}
+ }
+ if(need!==null){
+  var pool=[];
+  if(!trimS(sels)){
+   /* 只有 :contains()，没有选择器 → 遍历全部元素再按文本筛选 */
+   var all=node.getElementsByTagName?node.getElementsByTagName('*'):[];
+   for(i=0;i<all.length;i++)pool.push(all[i]);
+  }else{
+   try{list=node.querySelectorAll(sels);}catch(e){list=null;}
+   if(list)for(i=0;i<list.length;i++)pool.push(list[i]);
+  }
+  for(i=0;i<pool.length;i++){
+   var tx=pool[i].textContent||'';
+   if(tx.indexOf(need)>=0)out.push(pool[i]);
+  }
+  return out;
+ }
+ try{list=node.querySelectorAll(sels);}catch(e){return out;}
  for(i=0;i<list.length;i++){out.push(list[i]);}
  return out;
 }
@@ -1279,28 +1346,138 @@ function parseToc(s,parsed,base){
  return out;
 }
 
+/* 从书籍页解析详情（同一份 HTML，零额外请求） */
+function parseBookInfo(s,parsed,base){
+ var bi=s.ruleBookInfo||{};
+ var out={cover:'',intro:'',kind:'',lastChapter:'',wordCount:'',name:'',author:''};
+ if(!parsed||!parsed.doc)return out;
+ function one(rule){
+  if(!rule)return '';
+  try{ return rdText(rule,parsed.doc,false,''); }catch(e){ return ''; }
+ }
+ out.cover=rdUrl(bi.coverUrl||'',parsed.doc,base)||'';
+ out.intro=one(bi.intro||'');
+ out.kind=one(bi.kind||'');
+ out.lastChapter=one(bi.lastChapter||'');
+ out.wordCount=one(bi.wordCount||'');
+ out.name=one(bi.name||'');
+ out.author=one(bi.author||'');
+ if(out.intro&&out.intro.length>400)out.intro=out.intro.slice(0,400)+'…';
+ return out;
+}
+
+/* 目录分页：识别 ruleToc.nextTocUrl，循环抓取后续目录页（上限 20 页）。
+ * 很多站的目录被切成多页，只读第一页会丢大量章节——这是真实缺陷而非优化项。 */
+var RD_TOC_MAXPAGE=20;
+
+/* 从已解析的目录页里取出「下一页目录」的候选地址（可能多个，规则常返回整组页码）
+ * 返回数组；取不到返回空数组。 */
+function nextTocUrl(s,parsed,base){
+ var rule=(s.ruleToc&&s.ruleToc.nextTocUrl)||'';
+ var out=[],i,u;
+ if(!rule)return out;
+ if(parsed&&parsed.json!==undefined&&parsed.json!==null&&rdJsonIsRule(rule)){
+  var ja=rdJsonQ(rule,parsed.json)||[];
+  for(i=0;i<ja.length;i++){
+   u=trimS(ja[i]===undefined||ja[i]===null?'':String(ja[i]));
+   if(u)out.push(fullUrl(u,base));
+  }
+  return out;
+ }
+ if(!parsed||!parsed.doc)return out;
+ /* 先试「取整组节点」：页码链接常是多个 <a>，只要第一个会点错方向 */
+ var nodes=rdList(rule,parsed.doc);
+ if(nodes&&nodes.length){
+  for(i=0;i<nodes.length;i++){
+   var n=nodes[i],a='';
+   if(n&&n.getAttribute){a=n.getAttribute('href')||n.getAttribute('src')||'';}
+   u=trimS(a||(n?rdVal(n,'text'):''));
+   if(u&&u.indexOf('javascript:')!==0)out.push(fullUrl(u,base));
+  }
+  if(out.length)return out;
+ }
+ u=rdUrl(rule,parsed.doc,base);
+ if(u)out.push(u);
+ return out;
+}
+
+/* 从候选里挑「还没访问过」的下一个目录页；都访问过返回 '' */
+function tocPickNext(cands,visited){
+ var i,u;
+ for(i=0;i<(cands?cands.length:0);i++){
+  u=trimS(cands[i]);
+  if(!u)continue;
+  if(visited&&visited[u])continue;
+  return u;
+ }
+ return '';
+}
+
 function openBook(item){
  if(SR_BUSY)return;
  SR_BUSY=true;msg('打开书籍...',true);
  var s=item.bs,bookUrl=item.url;
+
+ /* 目录收集：首屏目录 + nextTocUrl 逐页续抓（串行、去重、封顶 RD_TOC_MAXPAGE 页）
+  * 章节按 URL 去重，避免分页站首尾页重叠导致目录出现重复条目。 */
+ function collectToc(first,parsed,base,done){
+  var acc=first||[],seenUrl={},i;
+  for(i=0;i<acc.length;i++){if(acc[i]&&acc[i].url)seenUrl[acc[i].url]=1;}
+  var pageSeen={};pageSeen[base]=1;
+  var pageNo=1;
+  function step(parsed2,base2){
+   var cands;
+   try{cands=nextTocUrl(s,parsed2,base2);}catch(e){cands=[];}
+   var nxt=tocPickNext(cands,pageSeen);
+   if(!nxt||pageNo>=RD_TOC_MAXPAGE){finish();return;}
+   pageSeen[nxt]=1;pageNo++;
+   msg('正在抓取目录第 '+pageNo+' 页（已收集 '+acc.length+' 章）…',true);
+   proxyFetch(nxt,function(err,text,fu){
+    if(err){finish();return;}
+    var p2;
+    try{p2=rdParse(text);}catch(e){finish();return;}
+    var add=[];
+    try{add=parseToc(s,p2,fu||nxt);}catch(e){add=[];}
+    if(!add.length){finish();return;}
+    var k,added=0;
+    for(k=0;k<add.length;k++){
+     var u=add[k]&&add[k].url;
+     if(!u||seenUrl[u])continue;
+     seenUrl[u]=1;acc.push(add[k]);added++;
+    }
+    /* 整页都是重复内容 → 说明分页到头（或站点做了重定向），停止以免死循环 */
+    if(!added){finish();return;}
+    step(p2,fu||nxt);
+   },20000);
+  }
+  function finish(){
+   SR_BUSY=false;SR_SEL=item;SR_CHS=acc;
+   if(acc.length){msg('');renderSrcToc();showSrcToc();}
+   else{msg('未解析到目录（规则不匹配，可换其他书源结果）');}
+  }
+  step(parsed,base);
+ }
+
  proxyFetch(bookUrl,function(err,text,finalUrl){
   if(err){SR_BUSY=false;msg('打开失败：'+err.message);return;}
   var parsed=rdParse(text);
   if(!parsed.doc&&parsed.json===undefined){SR_BUSY=false;msg('页面解析失败');return;}
   var base=finalUrl||bookUrl;
+  try{ SR_INFO=parseBookInfo(s,parsed,base); }catch(e){ SR_INFO={}; }
   var chs=parseToc(s,parsed,base);
-  if(chs.length){SR_BUSY=false;SR_SEL=item;SR_CHS=chs;msg('');renderSrcToc();showSrcToc();return;}
+  /* 首屏就有目录：仍要检查是否有下一页目录 */
+  if(chs.length){collectToc(chs,parsed,base);return;}
   var tocRule=(s.ruleBookInfo&&s.ruleBookInfo.tocUrl)||'';
   if(tocRule&&parsed.doc){
    var tocUrl=rdUrl(tocRule,parsed.doc,base);
    if(tocUrl){
     proxyFetch(tocUrl,function(err2,text2,finalUrl2){
-     SR_BUSY=false;
-     if(err2){msg('目录页抓取失败：'+err2.message);return;}
+     if(err2){SR_BUSY=false;msg('目录页抓取失败：'+err2.message);return;}
      var parsed2=rdParse(text2);
-     var chs2=parseToc(s,parsed2,finalUrl2||tocUrl);
-     if(chs2.length){SR_SEL=item;SR_CHS=chs2;msg('');renderSrcToc();showSrcToc();}
-     else{msg('未解析到目录（规则不匹配，可换其他书源结果）');}
+     var base2=finalUrl2||tocUrl;
+     var chs2=parseToc(s,parsed2,base2);
+     if(!chs2.length){SR_BUSY=false;SR_SEL=item;SR_CHS=[];msg('未解析到目录（规则不匹配，可换其他书源结果）');return;}
+     collectToc(chs2,parsed2,base2);
     },20000);
     return;
    }
@@ -1308,32 +1485,572 @@ function openBook(item){
   SR_BUSY=false;msg('未解析到目录（规则不匹配，可换其他书源结果）');
  });
 }
+/* ===================== 章节缓存与预取 =====================
+ * 三层加速：
+ *   1) 内存缓存（当前书，翻回瞬时）
+ *   2) 持久化缓存（localStorage，重开仍命中，LRU 淘汰）
+ *   3) 服务端 KV（经 proxy 的 ttl 参数，跨设备共享）
+ * 预取策略：下章优先、串行补齐、失败退避，避免触发站点风控。
+ */
+var CH_CACHE={};          /* key: 书的 bookUrl + '#' + 章节序号 → 正文 */
+var CH_KEY_PREFIX='rd_ch_';
+var CH_LS_MAX=60;         /* 持久化最多保留多少章 */
+var CH_LS_INDEX='rd_ch_idx';
+var PREFETCH_NUM=3;       /* 预先抓取后续几章 */
+var PREFETCH_GAP=320;     /* 章间间隔 ms，降低风控概率 */
+var pfTimer=null, pfQueue=[], pfRunning=false, pfFail={};
+
+function chKey(url,i){return String(url||'')+'#'+i;}
+function chGet(url,i){
+ var k=chKey(url,i);
+ if(CH_CACHE[k])return CH_CACHE[k];
+ try{
+  var v=lsGet(CH_KEY_PREFIX+k);
+  if(v){CH_CACHE[k]=v;return v;}
+ }catch(e){}
+ return null;
+}
+function chPut(url,i,body){
+ var k=chKey(url,i);
+ CH_CACHE[k]=body;
+ try{
+  lsSet(CH_KEY_PREFIX+k,body);
+  var idx=jsonParse(lsGet(CH_LS_INDEX)||'[]');
+  if(!(idx instanceof Array))idx=[];
+  var p=idx.indexOf(k);
+  if(p>=0)idx.splice(p,1);
+  idx.push(k);
+  while(idx.length>CH_LS_MAX){
+   var old=idx.shift();
+   try{localStorage.removeItem(CH_KEY_PREFIX+old);}catch(e){}
+  }
+  lsSet(CH_LS_INDEX,jsonStr(idx));
+ }catch(e){}
+}
+function chClear(){
+ CH_CACHE={};
+ var idx=jsonParse(lsGet(CH_LS_INDEX)||'[]');
+ if(idx instanceof Array){
+  for(var i=0;i<idx.length;i++){
+   try{localStorage.removeItem(CH_KEY_PREFIX+idx[i]);}catch(e){}
+  }
+ }
+ lsSet(CH_LS_INDEX,'[]');
+}
+
+/* 抓一章正文（不渲染），供预取复用 */
+function fetchChapterBody(s,ch,cb){
+ var key=s.bookSourceUrl+'|'+ch.url;
+ if(pfFail[key]&&(new Date().getTime()-pfFail[key])<120000){cb(new Error('skipped'),null);return;}
+ proxyFetch(ch.url,function(err,text,finalUrl){
+  if(err){pfFail[key]=new Date().getTime();cb(err);return;}
+  var parsed;
+  try{parsed=rdParse(text);}catch(e){cb(e);return;}
+  if(!parsed.doc&&parsed.json===undefined){cb(new Error('parse'));return;}
+  var body='';
+  try{body=rdContentText((s.ruleContent||{}).content||'',parsed.doc||parsed.json);}catch(e){}
+  if(!body){pfFail[key]=new Date().getTime();cb(new Error('empty'));return;}
+  body=body.replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n');
+  cb(null,body);
+ },20000,{ttl:86400});
+}
+
+/* 预取后续章节：串行，避免并发过高压垮站点/触发风控 */
+function prefetchFrom(i){
+ if(pfTimer){try{clearTimeout(pfTimer);}catch(e){}pfTimer=null;}
+ pfQueue=[];
+ if(!SR_SEL)return;
+ var s=SR_SEL.bs;
+ for(var n=1;n<=PREFETCH_NUM;n++){
+  var idx=i+n;
+  if(idx>=SR_CHS.length)break;
+  if(chGet(SR_SEL.bs.bookSourceUrl,idx))continue;
+  pfQueue.push(idx);
+ }
+ if(!pfQueue.length)return;
+ runPrefetch();
+}
+function runPrefetch(){
+ if(pfRunning||!pfQueue.length||!SR_SEL)return;
+ pfRunning=true;
+ var idx=pfQueue.shift();
+ var s=SR_SEL.bs;
+ fetchChapterBody(s,SR_CHS[idx],function(err,body){
+  if(!err&&body)chPut(s.bookSourceUrl,idx,body);
+  pfRunning=false;
+  if(pfQueue.length){pfTimer=setTimeout(runPrefetch,PREFETCH_GAP);}
+ });
+}
+
+/* ===================== 书内搜索 =====================
+ * 在完整正文里找关键词，结果按「第几章 · 百分比」展示，点击直接跳转。
+ * 位置统一用字符偏移（abs），不依赖页码（页码会随字号/屏幕变化）。
+ */
+var FIND_MAX=200;
+if(typeof rdFindOpen==='function'){}
+function rdFindOpen(){
+ if(!CONTENT){msg('当前没有正文');return;}
+ var p=$('rdFind');if(!p)return;
+ p.classList.add('show');
+ var m=$('rdMask');if(m)m.className='rd-mask show';
+ RD_DRAW='find';
+ setTimeout(function(){var q=$('rdFindQ');if(q){q.focus();}},120);
+}
+function rdFindDo(){
+ var q=trimS(val('rdFindQ'));
+ var list=$('rdFindList');
+ if(!list)return;
+ if(!q){list.innerHTML='<div class="mini" style="padding:12px">输入关键词后回车</div>';return;}
+ var text=CONTENT||'';
+ var hits=[],from=0,idx,n=0;
+ while(hits.length<FIND_MAX){
+  idx=text.indexOf(q,from);
+  if(idx<0)break;
+  hits.push(idx);
+  from=idx+q.length;
+  n++;
+ }
+ if(!hits.length){list.innerHTML='<div class="mini" style="padding:12px">没有找到「'+esc(q)+'」</div>';return;}
+ var h='<div class="mini" style="padding:8px 12px">找到 '+hits.length+(n>=FIND_MAX?'+':'')+' 处</div>';
+ for(var i=0;i<hits.length;i++){
+  var pos=hits[i];
+  var s0=Math.max(0,pos-28), s1=Math.min(text.length,pos+q.length+28);
+  var before=text.substring(s0,pos);
+  var mid=text.substring(pos,pos+q.length);
+  var after=text.substring(pos+q.length,s1);
+  var chap=rdSegTitleAt(pos);
+  var pct=Math.round(pos*1000/text.length)/10;
+  h+='<div class="rd-fi" data-pos="'+pos+'">';
+  h+='<span class="ch">'+esc(chap)+' · '+pct+'%</span>';
+  h+=(s0>0?'…':'')+esc(before)+'<span class="hit">'+esc(mid)+'</span>'+esc(after)+(s1<text.length?'…':'');
+  h+='</div>';
+ }
+ list.innerHTML=h;
+ var items=list.getElementsByTagName('div');
+ for(var j=0;j<items.length;j++){
+  (function(node){
+   if(!node.getAttribute('data-pos'))return;
+   on(node,'click',function(){
+    rdCloseDrawers();
+    var pos=parseInt(node.getAttribute('data-pos'),10);
+    if(VIEW.doc&&VIEW.doc.gotoAbs)VIEW.doc.gotoAbs(pos,true);
+    rdShowUI(1);
+   });
+  })(items[j]);
+ }
+}
+/* 给定字符位置，找出属于哪一章（用正文内的章节标题近似） */
+function rdSegTitleAt(pos){
+ var toc=rdBuiltToc(rdBuildSegs(CONTENT||''));
+ var best='';
+ for(var i=0;i<toc.length;i++){
+  if(toc[i].pos<=pos)best=toc[i].t||'';
+  else break;
+ }
+ return best||'开头';
+}
+
+/* ===================== 书签 ===================== */
+var BM_KEY='rd_bm';
+function bmLoad(){
+ var a=jsonParse(lsGet(BM_KEY)||'[]');
+ return (a instanceof Array)?a:[];
+}
+function bmSave(a){try{lsSet(BM_KEY,jsonStr(a));}catch(e){}}
+function bmDocId(){return (CUR&&CUR.id)?CUR.id:'';}
+function bmAdd(){
+ if(!VIEW.doc||!VIEW.doc.doc){msg('当前没有可标记的内容');return;}
+ var abs=VIEW.doc.abs?VIEW.doc.abs():0;
+ var list=bmLoad();
+ var title=(VIEW.doc.defTitle||CUR.title||'')+'';
+ var item={doc:bmDocId(),abs:abs,pct:0,t:title,bm:(VIEW.doc.segs&&VIEW.doc.segs[VIEW.doc.seg]?VIEW.doc.segs[VIEW.doc.seg].t:''),ts:new Date().getTime()};
+ item.pct=Math.round(abs*1000/(VIEW.doc.doc.length||1))/10;
+ for(var i=0;i<list.length;i++){
+  if(list[i].doc===item.doc&&Math.abs(list[i].abs-item.abs)<200){msg('这个位置已有书签');return;}
+ }
+ list.push(item);
+ bmSave(list);
+ msg('✅ 已添加书签（'+item.pct+'%）');
+}
+function bmListForDoc(){
+ var all=bmLoad(),out=[],d=bmDocId();
+ for(var i=0;i<all.length;i++){if(all[i].doc===d)out.push(all[i]);}
+ out.sort(function(a,b){return a.abs-b.abs;});
+ return out;
+}
+function bmGoto(abs){
+ if(VIEW.doc&&VIEW.doc.gotoAbs)VIEW.doc.gotoAbs(abs,true);
+ rdCloseDrawers();
+ rdShowUI(1);
+}
+function bmDel(idx){
+ var all=bmLoad(),d=bmDocId(),out=[],k=0;
+ for(var i=0;i<all.length;i++){
+  if(all[i].doc===d){ if(k===idx){k++;continue;} k++; }
+  out.push(all[i]);
+ }
+ bmSave(out);
+ msg('已删除书签');
+}
+
+/* ===================== 笔记 ===================== */
+var NOTE_KEY='rd_notes';
+function noteLoad(){
+ var a=jsonParse(lsGet(NOTE_KEY)||'[]');
+ return (a instanceof Array)?a:[];
+}
+function noteSave(a){try{lsSet(NOTE_KEY,jsonStr(a));}catch(e){}}
+function noteAddFromSelection(){
+ if(!VIEW.doc||!VIEW.doc.doc){msg('当前没有正文');return;}
+ var sel='';
+ try{ if(window.getSelection)sel=String(window.getSelection()).replace(/\s+/g,' ').trim(); }catch(e){}
+ if(!sel){msg('请先选中一段文字');return;}
+ if(sel.length>500)sel=sel.slice(0,500);
+ var n=prompt('为这段文字加个备注（可留空直接保存摘录）：','');
+ if(n===null)return;
+ var abs=VIEW.doc.abs?VIEW.doc.abs():0;
+ var list=noteLoad();
+ list.push({doc:bmDocId(),abs:abs,pct:Math.round(abs*1000/(VIEW.doc.doc.length||1))/10,quote:sel,note:trimS(n)||'',ts:new Date().getTime()});
+ noteSave(list);
+ try{window.getSelection().removeAllRanges();}catch(e){}
+ msg('✅ 已记下笔记');
+}
+function notesForDoc(){
+ var all=noteLoad(),out=[],d=bmDocId();
+ for(var i=0;i<all.length;i++){if(all[i].doc===d)out.push(all[i]);}
+ out.sort(function(a,b){return b.ts-a.ts;});
+ return out;
+}
+
+/* ===================== 阅读统计 ===================== */
+var STAT_KEY='rd_stat';
+var statT0=0,statAcc=0;
+function statToday(){
+ var d=new Date();
+ function p(n){return (n<10?'0':'')+n;}
+ return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
+}
+function statLoad(){
+ var o=jsonParse(lsGet(STAT_KEY)||'{}');
+ return (o&&typeof o==='object'&&!(o instanceof Array))?o:{};
+}
+function statSave(o){try{lsSet(STAT_KEY,jsonStr(o));}catch(e){}}
+function statTick(){
+ if(!statT0)return;
+ var now=new Date().getTime();
+ var d=now-statT0;
+ statT0=now;
+ if(d<=0||d>60000)return;   /* 超过 1 分钟视为挂起，不计入 */
+ statAcc+=d;
+ if(statAcc>=30000){
+  var o=statLoad(),k=statToday();
+  if(!o[k])o[k]={ms:0,chars:0};
+  o[k].ms+=statAcc;
+  statAcc=0;
+  statSave(o);
+ }
+}
+function statStart(){statT0=new Date().getTime();}
+function statStop(){statTick();statT0=0;}
+function statSummary(){
+ var o=statLoad(),keys=[],k,i;
+ for(k in o){if(o.hasOwnProperty(k))keys.push(k);}
+ keys.sort();
+ var total=0,days=0;
+ for(i=0;i<keys.length;i++){total+=o[keys[i]].ms||0;days++;}
+ function fmt(ms){
+  var m=Math.floor(ms/60000);
+  if(m<60)return m+' 分钟';
+  var h=Math.floor(m/60),r=m%60;
+  return h+' 小时'+(r?r+' 分':'');
+ }
+ return {days:days,total:fmt(total),today:(o[statToday()]?fmt(o[statToday()].ms||0):'0 分钟')};
+}
+
+/* ===================== 简繁转换（常用字表） ===================== */
+/* 简繁转换：字表取自 OpenCC STCharacters（简→繁），2712 条单字映射。
+ * 单字映射存在歧义（发→發/髮、干→乾/幹），因此先用一张小词组表修正常见词，
+ * 再逐字转换。数据内嵌，不依赖网络。 */
+var S2T_PHRASE=[
+ ['头发','頭髮'],['理发','理髮'],['发型','髮型'],['长发','長髮'],['短发','短髮'],['白发','白髮'],
+ ['干活','幹活'],['才干','才幹'],['干吗','幹嗎'],['主干','主幹'],['树干','樹幹'],
+ ['里面','裏面'],['心里','心裏'],['家里','家裏'],['公里','公里'],
+ ['面条','麵條'],['面包','麵包'],['面粉','麵粉']
+];
+/* 词组表索引：最长匹配优先（当前最长 2 字，扫描成本可忽略） */
+var S2T_PMAP={},S2T_PLEN=2;
+(function(){
+ var i,k;
+ for(i=0;i<S2T_PHRASE.length;i++){
+  k=S2T_PHRASE[i][0];
+  S2T_PMAP[k]=S2T_PHRASE[i][1];
+  if(k.length>S2T_PLEN)S2T_PLEN=k.length;
+ }
+})();
+var S2T_MAP={};
+(function(){
+ var pairs='㐷傌㐹㑶㐽偑㑇㑳㑈倲㑔㑯㑩儸㓥劏㓰劃㔉劚㖊噚㖞喎㘎㘚㚯㜄㛀媰㛣㜏㛤孋㟆㠏㟥嵾㡎幓㤘㥮㤽懤㥪慺㧏掆㧐㩳㧑撝㧟擓㧰擽㨫㩜㭎棡㭏椲㭤樢㭴樫㱩殰㱮殨㲿瀇㳔濧㳕灡㳠澾㳡濄㳽瀰㴋潚㶉鸂㶶燶㶽煱㺍獱㻅璯䀥䁻䁖瞜䂵碽䃅磾䅉稏䅟穇䇲筴䉤籔䌶䊷䌷紬䌸縳䌹絅䌺䋙䌻䋚䌼綐䌽綵䌾䋻䌿䋹䍀繿䍁繸䍠䍦䎬䎱䏝膞䓓薵䓕薳䓖藭䓨罃䗖螮䙌䙡䙓襬䜣訢䜤鿁䜧䜀䜩讌䝙貙䞍䝼䞐賰䟢躎䥺釾䥽鏺䥾䥱䦂䥇䦃鐯䦅鐥䦆钁䦶䦛䦷䦟䩄靦䯄騧䯅䯀䲝䱽䲟鮣䲠鰆䲡鰌䲢鰧䲣䱷䴓鳾䴔鵁䴕鴷䴖鶄䴗鶪䴘鷉䴙鸊䶮龑万萬与與丑醜专專业業丛叢东東丝絲丢丟两兩严嚴丧喪个個丰豐临臨为爲丽麗举舉么麼义義乌烏乐樂乔喬习習乡鄉书書买買乱亂争爭于於亏虧云雲亘亙亚亞产產亩畝亲親亵褻亸嚲亿億仅僅仆僕从從仑侖仓倉仪儀们們价價众衆优優伙夥会會伛傴伞傘伟偉传傳伡俥伣俔伤傷伥倀伦倫伧傖伪僞伫佇体體余餘佣傭佥僉侠俠侣侶侥僥侦偵侧側侨僑侩儈侪儕侬儂侭儘俣俁俦儔俨儼俩倆俪儷俫倈俭儉债債倾傾偬傯偻僂偾僨偿償傤儎傥儻傧儐储儲傩儺儿兒兑兌兖兗党黨兰蘭关關兴興兹茲养養兽獸冁囅内內冈岡册冊写寫军軍农農冯馮冲衝决決况況冻凍净淨凄悽准準凉涼减減凑湊凛凜几幾凤鳳凫鳧凭憑凯凱凶兇击擊凿鑿刍芻划劃刘劉则則刚剛创創删刪别別刬剗刭剄刹剎刽劊刾㓨刿劌剀剴剂劑剐剮剑劍剥剝剧劇劝勸办辦务務劢勱动動励勵劲勁劳勞势勢勋勳勚勩匀勻匦匭匮匱区區医醫华華协協单單卖賣占佔卢盧卤滷卧臥卫衛却卻卺巹厂廠厅廳历歷厉厲压壓厌厭厍厙厐龎厕廁厘釐厢廂厣厴厦廈厨廚厩廄厮廝县縣叁叄参參叆靉叇靆双雙发發变變叙敘叠疊台臺叶葉号號叹嘆叽嘰吁籲吃喫后後吓嚇吕呂吗嗎吨噸听聽启啓吴吳呐吶呒嘸呓囈呕嘔呖嚦呗唄员員呙咼呛嗆呜嗚咏詠咙嚨咛嚀咝噝咤吒咨諮咸鹹响響哑啞哒噠哓嘵哔嗶哕噦哗譁哙噲哜嚌哝噥哟喲唇脣唛嘜唝嗊唠嘮唡啢唢嗩唤喚啧嘖啬嗇啭囀啮齧啯嘓啰囉啴嘽啸嘯喷噴喽嘍喾嚳嗫囁嗳噯嘘噓嘤嚶嘱囑噜嚕嚣囂团團园園囱囪围圍囵圇国國图圖圆圓圣聖圹壙场場坏壞块塊坚堅坛壇坜壢坝壩坞塢坟墳坠墜垄壟垅壠垆壚垒壘垦墾垩堊垫墊垭埡垯墶垱壋垲塏垴堖埘塒埙壎埚堝堑塹堕墮塆壪墙牆壮壯声聲壳殼壶壺壸壼处處备備复復够夠头頭夸誇夹夾夺奪奁奩奂奐奋奮奖獎奥奧妆妝妇婦妈媽妩嫵妪嫗妫嬀姗姍姹奼娄婁娅婭娆嬈娇嬌娈孌娱娛娲媧娴嫺婳嫿婴嬰婵嬋婶嬸媪媼媭嬃嫒嬡嫔嬪嫱嬙嬷嬤孙孫学學孪孿宁寧宝寶实實宠寵审審宪憲宫宮宽寬宾賓寝寢对對寻尋导導寿壽将將尔爾尘塵尝嘗尧堯尴尷尸屍尽盡层層屃屓屉屜届屆属屬屡屢屦屨屿嶼岁歲岂豈岖嶇岗崗岘峴岚嵐岛島岩巖岭嶺岳嶽岽崬岿巋峃嶨峄嶧峡峽峣嶢峤嶠峥崢峦巒峰峯崂嶗崃崍崄嶮崭嶄嵘嶸嵚嶔嵝嶁巅巔巩鞏巯巰币幣帅帥师師帏幃帐帳帘簾帜幟带帶帧幀帮幫帱幬帻幘帼幗幂冪干幹并並广廣庄莊庆慶床牀庐廬庑廡库庫应應庙廟庞龐废廢庼廎廪廩开開异異弃棄弑弒张張弥彌弪弳弯彎弹彈强強归歸当當录錄彟彠彦彥彨彲彻徹征徵径徑徕徠忆憶忏懺忧憂忾愾怀懷态態怂慫怃憮怄慪怅悵怆愴怜憐总總怼懟怿懌恋戀恒恆恳懇恶惡恸慟恹懨恺愷恻惻恼惱恽惲悦悅悫愨悬懸悭慳悮悞悯憫惊驚惧懼惨慘惩懲惫憊惬愜惭慚惮憚惯慣愠慍愤憤愦憒愿願慑懾慭憖懑懣懒懶懔懍戆戇戋戔戏戲戗戧战戰戬戩戯戱户戶扑撲执執扩擴扪捫扫掃扬揚扰擾抚撫抛拋抟摶抠摳抡掄抢搶护護报報担擔拟擬拢攏拣揀拥擁拦攔拧擰拨撥择擇挂掛挚摯挛攣挜掗挝撾挞撻挟挾挠撓挡擋挢撟挣掙挤擠挥揮挦撏捝挩捞撈损損捡撿换換捣搗据據掳擄掴摑掷擲掸撣掺摻掼摜揽攬揾搵揿撳搀攙搁擱搂摟搄揯搅攪携攜摄攝摅攄摆擺摇搖摈擯摊攤撄攖撑撐撵攆撷擷撸擼撺攛擜㩵擞擻攒攢敌敵敚敓敛斂敩斆数數斋齋斓斕斗鬥斩斬断斷无無旧舊时時旷曠旸暘昙曇昵暱昼晝昽曨显顯晋晉晒曬晓曉晔曄晕暈晖暉暂暫暧曖术術朴樸机機杀殺杂雜权權杠槓条條来來杨楊杩榪杰傑极極构構枞樅枢樞枣棗枥櫪枧梘枨棖枪槍枫楓枭梟柜櫃柠檸柽檉栀梔栅柵标標栈棧栉櫛栊櫳栋棟栌櫨栎櫟栏欄树樹栖棲样樣栾欒桠椏桡橈桢楨档檔桤榿桥橋桦樺桧檜桨槳桩樁桪樳梦夢梼檮梾棶梿槤检檢棁梲棂欞椁槨椝槼椟櫝椠槧椢槶椤欏椫樿椭橢椮槮楼樓榄欖榅榲榇櫬榈櫚榉櫸榝樧槚檟槛檻槟檳槠櫧横橫樯檣樱櫻橥櫫橱櫥橹櫓橼櫞檩檁欢歡欤歟欧歐歼殲殁歿殇殤残殘殒殞殓殮殚殫殡殯殴毆毁毀毂轂毕畢毙斃毡氈毵毿氇氌气氣氢氫氩氬氲氳汇匯汉漢汤湯汹洶沄澐沟溝没沒沣灃沤漚沥瀝沦淪沧滄沨渢沩潙沪滬泞濘泪淚泶澩泷瀧泸瀘泺濼泻瀉泼潑泽澤泾涇洁潔洒灑洼窪浃浹浅淺浆漿浇澆浈湞浉溮浊濁测測浍澮济濟浏瀏浐滻浑渾浒滸浓濃浔潯浕濜涂塗涌湧涚涗涛濤涝澇涞淶涟漣涠潿涡渦涢溳涣渙涤滌润潤涧澗涨漲涩澀淀澱渊淵渌淥渍漬渎瀆渐漸渑澠渔漁渖瀋渗滲温溫游遊湾灣湿溼溁濚溃潰溅濺溆漵溇漊滗潷滚滾滞滯滟灩滠灄满滿滢瀅滤濾滥濫滦灤滨濱滩灘滪澦潆瀠潇瀟潋瀲潍濰潜潛潴瀦澛瀂澜瀾濑瀨濒瀕灏灝灭滅灯燈灵靈灶竈灾災灿燦炀煬炉爐炖燉炜煒炝熗点點炼煉炽熾烁爍烂爛烃烴烛燭烟煙烦煩烧燒烨燁烩燴烫燙烬燼热熱焕煥焖燜焘燾煴熅熏燻爱愛爷爺牍牘牦犛牵牽牺犧犊犢状狀犷獷犸獁犹猶狈狽狝獮狞獰独獨狭狹狮獅狯獪狰猙狱獄狲猻猃獫猎獵猕獼猡玀猪豬猫貓猬蝟献獻獭獺玑璣玙璵玚瑒玛瑪玮瑋环環现現玱瑲玺璽珐琺珑瓏珰璫珲琿琎璡琏璉琐瑣琼瓊瑶瑤瑷璦瑸璸璎瓔瓒瓚瓮甕瓯甌电電画畫畅暢畴疇疖癤疗療疟瘧疠癘疡瘍疬癧疭瘲疮瘡疯瘋疱皰疴痾痈癰痉痙痒癢痖瘂痨癆痪瘓痫癇痴癡瘅癉瘆瘮瘗瘞瘘瘻瘪癟瘫癱瘾癮瘿癭癞癩癣癬癫癲皂皁皑皚皱皺皲皸盏盞盐鹽监監盖蓋盗盜盘盤眍瞘眦眥眬矓睁睜睐睞睑瞼瞆瞶瞒瞞瞩矚矫矯矶磯矾礬矿礦砀碭码碼砖磚砗硨砚硯砜碸砺礪砻礱砾礫础礎硁硜硕碩硖硤硗磽硙磑硚礄确確硵磠碍礙碛磧碜磣碱鹼礼禮祃禡祎禕祢禰祯禎祷禱祸禍禀稟禄祿禅禪离離秃禿秆稈种種秘祕积積称稱秽穢秾穠稆穭税稅稣穌稳穩穑穡穞穭穷窮窃竊窍竅窎窵窑窯窜竄窝窩窥窺窦竇窭窶竖豎竞競笃篤笋筍笔筆笕筧笺箋笼籠笾籩筑築筚篳筛篩筜簹筝箏筹籌筼篔签籤筿篠简簡箓籙箦簀箧篋箨籜箩籮箪簞箫簫篑簣篓簍篮籃篯籛篱籬簖籪籁籟籴糴类類籼秈粜糶粝糲粤粵粪糞粮糧粽糉糁糝糇餱糍餈紧緊絷縶緼縕縆緪纟糹纠糾纡紆红紅纣紂纤纖纥紇约約级級纨紈纩纊纪紀纫紉纬緯纭紜纮紘纯純纰紕纱紗纲綱纳納纴紝纵縱纶綸纷紛纸紙纹紋纺紡纻紵纼紖纽紐纾紓线線绀紺绁紲绂紱练練组組绅紳细細织織终終绉縐绊絆绋紼绌絀绍紹绎繹经經绐紿绑綁绒絨结結绔絝绕繞绖絰绗絎绘繪给給绚絢绛絳络絡绝絕绞絞统統绠綆绡綃绢絹绣繡绤綌绥綏绦絛继繼绨綈绩績绪緒绫綾绬緓续續绮綺绯緋绰綽绱鞝绲緄绳繩维維绵綿绶綬绷繃绸綢绹綯绺綹绻綣综綜绽綻绾綰绿綠缀綴缁緇缂緙缃緗缄緘缅緬缆纜缇緹缈緲缉緝缊縕缋繢缌緦缍綞缎緞缏緶缐線缑緱缒縋缓緩缔締缕縷编編缗緡缘緣缙縉缚縛缛縟缜縝缝縫缞縗缟縞缠纏缡縭缢縊缣縑缤繽缥縹缦縵缧縲缨纓缩縮缪繆缫繅缬纈缭繚缮繕缯繒缰繮缱繾缲繰缳繯缴繳缵纘罂罌网網罗羅罚罰罢罷罴羆羁羈羟羥羡羨群羣翘翹翙翽翚翬耢耮耧耬耸聳耻恥聂聶聋聾职職聍聹联聯聩聵聪聰肃肅肠腸肤膚肮骯肴餚肾腎肿腫胀脹胁脅胆膽胜勝胧朧胨腖胪臚胫脛胶膠脉脈脍膾脏髒脐臍脑腦脓膿脔臠脚腳脱脫脶腡脸臉腊臘腌醃腘膕腭齶腻膩腼靦腽膃腾騰膑臏膻羶臜臢舆輿舣艤舰艦舱艙舻艫艰艱艳豔艺藝节節芈羋芗薌芜蕪芦蘆苁蓯苇葦苈藶苋莧苌萇苍蒼苎苧苏蘇苧薴苹蘋范範茎莖茏蘢茑蔦茔塋茕煢茧繭荆荊荐薦荙薘荚莢荛蕘荜蓽荝萴荞蕎荟薈荠薺荡蕩荣榮荤葷荥滎荦犖荧熒荨蕁荩藎荪蓀荫蔭荬蕒荭葒荮葤药藥莅蒞莱萊莲蓮莳蒔莴萵莶薟获獲莸蕕莹瑩莺鶯莼蓴萚蘀萝蘿萤螢营營萦縈萧蕭萨薩葱蔥蒀蒕蒇蕆蒉蕢蒋蔣蒌蔞蒏醟蓝藍蓟薊蓠蘺蓣蕷蓥鎣蓦驀蔂虆蔷薔蔹蘞蔺藺蔼藹蕰薀蕲蘄蕴蘊薮藪藓蘚藴蘊蘖櫱虏虜虑慮虚虛虫蟲虬虯虮蟣虱蝨虽雖虾蝦虿蠆蚀蝕蚁蟻蚂螞蚃蠁蚕蠶蚝蠔蚬蜆蛊蠱蛎蠣蛏蟶蛮蠻蛰蟄蛱蛺蛲蟯蛳螄蛴蠐蜕蛻蜗蝸蜡蠟蝇蠅蝈蟈蝉蟬蝎蠍蝼螻蝾蠑螀螿螨蟎蟏蠨衅釁衔銜补補衬襯衮袞袄襖袅嫋袆褘袜襪袭襲袯襏装裝裆襠裈褌裢褳裣襝裤褲裥襉褛褸褴襤襕襴见見观觀觃覎规規觅覓视視觇覘览覽觉覺觊覬觋覡觌覿觍覥觎覦觏覯觐覲觑覷觞觴触觸觯觶訚誾詟讋誉譽誊謄讠訁计計订訂讣訃认認讥譏讦訐讧訌讨討让讓讪訕讫訖讬託训訓议議讯訊记記讱訒讲講讳諱讴謳讵詎讶訝讷訥许許讹訛论論讻訩讼訟讽諷设設访訪诀訣证證诂詁诃訶评評诅詛识識诇詗诈詐诉訴诊診诋詆诌謅词詞诎詘诏詔诐詖译譯诒詒诓誆诔誄试試诖詿诗詩诘詰诙詼诚誠诛誅诜詵话話诞誕诟詬诠詮诡詭询詢诣詣诤諍该該详詳诧詫诨諢诩詡诪譸诫誡诬誣语語诮誚误誤诰誥诱誘诲誨诳誑说說诵誦诶誒请請诸諸诹諏诺諾读讀诼諑诽誹课課诿諉谀諛谁誰谂諗调調谄諂谅諒谆諄谇誶谈談谉讅谊誼谋謀谌諶谍諜谎謊谏諫谐諧谑謔谒謁谓謂谔諤谕諭谖諼谗讒谘諮谙諳谚諺谛諦谜謎谝諞谞諝谟謨谠讜谡謖谢謝谣謠谤謗谥諡谦謙谧謐谨謹谩謾谪謫谫譾谬謬谭譚谮譖谯譙谰讕谱譜谲譎谳讞谴譴谵譫谶讖豮豶贝貝贞貞负負贠貟贡貢财財责責贤賢败敗账賬货貨质質贩販贪貪贫貧贬貶购購贮貯贯貫贰貳贱賤贲賁贳貰贴貼贵貴贶貺贷貸贸貿费費贺賀贻貽贼賊贽贄贾賈贿賄赀貲赁賃赂賂赃贓资資赅賅赆贐赇賕赈賑赉賚赊賒赋賦赌賭赍齎赎贖赏賞赐賜赑贔赒賙赓賡赔賠赕賧赖賴赗賵赘贅赙賻赚賺赛賽赜賾赝贗赞贊赟贇赠贈赡贍赢贏赣贛赪赬赵趙赶趕趋趨趱趲趸躉跃躍跄蹌跖蹠跞躒践踐跶躂跷蹺跸蹕跹躚跻躋踌躊踪蹤踬躓踯躑蹑躡蹒蹣蹰躕蹿躥躏躪躜躦躯軀輼轀车車轧軋轨軌轩軒轪軑轫軔转轉轭軛轮輪软軟轰轟轱軲轲軻轳轤轴軸轵軹轶軼轷軤轸軫轹轢轺軺轻輕轼軾载載轾輊轿轎辀輈辁輇辂輅较較辄輒辅輔辆輛辇輦辈輩辉輝辊輥辋輞辌輬辍輟辎輜辏輳辐輻辑輯辒轀输輸辔轡辕轅辖轄辗輾辘轆辙轍辚轔辞辭辟闢辩辯辫辮边邊辽遼达達迁遷过過迈邁运運还還这這进進远遠违違连連迟遲迩邇迳逕迹跡适適选選逊遜递遞逦邐逻邏遗遺遥遙邓鄧邝鄺邬鄔邮郵邹鄒邺鄴邻鄰郁鬱郏郟郐鄶郑鄭郓鄆郦酈郧鄖郸鄲酂酇酝醞酦醱酱醬酽釅酾釃酿釀醖醞采採释釋里裏鉴鑑銮鑾錾鏨钅釒钆釓钇釔针針钉釘钊釗钋釙钌釕钍釷钎釺钏釧钐釤钑鈒钒釩钓釣钔鍆钕釹钖鍚钗釵钘鈃钙鈣钚鈈钛鈦钜鉅钝鈍钞鈔钟鍾钠鈉钡鋇钢鋼钣鈑钤鈐钥鑰钦欽钧鈞钨鎢钩鉤钪鈧钫鈁钬鈥钭鈄钮鈕钯鈀钰鈺钱錢钲鉦钳鉗钴鈷钵鉢钶鈳钷鉕钸鈽钹鈸钺鉞钻鑽钼鉬钽鉭钾鉀钿鈿铀鈾铁鐵铂鉑铃鈴铄鑠铅鉛铆鉚铇鉋铈鈰铉鉉铊鉈铋鉍铌鈮铍鈹铎鐸铏鉶铐銬铑銠铒鉺铓鋩铔錏铕銪铖鋮铗鋏铘鋣铙鐃铚銍铛鐺铜銅铝鋁铞銱铟銦铠鎧铡鍘铢銖铣銑铤鋌铥銩铦銛铧鏵铨銓铩鎩铪鉿铫銚铬鉻铭銘铮錚铯銫铰鉸铱銥铲鏟铳銃铴鐋铵銨银銀铷銣铸鑄铹鐒铺鋪铻鋙铼錸铽鋱链鏈铿鏗销銷锁鎖锂鋰锃鋥锄鋤锅鍋锆鋯锇鋨锈鏽锉銼锊鋝锋鋒锌鋅锍鋶锎鐦锏鐧锐銳锑銻锒鋃锓鋟锔鋦锕錒锖錆锗鍺锘鍩错錯锚錨锛錛锜錡锝鍀锞錁锟錕锠錩锡錫锢錮锣鑼锤錘锥錐锦錦锧鑕锨鍁锩錈锪鍃锫錇锬錟锭錠键鍵锯鋸锰錳锱錙锲鍥锳鍈锴鍇锵鏘锶鍶锷鍔锸鍤锹鍬锺鍾锻鍛锼鎪锽鍠锾鍰锿鎄镀鍍镁鎂镂鏤镃鎡镄鐨镅鎇镆鏌镇鎮镈鎛镉鎘镊鑷镋钂镌鐫镍鎳镎鎿镏鎦镐鎬镑鎊镒鎰镓鎵镔鑌镕鎔镖鏢镗鏜镘鏝镙鏍镚鏰镛鏞镜鏡镝鏑镞鏃镟鏇镠鏐镡鐔镢钁镣鐐镤鏷镥鑥镦鐓镧鑭镨鐠镩鑹镪鏹镫鐙镬鑊镭鐳镮鐶镯鐲镰鐮镱鐿镲鑔镳鑣镴鑞镵鑱镶鑲长長门門闩閂闪閃闫閆闬閈闭閉问問闯闖闰閏闱闈闲閒闳閎间間闵閔闶閌闷悶闸閘闹鬧闺閨闻聞闼闥闽閩闾閭闿闓阀閥阁閣阂閡阃閫阄鬮阅閱阆閬阇闍阈閾阉閹阊閶阋鬩阌閿阍閽阎閻阏閼阐闡阑闌阒闃阓闠阔闊阕闋阖闔阗闐阘闒阙闕阚闞阛闤队隊阳陽阴陰阵陣阶階际際陆陸陇隴陈陳陉陘陕陝陦隯陧隉陨隕险險随隨隐隱隶隸隽雋难難雇僱雏雛雠讎雳靂雾霧霁霽霉黴霡霢霭靄靓靚靔靝静靜靥靨鞑韃鞒鞽鞯韉鞲韝韦韋韧韌韨韍韩韓韪韙韫韞韬韜韵韻页頁顶頂顷頃顸頇项項顺順须須顼頊顽頑顾顧顿頓颀頎颁頒颂頌颃頏预預颅顱领領颇頗颈頸颉頡颊頰颋頲颌頜颍潁颎熲颏頦颐頤频頻颒頮颓頹颔頷颕頴颖穎颗顆题題颙顒颚顎颛顓颜顏额額颞顳颟顢颠顛颡顙颢顥颣纇颤顫颥顬颦顰颧顴风風飏颺飐颭飑颮飒颯飓颶飔颸飕颼飖颻飗飀飘飄飙飆飚飈飞飛飨饗餍饜饣飠饤飣饥飢饦飥饧餳饨飩饩餼饪飪饫飫饬飭饭飯饮飲饯餞饰飾饱飽饲飼饳飿饴飴饵餌饶饒饷餉饸餄饹餎饺餃饻餏饼餅饽餑饾餖饿餓馀餘馁餒馂餕馃餜馄餛馅餡馆館馇餷馈饋馉餶馊餿馋饞馌饁馍饃馎餺馏餾馐饈馑饉馒饅馓饊馔饌馕饢马馬驭馭驮馱驯馴驰馳驱驅驲馹驳駁驴驢驵駔驶駛驷駟驸駙驹駒驺騶驻駐驼駝驽駑驾駕驿驛骀駘骁驍骂罵骃駰骄驕骅驊骆駱骇駭骈駢骉驫骊驪骋騁验驗骍騂骎駸骏駿骐騏骑騎骒騍骓騅骔騌骕驌骖驂骗騙骘騭骙騤骚騷骛騖骜驁骝騮骞騫骟騸骠驃骡騾骢驄骣驏骤驟骥驥骦驦骧驤髅髏髋髖髌髕鬓鬢鬶鬹魇魘魉魎鱼魚鱽魛鱾魢鱿魷鲀魨鲁魯鲂魴鲃䰾鲄魺鲅鮁鲆鮃鲇鮎鲈鱸鲉鮋鲊鮓鲋鮒鲌鮊鲍鮑鲎鱟鲏鮍鲐鮐鲑鮭鲒鮚鲓鮳鲔鮪鲕鮞鲖鮦鲗鰂鲘鮜鲙鱠鲚鱭鲛鮫鲜鮮鲝鮺鲞鯗鲟鱘鲠鯁鲡鱺鲢鰱鲣鰹鲤鯉鲥鰣鲦鰷鲧鯀鲨鯊鲩鯇鲪鮶鲫鯽鲬鯒鲭鯖鲮鯪鲯鯕鲰鯫鲱鯡鲲鯤鲳鯧鲴鯝鲵鯢鲶鯰鲷鯛鲸鯨鲹鰺鲺鯴鲻鯔鲼鱝鲽鰈鲾鰏鲿鱨鳀鯷鳁鰮鳂鰃鳃鰓鳄鱷鳅鰍鳆鰒鳇鰉鳈鰁鳉鱂鳊鯿鳋鰠鳌鰲鳍鰭鳎鰨鳏鰥鳐鰩鳑鰟鳒鰜鳓鰳鳔鰾鳕鱈鳖鱉鳗鰻鳘鰵鳙鱅鳚䲁鳛鰼鳜鱖鳝鱔鳞鱗鳟鱒鳠鱯鳡鱤鳢鱧鳣鱣鳤䲘鸟鳥鸠鳩鸡雞鸢鳶鸣鳴鸤鳲鸥鷗鸦鴉鸧鶬鸨鴇鸩鴆鸪鴣鸫鶇鸬鸕鸭鴨鸮鴞鸯鴦鸰鴒鸱鴟鸲鴝鸳鴛鸴鷽鸵鴕鸶鷥鸷鷙鸸鴯鸹鴰鸺鵂鸻鴴鸼鵃鸽鴿鸾鸞鸿鴻鹀鵐鹁鵓鹂鸝鹃鵑鹄鵠鹅鵝鹆鵒鹇鷳鹈鵜鹉鵡鹊鵲鹋鶓鹌鵪鹍鵾鹎鵯鹏鵬鹐鵮鹑鶉鹒鶊鹓鵷鹔鷫鹕鶘鹖鶡鹗鶚鹘鶻鹙鶖鹚鷀鹛鶥鹜鶩鹝鷊鹞鷂鹟鶲鹠鶹鹡鶺鹢鷁鹣鶼鹤鶴鹥鷖鹦鸚鹧鷓鹨鷚鹩鷯鹪鷦鹫鷲鹬鷸鹭鷺鹮䴉鹯鸇鹰鷹鹱鸌鹲鸏鹳鸛鹴鸘鹾鹺麦麥麸麩麹麴麺麪麽麼黄黃黉黌黡黶黩黷黪黲黾黽鼋黿鼌鼂鼍鼉鼹鼴齐齊齑齏齿齒龀齔龁齕龂齗龃齟龄齡龅齙龆齠龇齜龈齦龉齬龊齪龋齲龌齷龙龍龚龔龛龕龟龜鿎䃮鿏䥑鿒鿓鿔鎶';
+ for(var i=0;i<pairs.length;i+=2){S2T_MAP[pairs.charAt(i)]=pairs.charAt(i+1);}
+})();
+function s2t(text){
+ if(!RD_CFG||!RD_CFG.s2t)return text;
+ var out='',n=text.length,i=0,tryLen,seg;
+ /* 先按词组表最长匹配，命中则整词替换（解决 发→發/髮、干→乾/幹 的单字歧义） */
+ while(i<n){
+  var hit=null;
+  for(tryLen=S2T_PLEN;tryLen>=2;tryLen--){
+   if(i+tryLen>n)continue;
+   seg=text.substr(i,tryLen);
+   if(S2T_PMAP[seg]){hit=S2T_PMAP[seg];i+=tryLen;break;}
+  }
+  if(hit){out+=hit;continue;}
+  var c=text.charAt(i);
+  out+=(S2T_MAP[c]||c);
+  i++;
+ }
+ return out;
+}
+
+/* ===================== 听书 TTS ===================== */
+var ttsOn=false,ttsQueue=[],ttsIdx=0;
+function ttsSupported(){return !!(window.speechSynthesis&&window.SpeechSynthesisUtterance);}
+function ttsSplitPara(text){
+ return String(text||'').split(/\n+/).filter(function(x){return trimS(x).length>0;});
+}
+function ttsStart(){
+ if(!ttsSupported()){msg('当前浏览器不支持语音朗读');return;}
+ if(!VIEW.doc||!VIEW.doc.cur){msg('当前没有可朗读的内容');return;}
+ var t=VIEW.doc.segs&&VIEW.doc.segs[VIEW.doc.seg]?VIEW.doc.segs[VIEW.doc.seg]:null;
+ var text=VIEW.doc.cur||'';
+ ttsQueue=ttsSplitPara(text);
+ ttsIdx=0;
+ ttsOn=true;
+ msg('🔊 开始朗读（共 '+ttsQueue.length+' 段）');
+ ttsNext();
+}
+function ttsNext(){
+ if(!ttsOn)return;
+ if(ttsIdx>=ttsQueue.length){
+  ttsOn=false;
+  msg('朗读完毕');
+  return;
+ }
+ var seg=ttsQueue[ttsIdx++];
+ var u=new SpeechSynthesisUtterance(s2t(seg));
+ u.lang='zh-CN';
+ u.rate=1;
+ u.onend=function(){ if(ttsOn)ttsNext(); };
+ u.onerror=function(){ if(ttsOn)ttsNext(); };
+ try{window.speechSynthesis.speak(u);}catch(e){ttsOn=false;msg('朗读失败：'+e.message);}
+}
+function ttsStop(){
+ ttsOn=false;
+ try{window.speechSynthesis.cancel();}catch(e){}
+ msg('已停止朗读');
+}
+
+/* ===================== 自动滚屏 ===================== */
+var autoScrollOn=false,autoScrollSpeed=1,autoScrollTimer=null;
+function autoScrollToggle(){
+ autoScrollOn=!autoScrollOn;
+ if(autoScrollOn){
+  msg('自动滚屏：开（约 '+autoScrollSpeed+' 行/秒）');
+  var acc=0;
+  autoScrollTimer=setInterval(function(){
+   if(!autoScrollOn){clearInterval(autoScrollTimer);autoScrollTimer=null;return;}
+   acc+=autoScrollSpeed*0.35;
+   if(acc>=1){
+    var d=Math.floor(acc);acc-=d;
+    window.scrollBy(0,d);
+   }
+  },50);
+ }else{
+  if(autoScrollTimer){clearInterval(autoScrollTimer);autoScrollTimer=null;}
+  msg('自动滚屏：关');
+ }
+}
+
+/* ===================== 双栏 ===================== */
+function rdTwoCol(){
+ RD_CFG.cols=(RD_CFG.cols==2)?1:2;
+ rdCfgSave();rdApply();rdRelayout();
+ msg(RD_CFG.cols==2?'双栏：开（宽屏下左右两栏）':'双栏：关');
+}
+
+/* ===================== 换源 =====================
+ * 同名书如果被多个源收录，A 源挂了可以切到 B 源，并尽量保留阅读位置。
+ * 定位策略：① 章节名完全相同 ② 同序号 ③ 按百分比兜底。
+ */
+function srSwapPick(){
+ if(!SR_SEL||!SR_SEL.sources||SR_SEL.sources.length<2){msg('这本书只有一个可用来源');return;}
+ var list=SR_SEL.sources,lines=[],i;
+ for(i=0;i<list.length;i++){
+  var mark=(list[i].bs===SR_SEL.bs)?' ←当前':'';
+  lines.push((i+1)+'. '+list[i].srcName+mark);
+ }
+ var ans=prompt('选择要切换的书源：\n'+lines.join('\n'),'');
+ if(ans===null)return;
+ var n=parseInt(ans,10);
+ if(!(n>=1&&n<=list.length)){msg('序号无效');return;}
+ var target=list[n-1];
+ if(target.bs===SR_SEL.bs){msg('已经是这个源');return;}
+ var curName='',curIdx=-1,curPct=0;
+ if(SR_CHS.length&&SR_CHIDX>=0){
+  curName=SR_CHS[SR_CHIDX].name;
+  curIdx=SR_CHIDX;
+  curPct=SR_CHIDX/Math.max(1,SR_CHS.length-1);
+ }
+ msg('正在切换书源：'+target.srcName+' ...',true);
+ /* 沿用 openBook 的抓取与解析，但切换成功后按原位置定位 */
+ var keepName=curName,keepIdx=curIdx,keepPct=curPct;
+ openBook(target);
+ var tries=0;
+ var iv=setInterval(function(){
+  tries++;
+  if(SR_SEL===target&&SR_CHS.length){
+   clearInterval(iv);
+   var ni=-1,j;
+   for(j=0;j<SR_CHS.length;j++){ if(SR_CHS[j].name===keepName){ni=j;break;} }
+   if(ni<0&&keepIdx>=0&&keepIdx<SR_CHS.length)ni=keepIdx;
+   if(ni<0)ni=Math.round(keepPct*(SR_CHS.length-1));
+   renderSrcToc();
+   msg('已换源：'+target.srcName+'（定位到第 '+(ni+1)+' 章）');
+   openChapter(ni);
+  }else if(tries>40){
+   clearInterval(iv);
+  }
+ },250);
+}
+
+/* ===================== 书源健康检查 =====================
+ * 全量测源：并发 6 路、单源 8 秒、可中断、断点续测。
+ * 结果同时用于：① 显示每个源是否可用 ② 搜索时优先跑健康源。
+ */
+var HC_RUNNING=false,HC_STOP=false,HC_DONE=0,HC_OK=0,HC_FAIL=0,HC_TOTAL=0;
+var HC_HEALTH={};
+var HC_KEY='rd_health';
+var HC_TEST_KEY='斗破苍穹';
+
+function hcLoad(){
+ var o=jsonParse(lsGet(HC_KEY)||'{}');
+ if(o&&typeof o==='object'&&!(o instanceof Array)){
+  /* 超过 7 天的记录视为过期 */
+  var now=new Date().getTime(),out={},k;
+  for(k in o){
+   if(o.hasOwnProperty(k)&&o[k]&&(now-(o[k].ts||0))<7*86400000)out[k]=o[k];
+  }
+  HC_HEALTH=out;
+ }else{HC_HEALTH={};}
+}
+function hcSave(){try{lsSet(HC_KEY,jsonStr(HC_HEALTH));}catch(e){}}
+
+/* 单源健康判定：能否抓到搜索页 + 能否解析出至少 1 本书 */
+function hcTestOne(s,cb){
+ var lv=srcSupport(s);
+ if(lv==='js'||lv==='nosearch'||lv==='partial'){cb('skip');return;}
+ var req;
+ try{ req=rdBuildReq(s.searchUrl,s.bookSourceUrl||'',HC_TEST_KEY); }catch(e){cb('fail');return;}
+ if(!req||!req.url){cb('fail');return;}
+ proxyFetch(req.url,function(err,text,finalUrl){
+  if(err){cb('fail');return;}
+  try{
+   var parsed=rdParse(text);
+   var items=parseSearch(s,parsed,finalUrl||req.url);
+   cb(items.length?'ok':'fail');
+  }catch(e){cb('fail');}
+ },8000,req);
+}
+
+function hcRun(){
+ if(HC_RUNNING)return;
+ var cand=[],i;
+ for(i=0;i<SRCS.length;i++){
+  var lv=srcSupport(SRCS[i]);
+  if(lv==='js'||lv==='nosearch'){continue;}
+  cand.push(SRCS[i]);
+ }
+ HC_TOTAL=cand.length;
+ HC_RUNNING=true;HC_STOP=false;HC_DONE=0;HC_OK=0;HC_FAIL=0;
+ var idx=0,CONC=6,inflight=0;
+
+ function finish(){
+  HC_RUNNING=false;
+  hcSave();
+  renderSrcList();
+  msg('健康检查完成：可用 '+HC_OK+' / 测了 '+HC_DONE+' / 共 '+HC_TOTAL);
+ }
+ function next(){
+  if(HC_STOP){ if(inflight===0)finish(); return; }
+  while(inflight<CONC&&idx<cand.length){
+   (function(s){
+    inflight++;
+    var key=String(s.bookSourceUrl||'');
+    hcTestOne(s,function(r){
+     inflight--;HC_DONE++;
+     if(r==='ok'){HC_OK++;HC_HEALTH[key]={ok:1,ts:new Date().getTime()};}
+     else if(r==='fail'){HC_FAIL++;HC_HEALTH[key]={ok:0,ts:new Date().getTime()};}
+     if(HC_DONE%10===0){
+      var el=$('srcStat');
+      if(el)el.textContent='健康检查 '+HC_DONE+'/'+HC_TOTAL+' · 可用 '+HC_OK+' · 失败 '+HC_FAIL;
+     }
+     next();
+    });
+   })(cand[idx++]);
+  }
+  if(idx>=cand.length&&inflight===0)finish();
+ }
+ next();
+}
+function hcStop(){HC_STOP=true;msg('已请求停止，等待进行中的请求结束…');}
+
+/* 健康度影响搜索排序（0=未知，1=可用，-1=不可用） */
+function hcScore(s){
+ var h=HC_HEALTH[String(s.bookSourceUrl||'')];
+ if(!h)return 0;
+ return h.ok?2:-3;
+}
+
 function openChapter(i){
- if(SR_BUSY)return;
  if(i<0||i>=SR_CHS.length)return;
- SR_BUSY=true;
  var ch=SR_CHS[i];
  var s=SR_SEL?SR_SEL.bs:null;
- if(!s){SR_BUSY=false;return;}
+ if(!s)return;
  var t0=new Date().getTime();
- msg('加载第 '+(i+1)+'/'+SR_CHS.length+' 章（'+calcPct(i+1,SR_CHS.length)+'）：'+ch.name+' ...',true);
- proxyFetch(ch.url,function(err,text,finalUrl){
-  SR_BUSY=false;
-  if(err){msg('章节加载失败：'+err.message);return;}
-  var parsed=rdParse(text);
-  if(!parsed.doc&&parsed.json===undefined){msg('页面解析失败');return;}
-  var rule=s.ruleContent||{};
-  var body=rdContentText(rule.content||'',parsed.doc||parsed.json);
-  if(!body){msg('正文提取为空（规则不匹配或该源需要 JS）');return;}
-  body=body.replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n');
-  SR_CHIDX=i;
+
+ /* 记下「用户真正在读哪一章」，预取结果不应覆盖当前阅读位置 */
+ SR_CHIDX=i;
+
+ function render(body,fromCache){
   var t=$('srcChapTitle');
-  if(t){t.textContent='第 '+(i+1)+'/'+SR_CHS.length+' 章（'+calcPct(i+1,SR_CHS.length)+'）· '+ch.name+' · 本章 '+body.length+' 字 · 加载 '+elapsed(t0);}
+  if(t){t.textContent='第 '+(i+1)+'/'+SR_CHS.length+' 章（'+calcPct(i+1,SR_CHS.length)+'）· '+ch.name+' · 本章 '+body.length+' 字 · '+(fromCache?'缓存':'加载 '+elapsed(t0));}
   showSrcRead();
   VIEW.src.defTitle=ch.name;
-  VIEW.src.setDoc(body,0,true);
+  /* 关键：预取/加载可能落后于用户点击，只有仍停在目标章节时才渲染 */
+  if(SR_CHIDX===i)VIEW.src.setDoc(body,0,true);
   rdShowUI(1);
+ }
+
+ /* 1) 命中本地缓存：立即显示，不占用网络 */
+ var cached=chGet(s.bookSourceUrl,i);
+ if(cached){
+  SR_BUSY=false;
+  render(cached,true);
+  msg('已加载：'+ch.name+'（缓存命中）');
+  prefetchFrom(i);
+  return;
+ }
+
+ if(SR_BUSY)return;
+ SR_BUSY=true;
+ msg('加载第 '+(i+1)+'/'+SR_CHS.length+' 章（'+calcPct(i+1,SR_CHS.length)+'）：'+ch.name+' ...',true);
+
+ fetchChapterBody(s,ch,function(err,body){
+  SR_BUSY=false;
+  if(err){msg('章节加载失败：'+err.message);return;}
+  chPut(s.bookSourceUrl,i,body);
+  render(body,false);
   msg('已加载：'+ch.name+'（本章 '+body.length+' 字，用时 '+elapsed(t0)+'）');
+  prefetchFrom(i);
  });
 }
 function prevChapter(){if(SR_CHIDX>0)openChapter(SR_CHIDX-1);}
@@ -1351,7 +2068,8 @@ function renderSrcResults(){
   for(var i=0;i<SR_RESULTS.length;i++){
    var r=SR_RESULTS[i];
    h+='<div class="doc"><span class="t" style="cursor:pointer;color:#0055cc" onclick="openBookByIdx('+i+')">'+esc(r.name)+'</span>';
-   h+='<div class="m">'+esc(r.author||'')+' · '+esc(r.srcName)+'</div></div>';
+   var sc=(r.srcCount&&r.srcCount>1)?('<span style="color:#0a0">（'+r.srcCount+' 个源有）</span>'):'';
+   h+='<div class="m">'+esc(r.author||'')+' · '+esc(r.srcName)+sc+'</div></div>';
   }
  }
  if(SR_FAILS&&SR_FAILS.length){
@@ -1371,6 +2089,29 @@ function renderSrcToc(){
  var el=$('srcTocList');if(!el)return;
  var ti=$('srcBookTitle');
  if(ti){ti.textContent=(SR_SEL?SR_SEL.name:'')+'（'+SR_CHS.length+' 章）';}
+
+ /* 书籍详情（封面 / 简介 / 最新章节），数据来自打开时同一份 HTML，无额外请求 */
+ var ib=$('srcBookInfo');
+ if(ib){
+  var info=SR_INFO||{};
+  if(info.intro||info.lastChapter||info.cover){
+   var ih='';
+   if(info.cover)ih+='<img src="'+attr(info.cover)+'" style="float:left;width:72px;height:96px;object-fit:cover;border-radius:6px;margin:0 12px 8px 0" onerror="this.style.display=\'none\'">';
+   if(info.kind)ih+='<div class="mini">'+esc(info.kind)+(info.wordCount?(' · '+esc(info.wordCount)):'')+'</div>';
+   if(info.lastChapter)ih+='<div class="mini">最新：'+esc(info.lastChapter)+'</div>';
+   if(info.intro)ih+='<div style="font-size:.9em;line-height:1.6;margin-top:6px;white-space:pre-wrap">'+esc(info.intro)+'</div>';
+   ih+='<div style="clear:both"></div>';
+   ib.innerHTML=ih;ib.style.display='block';
+  }else{ ib.style.display='none'; }
+ }
+
+ /* 换源：同名书有多源时才显示 */
+ var sw=$('btnSwapSrc');
+ if(sw){
+  var n=(SR_SEL&&SR_SEL.sources)?SR_SEL.sources.length:0;
+  sw.style.display=(n>1)?'':'none';
+  sw.textContent='换源（'+n+'）';
+ }
  var h='';
  for(var i=0;i<SR_CHS.length;i++){
   h+='<div class="doc"><span class="t" style="font-size:1em;cursor:pointer;color:#0055cc" onclick="openChapter('+i+')">'+esc(SR_CHS[i].name)+'</span></div>';
@@ -1389,7 +2130,11 @@ function bind(){
  on($('btnToc'),'click',function(){rdDrawer('toc');});
  on($('btnSet'),'click',function(){rdDrawer('set');});
  on($('btnTocClose'),'click',rdCloseDrawers);
+ on($('btnSwapSrc'),'click',srSwapPick);
  on($('btnSetClose'),'click',rdCloseDrawers);
+ on($('btnFind'),'click',rdFindOpen);
+ on($('btnFindClose'),'click',rdCloseDrawers);
+ on($('rdFindQ'),'keyup',function(e){e=e||window.event;var k=e.keyCode||e.which;if(k===13){rdFindDo();}});
  on($('rdMask'),'click',rdCloseDrawers);
  on($('btnPrev'),'click',function(){VIEW.doc.prev();rdTouchUI();});
  on($('btnNext'),'click',function(){VIEW.doc.next();rdTouchUI();});
@@ -1413,11 +2158,14 @@ function bind(){
  on($('srcRange'),'change',function(){var n=parseInt(this.value,10);if(!n||!VIEW.src)return;VIEW.src.gotoLocal(VIEW.src.pageOff[n]||0,true);rdTouchUI();});
  on($('srcRange'),'input',function(){rdScheduleAutoHide();});
  on(window,'resize',function(){rdChrome();var v=rdActive();if(v)v.relayout();});
+ setInterval(function(){ if(RD_READING)statTick(); },30000);
+ on(window,'beforeunload',function(){statStop();});
  on(document,'keydown',rdKeys);
 }
 function init(){
  rdCfgLoad();
  srHealthLoad();
+ hcLoad();
  RD_COLMODE=rdColTest()?1:0;
  rdApply();
  VIEW.doc=rdViewer({stage:$('rdStage'),flow:$('rdFlow'),progEl:$('rdProg'),navPrev:$('btnPrev'),navNext:$('btnNext'),range:$('rdRange'),titleEl:$('rdTitle')});
@@ -1432,7 +2180,7 @@ function init(){
  loadSources(false);
 }
 /* ===================== 阅读核心 v3（分段按屏分页） ===================== */
-var RD_CFG_DEF={tap:'lr',swipe:1,anim:'none',fs:18,lh:1.8,ls:0,pad:16,gap:2,ind:1,align:'justify',wide:0,font:'sys',theme:'paper',bright:100,prog:'both'};
+var RD_CFG_DEF={s2t:0,cols:1,autoScroll:0,tts:0,tap:'lr',swipe:1,anim:'none',fs:18,lh:1.8,ls:0,pad:16,gap:2,ind:1,align:'justify',wide:0,font:'sys',theme:'paper',bright:100,prog:'both'};
 var RD_CFG={},RD_COLMODE=1,RD_REDUCE=0,RD_VPAD=12,RD_UI_ON=0,RD_DRAW='',RD_READING=0;
 var RD_PARTSZ=26000;
 var VIEW={doc:null,src:null};
@@ -1455,7 +2203,15 @@ var RD_SET_DEF=[
  ['grp','外观'],
  ['seg','theme','主题',[['paper','纸白'],['sepia','羊皮'],['green','护眼'],['night','夜间'],['black','纯黑']]],
  ['num','bright','亮度',60,100,5],
- ['seg','prog','进度显示',[['both','页码+百分比'],['page','仅页码'],['pct','仅百分比']]]
+ ['seg','prog','进度显示',[['both','页码+百分比'],['page','仅页码'],['pct','仅百分比']]],
+ ['grp','阅读辅助'],
+ ['seg','s2t','简体转繁体',[[0,'关'],[1,'开']]],
+ ['seg','cols','栏数',[[1,'单栏'],[2,'双栏']]],
+ ['seg','autoScroll','自动滚屏',[[0,'关'],[1,'开']]],
+ ['seg','tts','听书',[[0,'关'],[1,'开']]],
+ ['act','aBookmark','添加书签'],
+ ['act','aNote','记笔记（先选中文字）'],
+ ['act','aStat','阅读统计']
 ];
 function rdReduce(){try{return (window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)?1:0;}catch(e){return 0;}}
 function rdCfgLoad(){
@@ -1481,7 +2237,8 @@ function rdStyle(){
  var c=RD_CFG,ff=RD_FONTS[c.font]||'inherit';
  var gap=(c.gap===1?'0.35em':(c.gap===3?'1.1em':'0.7em'));
  var css='';
- css+='.rd-flow{font-size:'+c.fs+'px;line-height:'+c.lh+';font-family:'+ff+';}';
+ css+='.rd-flow{font-size:'+c.fs+'px;line-height:'+c.lh+';font-family:'+ff+';';
+ if((c.cols*1)===2){css+='-webkit-column-count:2;column-count:2;-webkit-column-gap:32px;column-gap:32px;}';}
  css+='.rd-flow p{margin:0 0 '+gap+';text-indent:'+(c.ind?'2em':'0')+';text-align:'+(c.align==='justify'?'justify':'left')+';letter-spacing:'+((c.ls*1)?c.ls+'px':'normal')+';}';
  css+='.rd-flow .rd-h{text-indent:0;font-weight:bold;margin-top:.2em;}';
  var st=$('rdDyn');
@@ -1490,7 +2247,14 @@ function rdStyle(){
  var dim=$('rdDim');
  if(dim){var op=(100-(c.bright*1))/100;dim.style.opacity=String(op<0?0:(op>0.55?0.55:op));}
 }
-function rdApply(){rdBodyClass();rdStyle();}
+function rdApply(){
+ rdBodyClass();rdStyle();
+ /* 选项联动：自动滚屏与听书是"动作型"开关，切换时立即生效 */
+ var wantAuto=(RD_CFG.autoScroll*1)===1;
+ if(wantAuto!==autoScrollOn)autoScrollToggle();
+ var wantTts=(RD_CFG.tts*1)===1;
+ if(wantTts!==ttsOn){ if(wantTts)ttsStart(); else ttsStop(); }
+}
 /* ---------- 章节分段 ---------- */
 var RD_CH_RE=[
  /^第\s*[0-9０-９零一二三四五六七八九十百千两壹贰叁肆伍陆柒捌玖拾]{1,12}\s*[章节回卷篇集部幕]/,
@@ -1807,7 +2571,9 @@ function rdViewer(o){
   else{v.gotoLocal(local,noAnim);}
  };
  v.setDoc=function(text,ratio,noAnim){
-  v.doc=text||'';
+  /* 保留原文：简繁开关切换时需要按原文重新排版，否则已渲染的正文不会变 */
+  v.raw=String(text||'');
+  v.doc=s2t(v.raw);
   v.segs=rdBuildSegs(v.doc);
   v.seg=0;v.cur='';v.off=0;v.page=1;v.pages=1;v.pageOff=[0];
   if(!v.geom()){
@@ -1901,7 +2667,20 @@ function rdCloseDrawers(){
  var m=$('rdMask');if(m)m.className='rd-mask';
  var t=$('rdToc');if(t)t.className='rd-toc';
  var s=$('rdSet');if(s)s.className='rd-set';
+ var f=$('rdFind');if(f)f.className='rd-find';
 }
+/* 设置面板里的「动作型」按钮 */
+/* 设置面板的动作按钮（原命名为 rdAction，会覆盖书源规则解析器同名函数，故改名） */
+function rdSetAct(name){
+ if(name==='aBookmark'){bmAdd();return;}
+ if(name==='aNote'){rdCloseDrawers();noteAddFromSelection();return;}
+ if(name==='aStat'){
+  var s=statSummary();
+  alert('阅读统计\n\n今天：'+s.today+'\n累计：'+s.total+'（共 '+s.days+' 天）');
+  return;
+ }
+}
+
 function rdSetRender(){
  var b=$('rdSetBody');if(!b)return;
  var h='',i,j,d,cur,dd;
@@ -1918,6 +2697,10 @@ function rdSetRender(){
    h+='</div></div>';
    continue;
   }
+  if(d[0]==='act'){
+   h+='<div class="rd-row"><button type="button" class="sg" onclick="rdSetAct(\''+attr(d[1])+'\')">'+esc(d[2])+'</button></div>';
+   continue;
+  }
   h+='<div class="rd-row"><div class="rd-lab">'+esc(d[2])+'<span class="v">'+esc(String(RD_CFG[d[1]]))+'</span></div><div class="seg">';
   h+='<button type="button" class="sg" onclick="rdNum(\''+attr(d[1])+'\',-1)">−</button>';
   h+='<button type="button" class="sg" onclick="rdNum(\''+attr(d[1])+'\',1)">＋</button>';
@@ -1926,9 +2709,23 @@ function rdSetRender(){
  h+='<div class="rd-row" style="margin-top:18px"><button type="button" class="sg" onclick="rdReset()">恢复默认设置</button></div>';
  b.innerHTML=h;
 }
+/* 简繁开关改变正文内容本身，必须按原文 + 原阅读位置重新排版 */
+function rdRetransform(){
+ var vs=[VIEW.doc,VIEW.src],i,v,ratio;
+ for(i=0;i<vs.length;i++){
+  v=vs[i];
+  if(!v||!v.raw)continue;
+  ratio=(v.doc&&v.doc.length)?(v.abs()/v.doc.length):0;
+  if(!(ratio>=0))ratio=0;
+  if(ratio>1)ratio=1;
+  v.setDoc(v.raw,ratio,true);
+ }
+}
 function rdSetK(k,val){
  if(typeof val==='string'&&/^-?[0-9]+(\.[0-9]+)?$/.test(val))val=parseFloat(val);
+ var wasS2T=(k==='s2t')?(RD_CFG.s2t*1):-1;
  RD_CFG[k]=val;
+ if(wasS2T>=0&&wasS2T!==(val*1))rdRetransform();
  rdCfgSave();rdApply();rdSetRender();rdChrome();rdRelayout();
  try{if(VIEW.doc&&VIEW.doc.sync)VIEW.doc.sync();}catch(e){}
  try{if(VIEW.src&&VIEW.src.sync)VIEW.src.sync();}catch(e){}
