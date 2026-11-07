@@ -121,8 +121,10 @@ body.theme-dark .think .think-body{color:#8a8a8a}
    <div class="rowq">
     <select id="modelSel" style="margin-bottom:6px"></select>
    </div>
-   <div class="rowq" style="margin-bottom:6px">
+   <div class="rowq" id="switchBar" style="margin-bottom:6px;display:none">
     <button class="btn sm" id="btnWebSearch" type="button" style="display:none">联网搜索：关</button>
+    <button class="btn sm" id="btnIncremental" type="button" style="display:none">增量模式：关</button>
+    <button class="btn sm" id="btnSingleChat" type="button" style="display:none">单次对话：关</button>
    </div>
    <textarea id="input" placeholder="输入消息…（Enter 发送，Shift+Enter 换行）"></textarea>
    <button class="btn primary" id="btnSend" type="button">发送</button>
@@ -262,7 +264,7 @@ var BUILTIN=[
 
 var providers=[],sessions=[],activeSessionId='',activeProvId='',settings={};
 
-function defaultSettings(){return {temperature:0.7,maxTokens:2048,stream:1,webSearch:0};}
+function defaultSettings(){return {temperature:0.7,maxTokens:2048,stream:1,webSearch:0,incremental:0,singleChat:0};}
 
 function loadAll(){
  var p=jParse(lsGet(K_PROV)||'null');
@@ -452,22 +454,43 @@ function searchCapable(){
  var p=curProv();
  return !!(p&&p.webSearch);
 }
-function renderWebSearch(){
- var b=$('btnWebSearch');
+/* 三个开关共用一个渲染入口：都只在内置网页版反代下显示 */
+function renderSwitch(btnId,on,label,onTip,offTip){
+ var b=$(btnId);
  if(!b)return;
  if(!searchCapable()){b.style.display='none';return;}
  b.style.display='';
- var on=Number(settings.webSearch)?true:false;
  b.className='btn sm'+(on?' on':'');
- b.innerHTML=on?'联网搜索：开':'联网搜索：关';
- b.title=on?'已开启：模型会先检索网页再回答。点击关闭':'未联网：模型只依据自身知识回答。点击开启';
+ b.innerHTML=label+'：'+(on?'开':'关');
+ b.title=on?onTip:offTip;
+}
+function renderWebSearch(){
+ var bar=$('switchBar');
+ if(bar)bar.style.display=searchCapable()?'':'none';
+ renderSwitch('btnWebSearch',Number(settings.webSearch),'联网搜索',
+  '已开启：模型会先检索网页再回答。点击关闭','未联网：模型只依据自身知识回答。点击开启');
+ renderSwitch('btnIncremental',Number(settings.incremental),'增量模式',
+  '已开启：每轮只发本次输入，前文靠上游会话记忆。点击关闭','未开启：每轮重发全部历史（更费流量但最稳妥）。点击开启');
+ renderSwitch('btnSingleChat',Number(settings.singleChat),'单次对话',
+  '已开启：网页版里始终只有一个对话。点击关闭','未开启：网页版会随会话过期新建对话。点击开启');
+}
+function toggleSwitch(key,tipOn,tipOff){
+ settings[key]=Number(settings[key])?0:1;
+ saveAll();
+ renderWebSearch();
+ tip(Number(settings[key])?tipOn:tipOff);
 }
 function toggleWebSearch(){
  if(!searchCapable()){tip('当前模型不支持联网搜索（仅内置 DeepSeek 网页版）');return;}
- settings.webSearch=Number(settings.webSearch)?0:1;
- saveAll();
- renderWebSearch();
- tip(Number(settings.webSearch)?'联网搜索已开启':'联网搜索已关闭');
+ toggleSwitch('webSearch','联网搜索已开启','联网搜索已关闭');
+}
+function toggleIncremental(){
+ if(!searchCapable()){tip('该功能仅内置 DeepSeek 网页版支持');return;}
+ toggleSwitch('incremental','增量模式已开启：以后只发本次输入','增量模式已关闭：恢复每轮全量历史');
+}
+function toggleSingleChat(){
+ if(!searchCapable()){tip('该功能仅内置 DeepSeek 网页版支持');return;}
+ toggleSwitch('singleChat','单次对话已开启：网页版只保留一个对话','单次对话已关闭');
 }
 /* 思考过程的折叠块：小而灰，默认收起，点击展开全文 */
 function thinkHtml(txt,streaming){
@@ -617,10 +640,26 @@ function authSet(xhr,p){
 function buildBody(model,messages,p){
  var body={model:model,messages:messages,temperature:Number(settings.temperature)||0.7,max_tokens:Number(settings.maxTokens)||2048};
  body.stream=(String(settings.stream)!=='0');
- /* 联网搜索：只有自带反代的 DeepSeek 网页版支持，
-    Worker 侧读 body.search_enabled 并转发给上游；其它接口没有这个字段，不传。 */
- if(p&&p.webSearch&&Number(settings.webSearch))body.search_enabled=true;
+ /* 网页版反代专属的三个开关，只有 p.webSearch（内置 DeepSeek 网页版）才传 */
+ if(p&&p.webSearch){
+  if(Number(settings.webSearch))body.search_enabled=true;
+  /* 增量模式：只发本轮，上下文由 Worker 用 parent_message_id 串接 */
+  if(Number(settings.incremental))body.incremental=true;
+  /* 单次对话：Worker 永远复用同一个 chat_session */
+  if(Number(settings.singleChat))body.single_chat=true;
+  /* 会话隔离：lite / lite1 / 多标签页互不污染上下文 */
+  body.conversation_scope=scopeId();
+ }
  return jStr(body);
+}
+/* 本设备的稳定会话标识：只用于反代侧隔离上下文，不含任何隐私内容 */
+function scopeId(){
+ var v=lsGet('ai.scopeId');
+ if(!v){
+  v='s'+new Date().getTime().toString(36)+Math.random().toString(36).slice(2,8);
+  lsSet('ai.scopeId',v);
+ }
+ return v;
 }
 
 var sending=false,stopFlag=false,xhrCur=null;
@@ -1018,6 +1057,8 @@ function bind(){
   tip('已切换模型：'+p[1]);
  });
  on($('btnWebSearch'),'click',toggleWebSearch);
+ on($('btnIncremental'),'click',toggleIncremental);
+ on($('btnSingleChat'),'click',toggleSingleChat);
  on($('btnSend'),'click',sendMessage);
  on($('btnStop'),'click',function(){
   stopFlag=true;
