@@ -263,6 +263,7 @@ var BUILTIN=[
 ];
 
 var providers=[],sessions=[],activeSessionId='',activeProvId='',settings={};
+var thinkOpenState={};  /* 思考块展开状态，整表重建后据此回填 */
 
 function defaultSettings(){return {temperature:0.7,maxTokens:2048,stream:1,webSearch:0,incremental:0,singleChat:0};}
 
@@ -493,13 +494,13 @@ function toggleSingleChat(){
  toggleSwitch('singleChat','单次对话已开启：网页版只保留一个对话','单次对话已关闭');
 }
 /* 思考过程的折叠块：小而灰，默认收起，点击展开全文 */
-function thinkHtml(txt,streaming){
+function thinkHtml(txt,streaming,key){
  var t=String(txt||'');
  var n=t.length;
  var label;
  if(streaming)label='思考中…'+(n?'（'+n+' 字）':'');
  else label='思考过程（'+n+' 字）';
- return '<details class="think'+((streaming||!t)?'':' done')+'"'+(streaming?' open':'')+'>'+
+ return '<details class="think'+((streaming||!t)?'':' done')+'" data-key="'+esc(String(key||''))+'"'+(streaming?' open':'')+'>'+
   '<summary>'+esc(label)+'</summary>'+
   '<div class="think-body">'+esc(t)+'</div></details>';
 }
@@ -519,7 +520,7 @@ function renderMsgs(){
   h+='<div class="turn '+cls+'" data-i="'+i+'">';
   h+='<div class="who">'+who+(m._err?' · 出错':'')+'</div>';
   if(m.reasoning){
-   h+=thinkHtml(m.reasoning,false);
+   h+=thinkHtml(m.reasoning,false,'r'+i);
   }
   if(m._err){
    h+='<div class="body-text" style="color:#c00">'+esc(m.content||'（无内容）')+'</div>';
@@ -536,7 +537,23 @@ function renderMsgs(){
   h+='<button class="btn sm" data-act="del" data-i="'+i+'" type="button">删除</button>';
   h+='</div></div>';
  }
+ /* 重建前后保持思考块的展开状态：新建的 <details> 默认收起，
+    用户刚展开就会被下一帧换成收起的新元素（表现为「展开立刻缩回」）。 */
+ var oldDetails=el.getElementsByTagName('details');
+ var oi;
+ for(oi=0;oi<oldDetails.length;oi++){
+  var ok=oldDetails[oi].getAttribute('data-key');
+  if(ok)thinkOpenState[ok]=oldDetails[oi].open;
+ }
  el.innerHTML=h;
+ var newDetails=el.getElementsByTagName('details');
+ for(oi=0;oi<newDetails.length;oi++){
+  (function(d){
+   var k=d.getAttribute('data-key');
+   if(k&&thinkOpenState[k]===true)d.open=true;
+   if(k){on(d,'toggle',function(){thinkOpenState[k]=d.open;});}
+  })(newDetails[oi]);
+ }
  var bs=el.getElementsByTagName('button');
  for(i=0;i<bs.length;i++){
   (function(b){
@@ -777,6 +794,8 @@ function streamRequest(p,model,msgs,s,slot){
  x.timeout=180000;
  x.ontimeout=function(){failRun(s,slot,'流式请求超时（180 秒），已中止。可点「重试」。');};
  var seen=0,buf='',full='',reasoning='',gotSse=false,lastPaint=0;
+ /* 记录用户对思考块的展开意图：paint 每帧只更新内容，绝不覆盖这个状态 */
+ function userOpen(slot,val){try{slot._thinkOpen=val;}catch(e){}}
  function paint(){
   slot.content=full;
   slot.reasoning=reasoning;
@@ -796,10 +815,14 @@ function streamRequest(p,model,msgs,s,slot){
     for(i=0;i<thinkEl.length;i++){if(thinkEl[i].className.indexOf('think')>=0){te=thinkEl[i];break;}}
     if(reasoning){
      if(!te){
-      /* 首次出现：插到正文前 */
+      /* 首次出现：插到正文前。默认展开，但一旦插入后就不再动它的 open 状态，
+         否则用户手动收起/展开会被下一帧覆盖（表现为“展开了又自己缩回”）。 */
       var tmp=document.createElement('div');
       tmp.innerHTML=thinkHtml(reasoning,true);
       var node=tmp.firstChild;
+      /* 用户曾经手动收起过，就保持收起；否则默认展开 */
+      if(slot._thinkOpen===false)node.open=false;
+      try{node.addEventListener('toggle',function(){userOpen(slot,node.open);});}catch(e){}
       var bodyFirst=null;
       var bd=last.getElementsByTagName('div');
       for(i=0;i<bd.length;i++){if(bd[i].className==='body-text'){bodyFirst=bd[i];break;}}
@@ -813,6 +836,8 @@ function streamRequest(p,model,msgs,s,slot){
       if(bodyBox)bodyBox.textContent=reasoning;
       var sum=te.getElementsByTagName('summary');
       if(sum[0])sum[0].textContent='思考中…（'+reasoning.length+' 字）';
+      /* 注意：这里**不动** te.open。用户展开/收起是用户的选择，
+         每帧重设 open 会导致“展开了立刻被缩回”的观感。 */
      }
     }
     var bt=last.getElementsByTagName('div');
