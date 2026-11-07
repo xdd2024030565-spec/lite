@@ -58,7 +58,8 @@ body.rd-th-green .rd{background:#dfeee1}
 body.rd-th-night .rd{background:#0f0f0f}
 body.rd-th-black .rd{background:#000000}
 /* 阅读器标识显示开关（阅读设置 → 外观）：关掉后页内不再显示任何“阅读器”品牌标识 */
-body.rd-nomark .top .site,
+body.rd-nomark .top,
+body.rd-nomark .foot,
 body.rd-nomark .rd-brand{display:none!important}
 .rd{position:fixed;left:0;top:0;right:0;bottom:0;overflow:hidden;z-index:60;
  background:var(--rd-bg,#fdfdfb);color:var(--rd-fg,#1b1b1b);-webkit-user-select:none;user-select:none}
@@ -173,7 +174,6 @@ body.reading #topMsg{position:fixed;left:8px;right:8px;top:8px;z-index:9;margin:
  <div class="top">
   <span class="site">📖 阅读器</span>
   <span class="tag">兼容版</span>
-  <a class="btn" href="https://reader.yongjiu.ccwu.cc/reader/web/list">纯HTML模式</a>
  </div>
  <div class="msg" id="topMsg"></div>
  <div id="vLib">
@@ -182,6 +182,7 @@ body.reading #topMsg{position:fixed;left:8px;right:8px;top:8px;z-index:9;margin:
    <button class="btn" id="btnTrash" type="button">回收站</button>
    <button class="btn" id="btnReload" type="button">刷新</button>
    <button class="btn" id="btnSource" type="button">🌐 书源</button>
+   <button class="btn" id="btnLibSet" type="button">⚙ 阅读设置</button>
   </div>
   <div class="box" id="importBox">
    <div class="box-title">导入文档</div>
@@ -2153,6 +2154,7 @@ function bind(){
  on($('rdTocQ'),'keyup',function(){rdTocRender();});
  on($('btnEmpty'),'click',emptyTrash);
  on($('btnSource'),'click',function(){show('source');loadSources();});
+ on($('btnLibSet'),'click',function(){rdDrawer('set');});
  on($('btnSrcBack'),'click',function(){show('lib');renderLib();});
  on($('btnSrcMgr'),'click',function(){var b=$('srcMgrBox');if(b)b.style.display=(b.style.display==='block')?'none':'block';});
  on($('btnSrcImport'),'click',doSrcImport);
@@ -2214,7 +2216,7 @@ var RD_SET_DEF=[
  ['seg','theme','主题',[['paper','纸白'],['sepia','羊皮'],['green','护眼'],['night','夜间'],['black','纯黑']]],
  ['num','bright','亮度',60,100,5],
  ['seg','prog','进度显示',[['both','页码+百分比'],['page','仅页码'],['pct','仅百分比']]],
- ['seg','hidemark','阅读器标识',[[1,'隐藏'],[0,'显示']]],
+ ['seg','hidemark','页内标识',[[1,'隐藏'],[0,'显示']]],
  ['grp','阅读辅助'],
  ['seg','s2t','简体转繁体',[[0,'关'],[1,'开']]],
  ['seg','cols','栏数',[[1,'单栏'],[2,'双栏']]],
@@ -2717,6 +2719,9 @@ function rdSetRender(){
   h+='<button type="button" class="sg" onclick="rdNum(\''+attr(d[1])+'\',1)">＋</button>';
   h+='</div></div>';
  }
+ h+='<div class="rd-grp">其它</div>';
+ h+='<div class="rd-row"><div class="rd-lab">纯HTML模式<span class="v">无需脚本</span></div>';
+ h+='<a class="sg" style="display:inline-block;text-decoration:none;color:inherit" href="https://reader.yongjiu.ccwu.cc/reader/web/list">在纯HTML模式打开书库</a></div>';
  h+='<div class="rd-row" style="margin-top:18px"><button type="button" class="sg" onclick="rdReset()">恢复默认设置</button></div>';
  b.innerHTML=h;
 }
@@ -2807,8 +2812,9 @@ function rdBindView(v){
 }
 function rdKeys(e){
  e=e||window.event;
- if(!RD_READING)return;
  var k=e.keyCode||e.which;
+ if(RD_DRAW&&k===27){rdCloseDrawers();return;}
+ if(!RD_READING)return;
  if(k===27){if(RD_DRAW)rdCloseDrawers();return;}
  if(RD_DRAW)return;
  if(k===84){RD_UI_ON=!RD_UI_ON;rdChrome();rdScheduleAutoHide();if(e.preventDefault)e.preventDefault();return;}
