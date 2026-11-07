@@ -107,6 +107,18 @@ body.theme-dark .think .think-body{color:#8a8a8a}
   <div id="sessList"></div>
  </div>
 
+ <!-- 选择固定对话（仅内置 DeepSeek 网页版） -->
+ <div id="vPick" style="display:none">
+  <div class="nav">
+   <button class="btn sm" id="btnPickBack" type="button">« 返回</button>
+   <button class="btn sm" id="btnPickPlain" type="button">普通新对话</button>
+  </div>
+  <div class="mini" style="padding:6px 0">从 DeepSeek 网页版里选一个已有对话，导入它最近
+   <input type="text" id="pickLimit" value="5" style="display:inline-block;width:46px;padding:2px 6px;margin:0 4px">
+   条作为上下文；之后的聊天只留在本机。</div>
+  <div id="pickList"></div>
+ </div>
+
  <!-- 对话 -->
  <div id="vChat" style="display:none">
   <div class="nav">
@@ -355,7 +367,7 @@ function toggleTheme(){
 
 /* ---------- 视图切换 ---------- */
 function show(v){
- var ids={list:'vList',chat:'vChat',prov:'vProv',set:'vSet'},k;
+ var ids={list:'vList',chat:'vChat',prov:'vProv',set:'vSet',pick:'vPick'},k;
  for(k in ids){
   if(ids.hasOwnProperty(k)){
    var el=$(ids[k]);
@@ -398,7 +410,112 @@ function fmtTime(ts){
  function p(n){return (n<10?'0':'')+n;}
  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
 }
+/* ---------- 选择固定对话（仅内置 DeepSeek 网页版）----------
+ 网页版反代在上游维护固定会话；这里可挑一个已有的，导入最近 N 条作上下文，
+ 之后的新对话仍只存本机（纯 ES5，用 XMLHttpRequest，老内核也能用）。 */
+var pickList=[];
+function pickerAvailable(){
+ var p=curProv();
+ return !!(p&&p.webSearch);
+}
+function apiBase(p){
+ return String((p&&p.base)||'').replace(/\/+$/,'');
+}
+function openPick(){
+ if(!pickerAvailable()){tip('该功能仅内置 DeepSeek 网页版支持');return;}
+ show('pick');
+ var box=$('pickList');
+ if(box)box.innerHTML='<div class="mini">正在读取网页版会话…</div>';
+ var x=new XMLHttpRequest();
+ x.timeout=30000;
+ x.onreadystatechange=function(){
+  if(x.readyState!==4)return;
+  if(x.status>=200&&x.status<300){
+   var d=jParse(x.responseText||'');
+   pickList=(d&&d.data)||[];
+   renderPick();
+  }else{
+   if(box)box.innerHTML='<div class="mini">读取失败：HTTP '+x.status+'</div>';
+  }
+ };
+ x.onerror=function(){if(box)box.innerHTML='<div class="mini">读取失败：网络错误</div>';};
+ try{
+  x.open('GET',apiBase(curProv())+'/sessions',true);
+  x.send();
+ }catch(e){
+  if(box)box.innerHTML='<div class="mini">读取失败：'+(e&&e.message?e.message:e)+'</div>';
+ }
+}
+function renderPick(){
+ var box=$('pickList');
+ if(!box)return;
+ if(!pickList.length){box.innerHTML='<div class="mini">网页版里还没有会话</div>';return;}
+ var h='',i;
+ for(i=0;i<pickList.length;i++){
+  var it=pickList[i];
+  h+='<div class="item" data-sid="'+esc(it.id)+'">';
+  h+='<span class="t">'+esc(it.title||'(无标题)')+(it.tagged?' <span class="mini">[固定]</span>':'')+'</span>';
+  h+='<span class="m">点此绑定并导入上下文</span></div>';
+ }
+ box.innerHTML=h;
+ var items=box.getElementsByTagName('div');
+ for(i=0;i<items.length;i++){
+  (function(el){
+   if(!el.getAttribute||!el.getAttribute('data-sid'))return;
+   on(el,'click',function(){bindPick(el.getAttribute('data-sid'));});
+  })(items[i]);
+ }
+}
+function bindPick(sid){
+ var it=null,i;
+ for(i=0;i<pickList.length;i++){if(pickList[i].id===sid){it=pickList[i];break;}}
+ var lim=parseInt(trimS(val('pickLimit')),10);
+ if(isNaN(lim)||lim<0)lim=5;
+ if(lim>20)lim=20;
+ var s={id:uid(),title:(it&&it.title)||'固定对话',messages:[],
+        created:new Date().getTime(),updated:new Date().getTime(),pinnedSessionId:sid};
+ sessions.unshift(s);
+ activeSessionId=s.id;
+ saveAll();
+ if(lim<=0){
+  tip('已绑定「'+((it&&it.title)||'会话')+'」（不导入历史）');
+  openChat();
+  return;
+ }
+ var x=new XMLHttpRequest();
+ x.timeout=40000;
+ x.onreadystatechange=function(){
+  if(x.readyState!==4)return;
+  if(x.status>=200&&x.status<300){
+   var d=jParse(x.responseText||'');
+   var ms=(d&&d.messages)||[];
+   var k;
+   for(k=0;k<ms.length;k++){
+    s.messages.push({role:ms[k].role,content:ms[k].content,
+      reasoning:ms[k].reasoning||'',_imported:true});
+   }
+   var first=null;
+   for(k=0;k<s.messages.length;k++){if(s.messages[k].role==='user'){first=s.messages[k];break;}}
+   if(first&&first.content&&(!it||!it.title))s.title=String(first.content).slice(0,16);
+  }else{
+   tip('会话已绑定，但导入失败：HTTP '+x.status);
+  }
+  s.updated=new Date().getTime();
+  saveAll();
+  openChat();
+  tip('已导入 '+s.messages.length+' 条上下文');
+ };
+ x.onerror=function(){saveAll();openChat();tip('会话已绑定，但导入失败：网络错误');};
+ try{
+  x.open('GET',apiBase(curProv())+'/sessions/messages?id='+encodeURIComponent(sid)+'&limit='+lim,true);
+  x.send();
+ }catch(e){openChat();tip('导入失败：'+(e&&e.message?e.message:e));}
+}
 function newSession(){
+ if(pickerAvailable()){openPick();return;}
+ newSessionCore();
+}
+function newSessionCore(){
  var s={id:uid(),title:'新对话',messages:[],created:new Date().getTime(),updated:new Date().getTime()};
  sessions.unshift(s);
  activeSessionId=s.id;
@@ -666,6 +783,9 @@ function buildBody(model,messages,p){
   if(Number(settings.singleChat))body.single_chat=true;
   /* 会话隔离：lite / lite1 / 多标签页互不污染上下文 */
   body.conversation_scope=scopeId();
+  /* 本对话绑定了某个上游会话时，钉死用它 */
+  var cs=curSession();
+  if(cs&&cs.pinnedSessionId)body.pinned_session_id=cs.pinnedSessionId;
  }
  return jStr(body);
 }
@@ -1041,6 +1161,8 @@ function cfgImport(){
 /* ---------- 绑定 ---------- */
 function bind(){
  on($('btnNew'),'click',newSession);
+ on($('btnPickBack'),'click',function(){show('list');renderSessions();});
+ on($('btnPickPlain'),'click',newSessionCore);
  on($('btnProv'),'click',function(){show('prov');renderProv();$('provEdit').style.display='none';});
  on($('btnSet'),'click',openSet);
  on($('btnTheme'),'click',toggleTheme);
