@@ -108,6 +108,9 @@ body.theme-dark .think{border-color:#555555;color:#aaaaaa}
    <div class="rowq">
     <select id="modelSel" style="margin-bottom:6px"></select>
    </div>
+   <div class="rowq" style="margin-bottom:6px">
+    <button class="btn sm" id="btnWebSearch" type="button" style="display:none">联网搜索：关</button>
+   </div>
    <textarea id="input" placeholder="输入消息…（Enter 发送，Shift+Enter 换行）"></textarea>
    <button class="btn primary" id="btnSend" type="button">发送</button>
    <button class="btn" id="btnStop" type="button" style="display:none">停止</button>
@@ -241,12 +244,12 @@ var K_PROV='ai.providers',K_SESS='ai.sessions',K_ACT='ai.activeSession',K_SET='a
 var DS_BASE='https://deepseek-web.yongjiu.ccwu.cc/v1';
 
 var BUILTIN=[
- {id:'deepseek-web',name:'DeepSeek 网页版',base:DS_BASE,key:'',proxy:'',models:['deepseek-chat','deepseek-reasoner'],sys:'你是一个有用的 AI 助手',locked:true,selfProxied:true,badge:'免密钥'}
+ {id:'deepseek-web',name:'DeepSeek 网页版',base:DS_BASE,key:'',proxy:'',models:['deepseek-chat','deepseek-reasoner'],sys:'你是一个有用的 AI 助手',locked:true,selfProxied:true,badge:'免密钥',webSearch:true}
 ];
 
 var providers=[],sessions=[],activeSessionId='',activeProvId='',settings={};
 
-function defaultSettings(){return {temperature:0.7,maxTokens:2048,stream:1};}
+function defaultSettings(){return {temperature:0.7,maxTokens:2048,stream:1,webSearch:0};}
 
 function loadAll(){
  var p=jParse(lsGet(K_PROV)||'null');
@@ -259,6 +262,7 @@ function loadAll(){
   if(!found){providers.unshift(cloneProviders([BUILTIN[i]])[0]);}
   else{
    found.locked=true;found.selfProxied=true;
+   found.webSearch=!!BUILTIN[i].webSearch;
    if(!found.base)found.base=BUILTIN[i].base;
   }
  }
@@ -403,6 +407,7 @@ function openChat(){
  var t=$('chatTitle');
  if(t)t.textContent='《'+esc(s.title||'未命名')+'》 · '+s.messages.length+' 条 · 点标题可改名';
  renderModelSel();
+ renderWebSearch();
  renderMsgs();
 }
 function renderModelSel(){
@@ -426,6 +431,30 @@ function curModelOf(p){
  var cp=curProv();
  if(cp&&cp.id===p.id)return p.models[0];
  return p.models[0];
+}
+/* ---------- 联网搜索开关 ----------
+ 只有自带反代的「DeepSeek 网页版」有网页搜索能力：Worker 读 body.search_enabled，
+ 转发成上游 search_enabled。其它 OpenAI 兼容接口没有这个标准字段，故隐藏开关。 */
+function searchCapable(){
+ var p=curProv();
+ return !!(p&&p.webSearch);
+}
+function renderWebSearch(){
+ var b=$('btnWebSearch');
+ if(!b)return;
+ if(!searchCapable()){b.style.display='none';return;}
+ b.style.display='';
+ var on=Number(settings.webSearch)?true:false;
+ b.className='btn sm'+(on?' on':'');
+ b.innerHTML=on?'联网搜索：开':'联网搜索：关';
+ b.title=on?'已开启：模型会先检索网页再回答。点击关闭':'未联网：模型只依据自身知识回答。点击开启';
+}
+function toggleWebSearch(){
+ if(!searchCapable()){tip('当前模型不支持联网搜索（仅内置 DeepSeek 网页版）');return;}
+ settings.webSearch=Number(settings.webSearch)?0:1;
+ saveAll();
+ renderWebSearch();
+ tip(Number(settings.webSearch)?'联网搜索已开启':'联网搜索已关闭');
 }
 function renderMsgs(){
  var s=curSession(),el=$('msgs');
@@ -561,9 +590,12 @@ function authSet(xhr,p){
   try{xhr.setRequestHeader('Authorization','Bearer '+p.key);}catch(e){}
  }
 }
-function buildBody(model,messages){
+function buildBody(model,messages,p){
  var body={model:model,messages:messages,temperature:Number(settings.temperature)||0.7,max_tokens:Number(settings.maxTokens)||2048};
  body.stream=(String(settings.stream)!=='0');
+ /* 联网搜索：只有自带反代的 DeepSeek 网页版支持，
+    Worker 侧读 body.search_enabled 并转发给上游；其它接口没有这个字段，不传。 */
+ if(p&&p.webSearch&&Number(settings.webSearch))body.search_enabled=true;
  return jStr(body);
 }
 
@@ -671,7 +703,7 @@ function plainRequest(p,model,msgs,s,slot){
    }
   };
   x.onerror=function(){failRun(s,slot,'网络错误（请求被中断或跨域被拦）');};
-  x.send(buildBody(model,msgs));
+  x.send(buildBody(model,msgs,p));
  }catch(e){failRun(s,slot,'请求异常：'+(e&&e.message?e.message:e));}
 }
 
@@ -764,7 +796,7 @@ function streamRequest(p,model,msgs,s,slot){
    }
   };
   x.onerror=function(){failRun(s,slot,'网络错误（请求被中断或跨域被拦）');};
-  x.send(buildBody(model,msgs));
+  x.send(buildBody(model,msgs,p));
  }catch(e){failRun(s,slot,'请求异常：'+(e&&e.message?e.message:e));}
 }
 
@@ -932,9 +964,11 @@ function bind(){
   var s=curSession();
   if(s){s.providerId=p[0];s.model=p[1];}
   saveAll();
+  renderWebSearch();
   renderMsgs();
   tip('已切换模型：'+p[1]);
  });
+ on($('btnWebSearch'),'click',toggleWebSearch);
  on($('btnSend'),'click',sendMessage);
  on($('btnStop'),'click',function(){
   stopFlag=true;
