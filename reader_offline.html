@@ -50,6 +50,16 @@ body.rd-th-sepia{--rd-bg:#f4ecd8;--rd-fg:#43331f;background:#f4ecd8;color:#43331
 body.rd-th-green{--rd-bg:#dfeee1;--rd-fg:#20372a;background:#dfeee1;color:#20372a}
 body.rd-th-night{--rd-bg:#121212;--rd-fg:#c9c9c9;background:#0f0f0f;color:#c9c9c9}
 body.rd-th-black{--rd-bg:#000000;--rd-fg:#9a9a9a;background:#000000;color:#9a9a9a}
+/* 不支持 CSS 变量的老浏览器：先用纯色兜底，避免阅读层透明、主页面文字透出来压住正文 */
+.rd{background:#fdfdfb}
+body.rd-th-paper .rd{background:#fdfdfb}
+body.rd-th-sepia .rd{background:#f4ecd8}
+body.rd-th-green .rd{background:#dfeee1}
+body.rd-th-night .rd{background:#0f0f0f}
+body.rd-th-black .rd{background:#000000}
+/* 阅读器标识显示开关（阅读设置 → 外观）：关掉后页内不再显示任何“阅读器”品牌标识 */
+body.rd-nomark .top .site,
+body.rd-nomark .rd-brand{display:none!important}
 .rd{position:fixed;left:0;top:0;right:0;bottom:0;overflow:hidden;z-index:60;
  background:var(--rd-bg,#fdfdfb);color:var(--rd-fg,#1b1b1b);-webkit-user-select:none;user-select:none}
 .rd-stage{position:absolute;left:0;right:0;top:0;bottom:0;overflow:hidden;z-index:1;
@@ -1030,7 +1040,7 @@ function init(){
  loadSources(false);
 }
 /* ===================== 阅读核心 v3（分段按屏分页） ===================== */
-var RD_CFG_DEF={tap:'lr',swipe:1,anim:'none',fs:18,lh:1.8,ls:0,pad:16,gap:2,ind:1,align:'justify',wide:0,font:'sys',theme:'paper',bright:100,imm:1,foot:1,prog:'both'};
+var RD_CFG_DEF={tap:'lr',swipe:1,anim:'none',fs:18,lh:1.8,ls:0,pad:16,gap:2,ind:1,align:'justify',wide:0,font:'sys',theme:'paper',bright:100,hidemark:1,imm:1,foot:1,prog:'both'};
 var RD_CFG={},RD_COLMODE=1,RD_REDUCE=0,RD_VPAD=12,RD_TOPON=0,RD_DRAW='',RD_READING=0;
 var RD_PARTSZ=26000;
 var VIEW={doc:null,src:null};
@@ -1055,7 +1065,8 @@ var RD_SET_DEF=[
  ['num','bright','亮度',60,100,5],
  ['seg','imm','顶部工具栏',[[1,'自动隐藏'],[0,'常显']]],
  ['seg','foot','底部按钮',[[1,'常显'],[0,'隐藏']]],
- ['seg','prog','进度显示',[['both','页码+百分比'],['page','仅页码'],['pct','仅百分比']]]
+ ['seg','prog','进度显示',[['both','页码+百分比'],['page','仅页码'],['pct','仅百分比']]],
+ ['seg','hidemark','阅读器标识',[[1,'隐藏'],[0,'显示']]]
 ];
 function rdReduce(){try{return (window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)?1:0;}catch(e){return 0;}}
 function rdCfgLoad(){
@@ -1075,7 +1086,7 @@ function rdCfgLoad(){
 function rdCfgSave(){try{lsSet('rd_cfg',jsonStr(RD_CFG));}catch(e){}}
 function rdBodyClass(){
  var c=RD_CFG;var dark=(c.theme==='night'||c.theme==='black');
- document.body.className=(dark?'theme-dark ':'')+'rd-th-'+c.theme+(RD_READING?' reading':'');
+ document.body.className=(dark?'theme-dark ':'')+'rd-th-'+c.theme+(RD_READING?' reading':'')+((c.hidemark!==undefined&&(c.hidemark*1)===0)?'':' rd-nomark');
 }
 function rdStyle(){
  var c=RD_CFG,ff=RD_FONTS[c.font]||'inherit';
